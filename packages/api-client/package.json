@@ -1,0 +1,33 @@
+{
+  "name": "@learn-fullstack/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./msw": {
+      "types": "./dist/msw/handlers.d.ts",
+      "import": "./dist/msw/handlers.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/msw/handlers.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts src/msw/handlers.ts --format esm --dts --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@learn-fullstack/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "msw": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

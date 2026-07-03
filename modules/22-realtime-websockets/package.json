@@ -1,0 +1,40 @@
+{
+  "name": "@learn-fullstack/mod-22-realtime-websockets",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "@nestjs/platform-socket.io": "catalog:",
+    "@nestjs/testing": "catalog:",
+    "@nestjs/websockets": "catalog:",
+    "@swc/core": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "graphql": "catalog:",
+    "graphql-subscriptions": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "reflect-metadata": "catalog:",
+    "rxjs": "catalog:",
+    "socket.io": "catalog:",
+    "socket.io-client": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:"
+  }
+}

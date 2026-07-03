@@ -1,0 +1,57 @@
+{
+  "name": "learn-fullstack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal hands-on course: full-stack TypeScript — React, Next.js, Node/NestJS, REST/GraphQL, Postgres/Prisma.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prepare": "husky || true",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "eslint .",
+    "typecheck": "turbo run typecheck && tsc -p tsconfig.json",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yaml,yml,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yaml,yml,css}\"",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @learn-fullstack/db migrate:dev",
+    "db:seed": "pnpm --filter @learn-fullstack/db seed",
+    "db:studio": "pnpm --filter @learn-fullstack/db studio",
+    "smoke": "tsx scripts/smoke.ts",
+    "docs:sync": "tsx scripts/docs-sync.ts",
+    "progress": "tsx scripts/progress.ts"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs,json,md,yaml,yml,css}": "prettier --write",
+    "*.{ts,tsx}": "eslint --fix"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "msw"
+    ]
+  },
+  "devDependencies": {
+    "@learn-fullstack/eslint-config": "workspace:*",
+    "@learn-fullstack/tsconfig": "workspace:*",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

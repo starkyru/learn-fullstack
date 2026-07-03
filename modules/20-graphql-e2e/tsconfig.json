@@ -1,0 +1,18 @@
+{
+  "extends": "@learn-fullstack/tsconfig/node.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "verbatimModuleSyntax": false,
+    "useDefineForClassFields": false
+  },
+  "include": ["src", "solution", "test"]
+}

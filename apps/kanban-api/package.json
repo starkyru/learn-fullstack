@@ -1,0 +1,35 @@
+{
+  "name": "@learn-fullstack/kanban-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@apollo/server": "catalog:",
+    "@learn-fullstack/shared": "workspace:*",
+    "@nestjs/apollo": "catalog:",
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/graphql": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "graphql": "catalog:",
+    "reflect-metadata": "catalog:",
+    "rxjs": "catalog:"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "catalog:",
+    "@swc/core": "catalog:",
+    "@types/node": "catalog:",
+    "@types/supertest": "catalog:",
+    "class-transformer": "catalog:",
+    "class-validator": "catalog:",
+    "supertest": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:"
+  }
+}

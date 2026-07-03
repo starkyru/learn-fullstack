@@ -1,0 +1,40 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: dev
+          POSTGRES_PASSWORD: dev
+          POSTGRES_DB: learn_fullstack
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dev -d learn_fullstack"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgresql://dev:dev@localhost:5432/learn_fullstack?schema=public
+      AUTH_SECRET: ci-secret-ci-secret-ci-secret-32
+      JWT_SECRET: ci-secret-ci-secret-ci-secret-32
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm docs:sync
+      # exercise the Postgres service: apply the schema and run the seed
+      - run: pnpm --filter @learn-fullstack/db exec prisma db push --skip-generate
+      - run: pnpm db:seed

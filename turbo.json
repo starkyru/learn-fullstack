@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["tsconfig.json", ".env"],
+  "globalEnv": ["NODE_ENV", "DATABASE_URL", "REDIS_URL", "JWT_SECRET", "AUTH_SECRET"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "db:generate"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "storybook-static/**"]
+    },
+    "dev": { "dependsOn": ["^build", "db:generate"], "cache": false, "persistent": true },
+    "typecheck": { "dependsOn": ["^build", "db:generate"] },
+    "test": { "dependsOn": ["^build", "db:generate"], "outputs": ["coverage/**"] },
+    "test:e2e": { "dependsOn": ["build"], "cache": false },
+    "db:generate": { "cache": false },
+    "migrate:dev": { "cache": false, "persistent": false },
+    "seed": { "cache": false },
+    "studio": { "cache": false, "persistent": true }
+  }
+}

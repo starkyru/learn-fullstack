@@ -1,0 +1,41 @@
+{
+  "name": "@learn-fullstack/mod-20-graphql-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@apollo/server": "catalog:",
+    "@nestjs/apollo": "catalog:",
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/graphql": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "@nestjs/testing": "catalog:",
+    "@swc/core": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@types/supertest": "catalog:",
+    "class-transformer": "catalog:",
+    "class-validator": "catalog:",
+    "graphql": "catalog:",
+    "graphql-request": "catalog:",
+    "graphql-subscriptions": "catalog:",
+    "jsdom": "catalog:",
+    "msw": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "reflect-metadata": "catalog:",
+    "rxjs": "catalog:",
+    "supertest": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:"
+  }
+}

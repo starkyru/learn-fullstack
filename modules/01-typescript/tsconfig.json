@@ -1,0 +1,4 @@
+{
+  "extends": "@learn-fullstack/tsconfig/base.json",
+  "include": ["src", "solution", "test"]
+}

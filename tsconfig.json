@@ -1,0 +1,4 @@
+{
+  "extends": "@learn-fullstack/tsconfig/node.json",
+  "include": ["scripts"]
+}

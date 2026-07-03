@@ -1,0 +1,4 @@
+{
+  "extends": "@learn-fullstack/tsconfig/react-library.json",
+  "include": ["src", "solution", "test"]
+}

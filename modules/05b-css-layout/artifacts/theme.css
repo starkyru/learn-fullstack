@@ -1,0 +1,48 @@
+/* theme.css — custom-property theming artifact. Mirrors buildThemeVars() / resolveTheme() from
+ * 03-theme.ts. One :root map defines every color; components read var(--color-*), never a literal.
+ * Documentation/shippable CSS; not run by the gate. */
+
+/* Light is the default map (matches THEMES.light). */
+:root {
+  --color-bg: #ffffff;
+  --color-fg: #111827;
+  --color-accent: #2563eb;
+  --color-muted: #6b7280;
+}
+
+/* prefers-color-scheme: the OS default when the user has NOT overridden (override === "system"). */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #111827;
+    --color-fg: #f9fafb;
+    --color-accent: #60a5fa;
+    --color-muted: #9ca3af;
+  }
+}
+
+/* Explicit override WINS over the OS preference — set data-theme on <html>. */
+:root[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-fg: #111827;
+  --color-accent: #2563eb;
+  --color-muted: #6b7280;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #111827;
+  --color-fg: #f9fafb;
+  --color-accent: #60a5fa;
+  --color-muted: #9ca3af;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+.accent {
+  color: var(--color-accent);
+}
+.muted {
+  color: var(--color-muted);
+}

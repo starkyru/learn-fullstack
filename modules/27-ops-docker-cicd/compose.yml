@@ -1,0 +1,45 @@
+# ARTIFACT — mirrors the output of `toYaml(buildComposeConfig())` (solution/02-compose.ts).
+# Documented by the module; the GATE does not run `docker compose up`.
+services:
+  postgres:
+    image: "postgres:16-alpine"
+    environment:
+      POSTGRES_USER: "app"
+      POSTGRES_PASSWORD: "app"
+      POSTGRES_DB: "app"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "pg_isready -U app"
+      interval: "10s"
+      timeout: "5s"
+      retries: 5
+  api:
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    environment:
+      DATABASE_URL: "postgres://app:app@postgres:5432/app"
+      NODE_ENV: "production"
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: "service_healthy"
+  web:
+    build:
+      context: "."
+      dockerfile: "web.Dockerfile"
+    environment:
+      API_URL: "http://api:3000"
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: "service_started"
+volumes:
+  pgdata: {}

@@ -1,0 +1,68 @@
+/* board.css — hand-written CSS artifact for the responsive Kanban board.
+ * The `{ className, style }` nodes from 01-layout-classes.ts and 05-layout-scratch.ts map onto
+ * these classes. This file is documentation/shippable CSS; the gate does NOT run it (no browser). */
+
+/* The board is a horizontally-scrolling grid of equal, min-width columns. */
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--board-columns, 3), minmax(272px, 1fr));
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+/* Container queries: the board reflows by ITS width, not the viewport. */
+.board-container {
+  container-type: inline-size;
+  container-name: board;
+}
+
+@container board (max-width: 479px) {
+  .board {
+    grid-template-columns: 1fr; /* stack */
+  }
+}
+
+@container board (min-width: 480px) and (max-width: 767px) {
+  .board {
+    grid-template-columns: repeat(2, minmax(272px, 1fr)); /* 2col */
+  }
+}
+
+@container board (min-width: 768px) {
+  .board {
+    grid-template-columns: repeat(3, minmax(272px, 1fr)); /* 3col */
+  }
+}
+
+/* A single column is a vertical Flexbox stack of cards. */
+.board-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 272px;
+}
+
+.board-column--collapsed {
+  width: 48px;
+}
+
+/* Card grid — the analog composer's target. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card-grid--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.card-grid--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Fluid type: the heading scales with the viewport between 16px and 32px.
+ * Mirrors fluidType({ minPx: 16, maxPx: 32, minVw: 400, maxVw: 1200 }). */
+.board-title {
+  font-size: clamp(16px, 2vw + 8px, 32px);
+}

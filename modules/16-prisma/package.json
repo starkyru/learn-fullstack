@@ -1,0 +1,20 @@
+{
+  "name": "@learn-fullstack/mod-16-prisma",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "prisma generate --schema prisma/schema.prisma",
+    "pretypecheck": "prisma generate --schema prisma/schema.prisma",
+    "typecheck": "tsc --noEmit",
+    "pretest": "prisma generate --schema prisma/schema.prisma",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@prisma/client": "catalog:",
+    "@types/node": "catalog:",
+    "prisma": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

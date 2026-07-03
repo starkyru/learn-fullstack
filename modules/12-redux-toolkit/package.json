@@ -1,0 +1,19 @@
+{
+  "name": "@learn-fullstack/mod-12-redux-toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "msw": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

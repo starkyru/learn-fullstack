@@ -1,0 +1,29 @@
+{
+  "name": "@learn-fullstack/mod-21-auth-security",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "@nestjs/testing": "catalog:",
+    "@swc/core": "catalog:",
+    "@types/bcryptjs": "catalog:",
+    "@types/node": "catalog:",
+    "@types/supertest": "catalog:",
+    "bcryptjs": "catalog:",
+    "jose": "catalog:",
+    "reflect-metadata": "catalog:",
+    "rxjs": "catalog:",
+    "supertest": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  }
+}

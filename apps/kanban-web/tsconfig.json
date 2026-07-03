@@ -1,0 +1,8 @@
+{
+  "extends": "@learn-fullstack/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["app", "src", "test", "tailwind.config.ts"],
+  "exclude": ["node_modules", ".next"]
+}

@@ -1,0 +1,17 @@
+// The single shared schema for the whole course. Domain slices (kanban, chat) are added
+// by the modules/apps that need them; Phase 0 ships only User so migrations work.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}

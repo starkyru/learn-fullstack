@@ -1,0 +1,12 @@
+{
+  "name": "@learn-fullstack/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "base.json",
+    "node.json",
+    "react-library.json",
+    "nextjs.json",
+    "nest.json"
+  ]
+}
