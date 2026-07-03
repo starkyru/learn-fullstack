@@ -4,7 +4,16 @@ import globals from "globals";
 
 /** Shared flat ESLint config (base). Not type-checked (keeps it fast + green). */
 export const base = tseslint.config(
-  { ignores: ["**/dist/**", "**/.next/**", "**/coverage/**", "**/storybook-static/**"] },
+  {
+    ignores: [
+      "**/dist/**",
+      "**/.next/**",
+      "**/coverage/**",
+      "**/storybook-static/**",
+      "**/generated/**",
+      "**/next-env.d.ts",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
