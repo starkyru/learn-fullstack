@@ -92,10 +92,12 @@ pnpm db:up && pnpm db:migrate && pnpm db:seed
 3. **Read the README, then code in `src/`.** `WE` tasks ship a solved reference next to a stub
    you complete by analogy; `TODO`/`FS` stubs `throw new Error("TODO…")` with hint-only
    docstrings. Never edit `solution/` — that's the gated answer key.
-4. **Grade yourself.** Tests import from `solution/`, so they're green out of the box. To grade
-   _your_ code, flip a test's `../solution/x.js` import to `../src/x.js`, run it red → green,
-   then restore. Or just run the module suite:
-   `pnpm turbo run typecheck test --filter=./modules/07-react-hooks-ii...`.
+4. **Grade yourself.** Tests import from `solution/`, so a plain `pnpm --filter … test` is
+   green out of the box and grades the answer key, not your code. Run **`pnpm grade <id>`**
+   (e.g. `pnpm grade 07-react-hooks-ii`) — it flips the test imports to `../src/`, runs the
+   module suite, and restores them automatically, so a green result reflects _your_ work.
+   (Manual path: flip a test's `../solution/x.js` import to `../src/x.js`, run it red → green,
+   then restore.) Typecheck stays: `pnpm turbo run typecheck --filter=./modules/07-react-hooks-ii...`.
 5. **Track + commit.** Mark the row in `PROGRESS.md` (or let `/progress` do it), then commit.
 6. **Stuck or curious?** `/tutor <id> <question>` for a hint-first tutor; `/exam <id>` for a
    5-question check.
