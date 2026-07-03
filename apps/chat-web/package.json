@@ -25,6 +25,8 @@
     "@types/react-dom": "catalog:",
     "jsdom": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
     "vitest": "catalog:"
   }
 }

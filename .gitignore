@@ -34,3 +34,6 @@ playwright-report/
 # module 16 prisma temp test databases
 modules/16-prisma/**/*.db
 modules/16-prisma/**/*.db-journal
+
+# Next.js generated types
+next-env.d.ts

@@ -14,6 +14,16 @@ const nextConfig = {
     "@learn-fullstack/shared",
     "@learn-fullstack/config",
   ],
+  // Source uses NodeNext-style `.js` import specifiers (tsconfig `moduleResolution: Bundler`
+  // maps them to the real `.ts`/`.tsx`). Teach webpack the same mapping so `next build` resolves
+  // them the way the typecheck does.
+  webpack: (config) => {
+    config.resolve.extensionAlias = {
+      ".js": [".ts", ".tsx", ".js"],
+      ".jsx": [".tsx", ".jsx"],
+    };
+    return config;
+  },
 };
 
 export default nextConfig;
