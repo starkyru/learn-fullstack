@@ -43,8 +43,10 @@ describe("CardAdder (useOptimistic)", () => {
 
     rejectAdd(new Error("network"));
 
-    // ...then rolled back once it rejects, with an error surfaced.
+    // ...then rolled back once it rejects, with an error surfaced. The optimistic layer is
+    // discarded when the form-action transition ends — a distinct commit from the error state —
+    // so poll for the reverted list rather than asserting it in the same tick as the alert.
     expect(await screen.findByRole("alert")).toHaveTextContent("Failed to add card");
-    expect(rows(list)).toEqual(["seed"]);
+    await waitFor(() => expect(rows(list)).toEqual(["seed"]));
   });
 });
