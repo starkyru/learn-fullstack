@@ -50,6 +50,25 @@ Each task is the _shape_ of a production tool:
 | 3   | Structured logging + errors | 🟢   | TODO | a request-scoped pino logger + Sentry error capture                  |
 | 4   | Caching layer               | 🔴   | FS   | an in-memory LRU + TTL cache for a hot query — from scratch          |
 
+## Theory & docs
+
+- **Frontend perf** — [Web Vitals](https://web.dev/articles/vitals) (the exact
+  LCP/CLS/INP thresholds `scoreWebVitals` encodes),
+  [code splitting](https://web.dev/articles/reduce-javascript-payloads-with-code-splitting).
+- **Backend tracing** —
+  [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/),
+  [OpenTelemetry for JS](https://opentelemetry.io/docs/languages/js/).
+- **Structured logging + errors** — [pino docs](https://getpino.io/#/),
+  [pino child loggers](https://getpino.io/#/docs/child-loggers),
+  [Sentry docs](https://docs.sentry.io/).
+- **Caching layer** —
+  [MDN `Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+  — the insertion-order guarantee the LRU rides on.
+- Background —
+  [MDN Performance API](https://developer.mozilla.org/en-US/docs/Web/API/Performance_API) and the
+  [Chrome DevTools Performance panel](https://developer.chrome.com/docs/devtools/performance) for
+  measuring the real thing these models mirror.
+
 ## Done when
 
 - [ ] `estimateBundle` sums the eager routes into `initialKb`; `splitByRoute` (solved) and the

@@ -33,6 +33,25 @@ functions you can unit-test with exact assertions, and ships the matching hand-w
 | 4   | Animations & motion               | 🟡   | TODO | keyframe card-drop + transitions; respect prefers-reduced-motion              |
 | 5   | Layout from scratch, no framework | 🔴   | FS   | rebuild a real UI (modal + responsive board) in pure CSS — no Tailwind/UI kit |
 
+## Theory & docs
+
+- **Flexbox + Grid layout** —
+  [Basic concepts of flexbox (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox),
+  [Basic concepts of grid layout (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout)
+- **Responsive + container queries** —
+  [CSS container queries (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries),
+  [clamp() (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp)
+- **Theming with custom properties** —
+  [Using CSS custom properties (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties),
+  [prefers-color-scheme (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+- **Animations & motion** —
+  [Using CSS animations (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations),
+  [Using CSS transitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions),
+  [prefers-reduced-motion (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+- **Layout from scratch, no framework** —
+  [CSS layout (MDN Learn)](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout),
+  [position (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/position)
+
 ## Artifacts
 
 The visual pieces ship as hand-written CSS the module documents but the gate does **not** run (no

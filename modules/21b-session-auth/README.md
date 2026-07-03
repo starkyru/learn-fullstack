@@ -35,6 +35,21 @@ there. This is security-sensitive: the solution is meant to be actually safe, no
 | 2   | CSRF protection        | 🔴   | FS   | double-submit token + origin check                        |
 | 3   | Middleware guard       | 🔴   | FS   | a `requireSession` middleware for protected routes        |
 
+## Theory & docs
+
+- **Session store + cookie** —
+  [MDN `Set-Cookie`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie),
+  [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html),
+  [Node `crypto` docs](https://nodejs.org/api/crypto.html)
+- **CSRF protection** —
+  [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html),
+  [MDN `Origin` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin),
+  [MDN `Referer` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer)
+- **Middleware guard** — [MDN `401 Unauthorized`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401),
+  [OWASP Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)
+- Background: [MDN HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) — the
+  `HttpOnly` / `Secure` / `SameSite` semantics the hardened cookie relies on.
+
 ## Done when
 
 - [ ] A stolen cookie can't be forged: the store holds only `sha256(token)`, never the raw token, and

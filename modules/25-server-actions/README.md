@@ -37,6 +37,24 @@ actions feel instant and progressively enhanced.
 | 3   | Optimistic actions       | 🟡   | TODO | useOptimistic card move; revalidate on settle               |
 | 4   | Secure actions           | 🟢   | EXT  | authorize actions via Auth.js session + zod-validate inputs |
 
+## Theory & docs
+
+- **Server Action mutation** —
+  [updating data with Server Actions](https://nextjs.org/docs/app/getting-started/updating-data),
+  [Server Functions](https://react.dev/reference/rsc/server-functions),
+  [`"use server"`](https://react.dev/reference/rsc/use-server).
+- **Forms + `useActionState`** —
+  [`useActionState`](https://react.dev/reference/react/useActionState),
+  [`<form action>`](https://react.dev/reference/react-dom/components/form).
+- **Optimistic actions** — [`useOptimistic`](https://react.dev/reference/react/useOptimistic),
+  [`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag) for the
+  on-settle cache bust.
+- **Secure actions** — [authentication guide](https://nextjs.org/docs/app/guides/authentication),
+  [data security](https://nextjs.org/docs/app/guides/data-security) (actions are public
+  endpoints — validate + authorize every input).
+- Background — [Server Components](https://react.dev/reference/rsc/server-components) for where
+  actions run and what they may close over.
+
 ## Done when
 
 - [ ] `createCardAction` validates with zod, persists via `deps.repo`, calls

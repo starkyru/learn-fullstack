@@ -35,6 +35,19 @@ Nest formalizes with providers and controllers.
 | 3   | Validation              | 🟢   | TODO | zod-validate request bodies; 400 on bad input              |
 | 4   | Refactor toward modules | 🟡   | EXT  | split routes/services/repo layers (sets up the Nest model) |
 
+## Theory & docs
+
+- **Express CRUD** — [Basic routing](https://expressjs.com/en/starter/basic-routing.html) ·
+  [Routing guide](https://expressjs.com/en/guide/routing.html) ·
+  [API reference (`req`/`res`, `express.json`)](https://expressjs.com/en/5x/api.html)
+- **Middleware** — [Using middleware](https://expressjs.com/en/guide/using-middleware.html) ·
+  [Writing middleware](https://expressjs.com/en/guide/writing-middleware.html) ·
+  [Error handling](https://expressjs.com/en/guide/error-handling.html)
+- **Validation** — [Zod docs](https://zod.dev) ·
+  [Error handling (mapping to `400`)](https://expressjs.com/en/guide/error-handling.html)
+- **Refactor toward modules** — [`express.Router` (Routing guide)](https://expressjs.com/en/guide/routing.html) ·
+  [Production best practices](https://expressjs.com/en/advanced/best-practice-performance.html)
+
 ## Done when
 
 - [ ] CRUD returns the correct status codes: `GET /cards` → `200` list, `GET /cards/:id` →

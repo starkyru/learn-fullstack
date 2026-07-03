@@ -24,6 +24,18 @@ The core stateful hooks and their timing: `useState`, `useReducer`, `useRef`,
 | 3   | useId in forms           | 🟢   | TODO | a `<Field>` linking `<label>` to `<input>` via `useId` |
 | 4   | Reducer-driven board     | 🟡   | TODO | a pure `boardReducer` (add / rename / move card)       |
 
+## Theory & docs
+
+- **useReducer** — [useReducer (react.dev)](https://react.dev/reference/react/useReducer),
+  [useState (react.dev)](https://react.dev/reference/react/useState)
+- **useRef & useLayoutEffect** — [useRef (react.dev)](https://react.dev/reference/react/useRef),
+  [useLayoutEffect (react.dev)](https://react.dev/reference/react/useLayoutEffect),
+  [Referencing Values with Refs (react.dev)](https://react.dev/learn/referencing-values-with-refs)
+- **useId in forms** — [useId (react.dev)](https://react.dev/reference/react/useId)
+- **Reducer-driven board** —
+  [Extracting State Logic into a Reducer (react.dev)](https://react.dev/learn/extracting-state-logic-into-a-reducer),
+  [Updating Arrays in State (react.dev)](https://react.dev/learn/updating-arrays-in-state)
+
 ## Done when
 
 - [ ] `useCounter` exposes `count` + `inc`/`dec`/`reset`.

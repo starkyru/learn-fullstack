@@ -49,6 +49,22 @@ pnpm exec prisma generate --schema prisma/schema.prisma
 | 3   | Transactions & seed | 🟡   | TODO | interactive transaction + a seed script both apps share         |
 | 4   | Perf                | 🟢   | EXT  | fix a Prisma N+1 with include/select; add a compound index      |
 
+## Theory & docs
+
+- **Schema & migrate** — [Models](https://www.prisma.io/docs/orm/prisma-schema/data-model/models) ·
+  [Getting started with Prisma Migrate](https://www.prisma.io/docs/orm/prisma-migrate/getting-started) ·
+  [Prototyping with `db push`](https://www.prisma.io/docs/orm/prisma-migrate/workflows/prototyping-your-schema)
+- **Relations & queries** — [Relations](https://www.prisma.io/docs/orm/prisma-schema/data-model/relations) ·
+  [Relation queries (nested reads/writes)](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries) ·
+  [Type safety (`GetPayload`)](https://www.prisma.io/docs/orm/prisma-client/type-safety)
+- **Transactions & seed** — [Transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions) ·
+  [Seeding](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding)
+- **Perf** — [Query optimization (N+1)](https://www.prisma.io/docs/orm/prisma-client/queries/query-optimization-performance) ·
+  [Indexes](https://www.prisma.io/docs/orm/prisma-schema/data-model/indexes) ·
+  [Logging (`$on("query")`)](https://www.prisma.io/docs/orm/prisma-client/debugging-and-troubleshooting/logging)
+- Background — [SQLite connector](https://www.prisma.io/docs/orm/overview/databases/sqlite) ·
+  [Generating the client (custom `output`)](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client)
+
 ## Done when
 
 - [ ] `prisma db push` / `migrate dev` produces the schema and the generated client typechecks.

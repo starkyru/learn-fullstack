@@ -29,6 +29,17 @@ load, and show optimistic results — plus the React 19 primitives (`use`, `useO
 | 3   | `useOptimistic`                    | 🟡   | TODO | an optimistic "add card" that rolls back on failure                            |
 | 4   | Concurrent pitfalls                | 🟢   | EXT  | fix a stale-closure interval counter (functional updater)                      |
 
+## Theory & docs
+
+- **Suspense + error boundary** — [`<Suspense>`](https://react.dev/reference/react/Suspense),
+  [`use`](https://react.dev/reference/react/use),
+  [Catching errors with an error boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary)
+- **`useTransition`/`useDeferredValue`** — [`useTransition`](https://react.dev/reference/react/useTransition),
+  [`useDeferredValue`](https://react.dev/reference/react/useDeferredValue)
+- **`useOptimistic`** — [`useOptimistic`](https://react.dev/reference/react/useOptimistic)
+- **Concurrent pitfalls** — [Updating state based on the previous state](https://react.dev/reference/react/useState#updating-state-based-on-the-previous-state),
+  [Lifecycle of reactive effects](https://react.dev/learn/lifecycle-of-reactive-effects)
+
 ## Done when
 
 - [ ] `<UserName>` suspends (fallback shows), then renders the resolved name; a rejected

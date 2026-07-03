@@ -29,6 +29,20 @@ navigation make it usable without a mouse. WCAG 2.1 is the standard (levels A / 
 | 3   | Focus management      | 🟡   | TODO | `getFocusableElements(container)` in DOM order (for a focus trap)           |
 | 4   | Keyboard navigation   | 🟡   | TODO | `nextRovingIndex(current, key, count)` for arrow/Home/End                   |
 
+## Theory & docs
+
+- **Semantic HTML & ARIA** — [ARIA (MDN)](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA),
+  [Using ARIA (W3C — the first rule of ARIA)](https://www.w3.org/TR/using-aria/),
+  [Button pattern (ARIA APG)](https://www.w3.org/WAI/ARIA/apg/patterns/button/)
+- **Color contrast (WCAG)** — [Understanding contrast (minimum)](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html),
+  [WCAG 2 quick reference](https://www.w3.org/WAI/WCAG21/quickref/)
+- **Focus management** — [Developing a keyboard interface (ARIA APG)](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/),
+  [Keyboard-navigable JavaScript widgets (MDN)](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets)
+- **Keyboard navigation** — [Developing a keyboard interface (ARIA APG)](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+  — roving tabindex is under "Keyboard navigation inside components"
+- **Background** — [WCAG 2 overview (W3C WAI)](https://www.w3.org/WAI/standards-guidelines/wcag/),
+  [Accessibility (MDN)](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+
 ## Done when
 
 - [ ] `ToggleButton` exposes `aria-pressed` and toggles it on click.

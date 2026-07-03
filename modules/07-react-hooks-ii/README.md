@@ -30,6 +30,23 @@ best-practices for **minimizing re-renders** along the way.
 | 3   | Portals & imperative handle | 🟡   | TODO | a `Modal` via `createPortal` exposing `focus()` through `useImperativeHandle`          |
 | 4   | Memoization                 | 🟢   | EXT  | fix a wasteful parent/child with `React.memo` + `useCallback` (prove no wasted render) |
 
+## Theory & docs
+
+- **Custom hook** —
+  [Reusing Logic with Custom Hooks (react.dev)](https://react.dev/learn/reusing-logic-with-custom-hooks),
+  [useEffect (react.dev)](https://react.dev/reference/react/useEffect)
+- **Context provider** — [useContext (react.dev)](https://react.dev/reference/react/useContext),
+  [Passing Data Deeply with Context (react.dev)](https://react.dev/learn/passing-data-deeply-with-context),
+  [Scaling Up with Reducer and Context (react.dev)](https://react.dev/learn/scaling-up-with-reducer-and-context)
+- **Portals & imperative handle** —
+  [createPortal (react.dev)](https://react.dev/reference/react-dom/createPortal),
+  [useImperativeHandle (react.dev)](https://react.dev/reference/react/useImperativeHandle)
+- **Memoization** — [memo (react.dev)](https://react.dev/reference/react/memo),
+  [useCallback (react.dev)](https://react.dev/reference/react/useCallback),
+  [useMemo (react.dev)](https://react.dev/reference/react/useMemo)
+- **Render model (background)** —
+  [Render and Commit (react.dev)](https://react.dev/learn/render-and-commit)
+
 ## Done when
 
 - [ ] `useDebounce` returns the latest value only after the delay elapses.

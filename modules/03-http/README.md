@@ -25,6 +25,19 @@ codes, headers, CORS, cookies, caching, and `fetch`.
 | 3   | HTTP cache semantics   | 🟢   | TODO | `conditionalResponse()` → `304` when `If-None-Match` matches the ETag |
 | 4   | Mini fetch retry/queue | 🔴   | FS   | `createFetcher()` — timeout + retry + in-flight de-dupe, no axios     |
 
+## Theory & docs
+
+- **Raw HTTP client** — [An overview of HTTP (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview),
+  [Using the Fetch API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- **CORS & cookies lab** — [Cross-Origin Resource Sharing (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS),
+  [Using HTTP cookies (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
+- **HTTP cache semantics** — [HTTP caching (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching),
+  [ETag (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag)
+- **Mini fetch retry/queue** — [Fetch API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API),
+  [AbortController (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+- **Background** — [HTTP request methods (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods),
+  [HTTP response status codes (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status)
+
 ## Done when
 
 - [ ] `httpPost` sends a JSON body and parses the JSON response.

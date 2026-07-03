@@ -36,6 +36,27 @@ artifacts** the module documents; the gate unit-tests the logic with **no browse
 | 3   | Framer Motion                     | 🟢   | TODO | list reorder with layout + AnimatePresence exit on card delete                                     |
 | 4   | View Transitions + reduced-motion | 🟡   | EXT  | animate a list/route change via the View Transitions API; collapse to instant under reduced-motion |
 
+## Theory & docs
+
+- **Transitions + keyframes** —
+  [Using CSS transitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions),
+  [Using CSS animations (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations),
+  [@keyframes (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes)
+- **FLIP from scratch** —
+  [Element.getBoundingClientRect() (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect),
+  [transform (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/transform),
+  [Window.requestAnimationFrame() (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame)
+- **Framer Motion** — the graded piece is the pure exit/enter reducer, not the library:
+  [Extracting State Logic into a Reducer (react.dev)](https://react.dev/learn/extracting-state-logic-into-a-reducer),
+  [Rendering Lists (react.dev)](https://react.dev/learn/rendering-lists)
+- **View Transitions + reduced-motion** —
+  [View Transition API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API),
+  [Document.startViewTransition() (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition),
+  [prefers-reduced-motion (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+- **Compositor-only animation (background)** —
+  [CSS and JavaScript animation performance (MDN)](https://developer.mozilla.org/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance),
+  [opacity (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/opacity)
+
 ## Done when
 
 - [ ] Every transition/keyframe the builders emit references `transform`/`opacity` only — never a

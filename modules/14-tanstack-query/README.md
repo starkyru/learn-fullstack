@@ -32,6 +32,26 @@ reach for: a headless **Table** and a taste of typed **Router** params + **Form*
 | 4   | TanStack Table             | 🟢   | WE   | solved sortable users table + analog cards-table stub                                             |
 | 5   | TanStack Router/Form taste | 🟢   | TODO | one typed route + one form field (the library survey — distinct from the 23b from-scratch router) |
 
+## Theory & docs
+
+- **Queries & mutations** — [queries](https://tanstack.com/query/latest/docs/framework/react/guides/queries),
+  [mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations),
+  [query invalidation](https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation).
+- **Optimistic + infinite** —
+  [optimistic updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates),
+  [infinite queries](https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries).
+- **SSR hydration** — [SSR guide](https://tanstack.com/query/latest/docs/framework/react/guides/ssr),
+  [advanced SSR](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr),
+  [hydration API](https://tanstack.com/query/latest/docs/framework/react/reference/hydration).
+- **TanStack Table** — [introduction](https://tanstack.com/table/latest/docs/introduction),
+  [sorting guide](https://tanstack.com/table/latest/docs/guide/sorting).
+- **TanStack Router/Form taste** —
+  [Router overview](https://tanstack.com/router/latest/docs/framework/react/overview),
+  [Form overview](https://tanstack.com/form/latest/docs/overview).
+- Background — [important defaults](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults)
+  (staleness, refetching, GC) and [MSW docs](https://mswjs.io/docs/) for the network-mocking layer
+  the tests run on.
+
 ## Done when
 
 - [ ] `useCards`/`useLists` render exactly the MSW data; after `useAddCard` the cards query refetches

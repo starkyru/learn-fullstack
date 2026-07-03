@@ -28,6 +28,25 @@ finishing this makes module 13's `zustand` import feel like something you alread
 | 2   | React binding | 🔴   | FS   | `useStore(selector, equalityFn)` on `useSyncExternalStore` |
 | 3   | Middleware    | 🔴   | FS   | a `persist` + `devtools`-style wrapper                     |
 
+## Theory & docs
+
+This is a 🔴 from-scratch module — the primitives below are the required reading; library docs are
+reference-only for comparing your API shape afterwards.
+
+- **`createStore`** — [closures (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures),
+  [`Set` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set),
+  [spread syntax for shallow merge (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+- **React binding** —
+  [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore),
+  [`Object.is` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
+- **Middleware** —
+  [first-class functions (MDN)](https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function),
+  [Web Storage API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API),
+  [`JSON.parse` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
+- After you've built it, compare your contract against the real thing:
+  [Zustand `createStore`](https://zustand.docs.pmnd.rs/apis/create-store) and
+  [persisting store data](https://zustand.docs.pmnd.rs/integrations/persisting-store-data).
+
 ## Done when
 
 - [ ] `createStore` supports object + functional `setState`, shallow-merges (or `replace`s),

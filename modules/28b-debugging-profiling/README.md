@@ -37,6 +37,25 @@ real app; you prove you understand the underlying bug/algorithm here.
 | 3   | Profile a slowdown       | 🟡   | TODO | flame-graph a hot path (clinic/0x); EXPLAIN ANALYZE a slow query; fix both              |
 | 4   | Hunt a memory leak       | 🔴   | FS   | reproduce a leak, take heap snapshots, find retainers; build a tiny perf_hooks profiler |
 
+## Theory & docs
+
+- **Debug a React render bug** —
+  [React Developer Tools](https://react.dev/learn/react-developer-tools),
+  [`memo`](https://react.dev/reference/react/memo),
+  [`useCallback`](https://react.dev/reference/react/useCallback).
+- **Debug a Node service** —
+  [Node.js debugging guide](https://nodejs.org/en/learn/getting-started/debugging),
+  [Chrome DevTools: debug JavaScript](https://developer.chrome.com/docs/devtools/javascript).
+- **Profile a slowdown** —
+  [Node.js flame graphs](https://nodejs.org/en/learn/diagnostics/flame-graphs),
+  [Postgres `EXPLAIN`](https://www.postgresql.org/docs/current/using-explain.html).
+- **Hunt a memory leak** —
+  [record heap snapshots](https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots),
+  [Node `perf_hooks`](https://nodejs.org/api/perf_hooks.html) (the API the timing profiler
+  mirrors).
+- Background — [Chrome DevTools docs](https://developer.chrome.com/docs/devtools) for the
+  Profiler/Sources/Memory panels the manual artifacts walk through.
+
 ## Done when
 
 - [ ] The memoized child stops re-rendering: `FixedParent` keeps its child at **one** render across

@@ -30,6 +30,18 @@ can't predict.
 | 3   | TanStack Form         | 🟢   | TODO | rebuild the card form with TanStack Form; note the tradeoffs      |
 | 4   | Async + server errors | 🟡   | EXT  | map a rejected `ServerValidationError` back onto the right fields |
 
+## Theory & docs
+
+- **Controlled form + zod** — [Reacting to input with state](https://react.dev/learn/reacting-to-input-with-state),
+  [`<input>` (react.dev)](https://react.dev/reference/react-dom/components/input),
+  [Zod docs](https://zod.dev/)
+- **React Hook Form** — [Get started (RHF)](https://react-hook-form.com/get-started),
+  [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray)
+- **TanStack Form** — [TanStack Form docs](https://tanstack.com/form/latest)
+- **Async + server errors** — [`setError` (RHF)](https://react-hook-form.com/docs/useform/seterror)
+- **Background** — [`<label>` (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label),
+  [`alert` role (MDN)](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/alert_role)
+
 ## Done when
 
 - [ ] `<SignupForm>` blocks submit with per-field messages; the mismatch message lands on the

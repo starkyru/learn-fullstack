@@ -41,6 +41,25 @@ NextRequest-like object and returns a redirect `Response`. No dev server require
 | 3   | Route handlers + middleware | 🟢   | TODO | a route-handler API + auth middleware redirect             |
 | 4   | Loading/error UI            | 🟢   | EXT  | add loading.tsx/error.tsx with Suspense boundaries         |
 
+## Theory & docs
+
+- **Routes & layouts** —
+  [Next.js layouts and pages](https://nextjs.org/docs/app/getting-started/layouts-and-pages),
+  [`layout.js` file convention](https://nextjs.org/docs/app/api-reference/file-conventions/layout)
+- **Server vs client components** —
+  [Next.js server and client components](https://nextjs.org/docs/app/getting-started/server-and-client-components),
+  [react.dev Server Components](https://react.dev/reference/rsc/server-components),
+  [react.dev `'use client'`](https://react.dev/reference/rsc/use-client)
+- **Route handlers + middleware** —
+  [`route.js` file convention](https://nextjs.org/docs/app/api-reference/file-conventions/route),
+  [Next.js middleware](https://nextjs.org/docs/app/api-reference/file-conventions/middleware),
+  [MDN `Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)
+- **Loading/error UI** —
+  [`loading.js`](https://nextjs.org/docs/app/api-reference/file-conventions/loading),
+  [`error.js`](https://nextjs.org/docs/app/api-reference/file-conventions/error),
+  [react.dev `<Suspense>`](https://react.dev/reference/react/Suspense)
+- Background: [Next.js App Router docs](https://nextjs.org/docs/app)
+
 ## Done when
 
 - [ ] `RootLayout` / `BoardLayout` await to the expected wrapper tree (html/body/main and

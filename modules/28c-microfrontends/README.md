@@ -31,6 +31,19 @@ without leaking. Finishing this makes Webpack/Vite Module Federation feel like s
 | 2   | Shared-singleton negotiation  | 🔴   | FS   | hand-rolled semver + highest-satisfying-wins singleton scope |
 | 3   | Shell mount/unmount lifecycle | 🔴   | FS   | `createShell(registry)` with leak-free `mount`/`unmount`     |
 
+## Theory & docs
+
+- **Remote registry + loader** — [Module Federation](https://module-federation.io/) (the real
+  runtime this module reimplements),
+  [MDN dynamic `import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import).
+- **Shared-singleton negotiation** — [the semver spec](https://semver.org/) behind
+  `parseVersion`/`compareVersions`/`satisfies`.
+- **Shell mount/unmount lifecycle** —
+  [MDN memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management)
+  (reachability — why a kept disposer reference is a leak),
+  [MDN custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)
+  for the closest platform analog of a mount/unmount contract.
+
 ## Done when
 
 - [ ] `loadRemote` runs each remote's loader AT MOST ONCE under concurrent calls, caches the resolved

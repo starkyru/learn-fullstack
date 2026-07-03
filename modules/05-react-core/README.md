@@ -24,6 +24,18 @@ Render UIs from components, props, and state — the foundation everything else 
 | 3   | Effects & data fetch | 🟡   | TODO | a `useBoardName` hook: fetch in `useEffect` with loading/error + cleanup               |
 | 4   | Component variants   | 🟢   | WE   | solved `cardVariants` example map + analog `badgeVariants` (story-ready for module 11) |
 
+## Theory & docs
+
+- **Components & props** — [Your First Component (react.dev)](https://react.dev/learn/your-first-component),
+  [Passing Props to a Component (react.dev)](https://react.dev/learn/passing-props-to-a-component)
+- **Lists, keys & state** — [Rendering Lists (react.dev)](https://react.dev/learn/rendering-lists),
+  [State: A Component's Memory (react.dev)](https://react.dev/learn/state-a-components-memory),
+  [Updating Arrays in State (react.dev)](https://react.dev/learn/updating-arrays-in-state)
+- **Effects & data fetch** — [Synchronizing with Effects (react.dev)](https://react.dev/learn/synchronizing-with-effects),
+  [useEffect (react.dev)](https://react.dev/reference/react/useEffect)
+- **Component variants** — [Keeping Components Pure (react.dev)](https://react.dev/learn/keeping-components-pure),
+  [How to write stories (Storybook)](https://storybook.js.org/docs/writing-stories)
+
 ## Done when
 
 - [ ] `<Badge>` renders its label and variant class like `<Card>` does.

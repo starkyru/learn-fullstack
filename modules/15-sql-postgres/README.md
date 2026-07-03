@@ -39,6 +39,28 @@ transaction, the index — and you watch the query planner change its mind in `E
 | 4   | Index & N+1 hunt   | 🔴   | FS   | reproduce an N+1 + a seq-scan; fix with a batched query + index; read EXPLAIN |
 | 5   | Mini query builder | 🔴   | FS   | typed `from(t).where().limit()` to parameterized SQL — no Prisma/Drizzle/Knex |
 
+## Theory & docs
+
+- **Schema + seed** — [data definition](https://www.postgresql.org/docs/current/ddl.html),
+  [constraints](https://www.postgresql.org/docs/current/ddl-constraints.html),
+  [node-postgres queries (parameterized)](https://node-postgres.com/features/queries).
+- **Joins & pagination** —
+  [joins between tables](https://www.postgresql.org/docs/current/tutorial-join.html),
+  [`LIMIT` and `OFFSET`](https://www.postgresql.org/docs/current/queries-limit.html).
+- **Transactions** —
+  [transactions tutorial](https://www.postgresql.org/docs/current/tutorial-transactions.html),
+  [transaction isolation](https://www.postgresql.org/docs/current/transaction-iso.html),
+  [node-postgres transactions](https://node-postgres.com/features/transactions).
+- **Index & N+1 hunt** — [indexes](https://www.postgresql.org/docs/current/indexes.html),
+  [using `EXPLAIN`](https://www.postgresql.org/docs/current/using-explain.html),
+  [row/array comparisons (`= ANY`)](https://www.postgresql.org/docs/current/functions-comparisons.html).
+- **Mini query builder** —
+  [node-postgres queries (parameterized)](https://node-postgres.com/features/queries),
+  [`SELECT` reference](https://www.postgresql.org/docs/current/sql-select.html).
+- Background — [the SQL language tutorial](https://www.postgresql.org/docs/current/tutorial-sql.html)
+  and [node-postgres pooling](https://node-postgres.com/features/pooling) for why bound params are
+  the pool-friendly path.
+
 ## Done when
 
 - [ ] `getUser` / `seedUsers` use bound params, so a SQL-injection payload is stored as literal

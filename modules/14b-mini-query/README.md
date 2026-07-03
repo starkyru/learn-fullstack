@@ -32,6 +32,25 @@ invalidation + optimistic-mutation machinery. When you finish, `@tanstack/react-
 | 2   | `useQuery` hook     | 🔴   | FS   | subscribe via `useSyncExternalStore`; expose status/data/error |
 | 3   | invalidate + mutate | 🔴   | FS   | invalidation + optimistic mutation with rollback               |
 
+## Theory & docs
+
+This is a 🔴 from-scratch module — build on the primitives below; TanStack Query pages are listed
+only as CONCEPT reading (what staleness/invalidation should mean), never as an implementation crib.
+
+- **Query cache + fetch** —
+  [`Map` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map),
+  [`Promise` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise),
+  [`JSON.stringify` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
+- **`useQuery` hook** —
+  [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore),
+  [`Object.is` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
+- **invalidate + mutate** — concept reading:
+  [important defaults (staleness)](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults),
+  [optimistic updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates).
+- Background —
+  [`Promise.prototype.finally` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally)
+  for the settle step that always invalidates, success or failure.
+
 ## Done when
 
 - [ ] Two `fetchQuery` calls for the SAME key while one is in flight call the fetcher ONCE and both

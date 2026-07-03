@@ -25,6 +25,25 @@ scale — windowing long lists and killing wasted re-renders (see `docs/REACT_PE
 | 3   | Virtualized board  | 🔴   | FS   | `visibleRange()` windowing + a list that renders only visible rows — no react-window  |
 | 4   | Perf pass          | 🟢   | EXT  | memoize a row so an unrelated list change doesn't re-render it (render-counter proof) |
 
+## Theory & docs
+
+- **Compound component** —
+  [createContext (react.dev)](https://react.dev/reference/react/createContext),
+  [Passing Data Deeply with Context (react.dev)](https://react.dev/learn/passing-data-deeply-with-context)
+- **Render-props & HOC** —
+  [Passing Props to a Component (react.dev)](https://react.dev/learn/passing-props-to-a-component),
+  [Children (react.dev)](https://react.dev/reference/react/Children),
+  [Reusing Logic with Custom Hooks (react.dev)](https://react.dev/learn/reusing-logic-with-custom-hooks)
+- **Virtualized board** —
+  [Element.scrollTop (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop),
+  [scroll event (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Element/scroll_event),
+  [Rendering Lists (react.dev)](https://react.dev/learn/rendering-lists)
+- **Perf pass** — [memo (react.dev)](https://react.dev/reference/react/memo),
+  [useCallback (react.dev)](https://react.dev/reference/react/useCallback),
+  [Profiler (react.dev)](https://react.dev/reference/react/Profiler)
+- **Render model (background)** —
+  [Render and Commit (react.dev)](https://react.dev/learn/render-and-commit)
+
 ## Done when
 
 - [ ] `<Accordion>` toggles its panel via shared context like `<Tabs>` does.

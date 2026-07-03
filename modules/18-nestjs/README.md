@@ -37,6 +37,20 @@ testable in-process with `@nestjs/testing` + `supertest`.
 | 3   | Guards & interceptors         | 🟡   | TODO | an auth guard + a logging/timeout interceptor + an exception filter |
 | 4   | Providers & DI                | 🔴   | FS   | a tiny DI container that explains Nest's injector, then map back    |
 
+## Theory & docs
+
+- **Module + controller + service** — [Modules](https://docs.nestjs.com/modules) ·
+  [Controllers](https://docs.nestjs.com/controllers) · [Providers](https://docs.nestjs.com/providers)
+- **Pipes & validation** — [Pipes](https://docs.nestjs.com/pipes) ·
+  [Validation (`ValidationPipe` + class-validator)](https://docs.nestjs.com/techniques/validation)
+- **Guards & interceptors** — [Guards](https://docs.nestjs.com/guards) ·
+  [Interceptors](https://docs.nestjs.com/interceptors) ·
+  [Exception filters](https://docs.nestjs.com/exception-filters)
+- **Providers & DI** — [Custom providers (tokens, `useValue`/`useFactory`)](https://docs.nestjs.com/fundamentals/custom-providers) ·
+  [Injection scopes](https://docs.nestjs.com/fundamentals/injection-scopes) ·
+  [Circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency)
+- Background — [Testing (`@nestjs/testing` + supertest)](https://docs.nestjs.com/fundamentals/testing)
+
 ## Done when
 
 - [ ] DI resolves a service into a controller: the `CardsController` uses the injected `CardsService`

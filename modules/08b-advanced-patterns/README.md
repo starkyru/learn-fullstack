@@ -30,6 +30,17 @@ Chakra APIs read like things you have already written.
 | 2   | State-reducer pattern | 🔴   | FS   | a `useSelect` whose consumer can intercept/override transitions       |
 | 3   | Prop getters + slots  | 🟡   | TODO | a headless `useDisclosure` returning `getButtonProps`/`getPanelProps` |
 
+## Theory & docs
+
+- **Polymorphic component** — [Using TypeScript (react.dev)](https://react.dev/learn/typescript),
+  [Passing props to a component](https://react.dev/learn/passing-props-to-a-component)
+- **State-reducer pattern** — [Extracting state logic into a reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer),
+  [`useReducer`](https://react.dev/reference/react/useReducer)
+- **Prop getters + slots** — [Reusing logic with custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks),
+  [Disclosure pattern (ARIA APG)](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)
+- **Background** — [ARIA Authoring Practices patterns](https://www.w3.org/WAI/ARIA/apg/patterns/)
+  for the widget wiring headless hooks are expected to fill in
+
 ## Done when
 
 - [ ] `<Box as="a">` type-checks `href` (polymorphic props via generics + `ComponentPropsWithoutRef`),

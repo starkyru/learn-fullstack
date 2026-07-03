@@ -29,6 +29,19 @@ drive it all with the History API so Back/Forward re-render the right page. Fini
 | 2   | Matcher + params  | 🔴   | FS   | match `/cards/:id`, extract params, pick the layout chain |
 | 3   | Client navigation | 🔴   | FS   | History API + render the matched layout+page              |
 
+## Theory & docs
+
+- **Route table** — [MDN URL API](https://developer.mozilla.org/en-US/docs/Web/API/URL_API),
+  [MDN `URL.pathname`](https://developer.mozilla.org/en-US/docs/Web/API/URL/pathname)
+- **Matcher + params** —
+  [MDN URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) — the
+  platform's own take on the segment matching you're hand-rolling
+- **Client navigation** — [MDN History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API),
+  [MDN `history.pushState`](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState),
+  [MDN `popstate` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event)
+- Background: the convention you're modeling —
+  [Next.js dynamic route segments](https://nextjs.org/docs/app/api-reference/file-conventions/dynamic-routes)
+
 ## Done when
 
 - [ ] `buildRouteTable` converts `[id]` → dynamic and `[...slug]` → catch-all, resolves each page's

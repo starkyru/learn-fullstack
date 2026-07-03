@@ -30,6 +30,22 @@ action, assert the next state — so the concepts stay independent of any React 
 | 3   | RTK Query         | 🟡   | TODO | a cards API with cache tags, invalidation, and an optimistic add         |
 | 4   | Custom middleware | 🔴   | FS   | an undo middleware that reverts the last board mutation                  |
 
+## Theory & docs
+
+- **Slice + selectors** — [`createSlice`](https://redux-toolkit.js.org/api/createSlice),
+  [writing reducers with Immer](https://redux-toolkit.js.org/usage/immer-reducers),
+  [deriving data with selectors](https://redux.js.org/usage/deriving-data-selectors).
+- **Async thunks** — [`createAsyncThunk`](https://redux-toolkit.js.org/api/createAsyncThunk),
+  [Redux Essentials: async logic and data fetching](https://redux.js.org/tutorials/essentials/part-5-async-logic).
+- **RTK Query** — [overview](https://redux-toolkit.js.org/rtk-query/overview),
+  [automated re-fetching with tags](https://redux-toolkit.js.org/rtk-query/usage/automated-refetching),
+  [manual cache updates & optimistic updates](https://redux-toolkit.js.org/rtk-query/usage/manual-cache-updates).
+- **Custom middleware** — [writing custom middleware](https://redux.js.org/usage/writing-custom-middleware),
+  [middleware deep dive](https://redux.js.org/understanding/history-and-design/middleware),
+  [implementing undo history](https://redux.js.org/usage/implementing-undo-history).
+- Background — [Redux Essentials: overview & concepts](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
+  and the [Redux style guide](https://redux.js.org/style-guide/) for the "why" behind the patterns.
+
 ## Done when
 
 - [ ] `boardSlice` adds/moves/removes cards; `selectVisibleCards` is memoized (same inputs → same

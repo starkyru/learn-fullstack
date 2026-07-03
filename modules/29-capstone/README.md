@@ -40,6 +40,19 @@ whole point: one capstone is not "more correct" than the other, they teach diffe
 | 3   | Cross-cutting         | 🟡   | EXT  | tests (trophy), CI, deploy, observability wired for both         |
 | 4   | Ship & document       | 🟢   | TODO | READMEs + /progress reports both apps pass                       |
 
+## Theory & docs
+
+- **Capstone specs** — this repo's [docs/CAPSTONES.md](../../docs/CAPSTONES.md), the briefs both
+  slices integrate against.
+- **Kanban stack** — [Next.js docs](https://nextjs.org/docs),
+  [Server Components](https://react.dev/reference/rsc/server-components),
+  [Prisma docs](https://www.prisma.io/docs), [Auth.js](https://authjs.dev/getting-started).
+- **Chat stack** — [NestJS docs](https://docs.nestjs.com/),
+  [Nest WebSocket gateways](https://docs.nestjs.com/websockets/gateways).
+- **Cross-cutting** — [Vitest](https://vitest.dev/guide/),
+  [GitHub Actions](https://docs.github.com/en/actions),
+  [OpenTelemetry](https://opentelemetry.io/docs/) — the trophy/CI/observability wiring of task 3.
+
 ## Done when
 
 - [ ] **Kanban slice** — `BoardService` does board CRUD over an injected repo; every mutation

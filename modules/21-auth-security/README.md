@@ -40,6 +40,25 @@ provider's token endpoint, a CSPRNG, the clock).
 | 4   | Passport + Nest guards | 🟡   | TODO | a JWT strategy + an RBAC guard on chat's Nest API                     |
 | 5   | OWASP hardening        | 🔴   | FS   | exploit then fix CSRF + stored XSS; add CSRF tokens + escaping        |
 
+## Theory & docs
+
+- **Password + sessions** —
+  [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html),
+  [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+- **JWT access+refresh** — [RFC 7519 (JSON Web Token)](https://datatracker.ietf.org/doc/html/rfc7519),
+  [jwt.io introduction](https://jwt.io/introduction)
+- **OAuth/OIDC + Auth.js** — [Auth.js docs](https://authjs.dev),
+  [RFC 7636 (PKCE)](https://datatracker.ietf.org/doc/html/rfc7636)
+- **Passport + Nest guards** — [Passport docs](https://www.passportjs.org/docs/),
+  [NestJS guards](https://docs.nestjs.com/guards),
+  [NestJS passport recipe](https://docs.nestjs.com/recipes/passport)
+- **OWASP hardening** —
+  [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html),
+  [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- Background: [MDN HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies),
+  [MDN `Authorization` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization),
+  [OWASP Cheat Sheet Series index](https://cheatsheetseries.owasp.org/)
+
 ## Done when
 
 - [ ] A wrong password fails and a correct one succeeds; the stored hash `!==` the raw password and

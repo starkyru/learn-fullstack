@@ -23,6 +23,17 @@ typed event bus, and the filesystem — the primitives NestJS and the chat gatew
 | 3   | Typed EventEmitter           | 🟡   | TODO | a `TypedEmitter<Events>` with typed `on`/`emit`                  |
 | 4   | File-based cache             | 🟢   | TODO | a `FileCache` (get/set) with TTL over `fs/promises`              |
 
+## Theory & docs
+
+- **HTTP server from `node:http`** — [HTTP (Node.js API)](https://nodejs.org/api/http.html),
+  [Anatomy of an HTTP transaction (Node.js)](https://nodejs.org/en/learn/modules/anatomy-of-an-http-transaction)
+- **Streams & backpressure** — [Stream (Node.js API)](https://nodejs.org/api/stream.html),
+  [Backpressuring in streams (Node.js)](https://nodejs.org/en/learn/modules/backpressuring-in-streams)
+- **Typed EventEmitter** — [Events (Node.js API)](https://nodejs.org/api/events.html),
+  [The Node.js event emitter (Node.js)](https://nodejs.org/en/learn/asynchronous-work/the-nodejs-event-emitter)
+- **File-based cache** — [File system (Node.js API)](https://nodejs.org/api/fs.html),
+  [Writing files with Node.js](https://nodejs.org/en/learn/manipulating-files/writing-files-with-nodejs)
+
 ## Done when
 
 - [ ] `route()` returns the right status/body per method+path; the analog route works too.

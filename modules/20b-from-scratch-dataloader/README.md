@@ -28,6 +28,17 @@ repeats. Finishing this makes module 20's `DataLoader` import feel like somethin
 | 2   | Cache + dedupe       | 🔴   | FS   | memoize by key; dedupe concurrent loads           |
 | 3   | Wire into a resolver | 🔴   | FS   | drop it into module 20's resolver; match behavior |
 
+## Theory & docs
+
+- **Batch scheduler** — [Using microtasks (MDN microtask guide)](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide) ·
+  [`queueMicrotask` (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask)
+- **Cache + dedupe** — [`Map` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) ·
+  [`Promise` (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- **Wire into a resolver** — [Execution (resolver chains, graphql.org)](https://graphql.org/learn/execution/) ·
+  [GraphQL best practices (server-side batching & caching)](https://graphql.org/learn/best-practices/)
+- Background — the [dataloader README](https://github.com/graphql/dataloader) is the contract you
+  are re-implementing: read it as theory only — the 🔴 lane forbids importing the library.
+
 ## Done when
 
 - [ ] N `load`s in one tick call `batchFn` ONCE with the distinct keys; each caller resolves to the

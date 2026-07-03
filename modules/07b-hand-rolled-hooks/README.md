@@ -31,6 +31,19 @@ the implementation.
 | 2   | `useEffect` + deps      | 🔴   | FS   | effect scheduling with dependency compare + cleanup     |
 | 3   | `useMemo`/`useRef`      | 🔴   | FS   | memo cell + persistent ref cell                         |
 
+## Theory & docs
+
+- **`useState` from scratch** — [useState (react.dev)](https://react.dev/reference/react/useState),
+  [Queueing a Series of State Updates (react.dev)](https://react.dev/learn/queueing-a-series-of-state-updates),
+  [Object.is() (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
+- **`useEffect` + deps** — [useEffect (react.dev)](https://react.dev/reference/react/useEffect),
+  [Synchronizing with Effects (react.dev)](https://react.dev/learn/synchronizing-with-effects),
+  [Lifecycle of Reactive Effects (react.dev)](https://react.dev/learn/lifecycle-of-reactive-effects)
+- **`useMemo`/`useRef`** — [useMemo (react.dev)](https://react.dev/reference/react/useMemo),
+  [useRef (react.dev)](https://react.dev/reference/react/useRef)
+- **Why hook order is law (background)** —
+  [Rules of Hooks (react.dev)](https://react.dev/reference/rules/rules-of-hooks)
+
 ## Done when
 
 - [ ] A counter component re-renders via your dispatcher: `useState` returns `[value, setState]`,

@@ -26,6 +26,17 @@ macrotask queues, async iteration, and bounded concurrency.
 | 3   | Async iterators        | 🔴   | FS   | `paginate()` — an async generator over a paged API, no library        |
 | 4   | Concurrency control    | 🟡   | TODO | `pMap(items, fn, {concurrency})` — a mini p-limit                     |
 
+## Theory & docs
+
+- **Promises & async/await** — [Using promises (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises),
+  [async function (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+- **Event-loop ordering** — [The event loop (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model),
+  [Using microtasks (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
+- **Async iterators** — [for await...of (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of),
+  [Iteration protocols (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+- **Concurrency control** — [Promise.all() (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all),
+  [Promise.allSettled() (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+
 ## Done when
 
 - [ ] `retry` retries on failure with backoff; `withTimeout` rejects a slow promise.

@@ -29,6 +29,16 @@ understanding the machine you'll build on.
 > Tests import the reference from `solution/` — flip the import to `../src/...` to check
 > your own work. Progress is tracked by `/progress`.
 
+## Theory & docs
+
+- **Tour the pipeline** — [Workspaces (pnpm)](https://pnpm.io/workspaces),
+  [Catalogs (pnpm)](https://pnpm.io/catalogs), [Turborepo docs](https://turborepo.com/docs)
+- **Validate env config** — [Zod docs](https://zod.dev/),
+  [How to read environment variables from Node.js](https://nodejs.org/en/learn/command-line/how-to-read-environment-variables-from-nodejs)
+- **Compose up Postgres** — [Docker Compose docs](https://docs.docker.com/compose/),
+  [PostgreSQL documentation](https://www.postgresql.org/docs/)
+- **Background** — [Vitest guide](https://vitest.dev/guide/)
+
 ## Done when
 
 - [ ] `pnpm typecheck && pnpm test` is green across the workspace.

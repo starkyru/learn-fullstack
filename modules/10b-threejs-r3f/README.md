@@ -34,6 +34,18 @@ select picking and leak-free teardown. This is the 3D companion to module 10's S
 | 3   | Load a model under Suspense     | 🟢   | TODO | useGLTF a model behind `<Suspense>` fallback (ties to module 10)                   |
 | 4   | Interaction + dispose (no leak) | 🔴   | FS   | raycast click-to-select + manual dispose of all GPU resources on unmount — no leak |
 
+## Theory & docs
+
+- **Raw Three.js scene** — [Three.js manual: fundamentals](https://threejs.org/manual/#en/fundamentals),
+  [Three.js docs](https://threejs.org/docs/)
+- **Declarative r3f scene** — [react-three-fiber: introduction](https://r3f.docs.pmnd.rs/getting-started/introduction),
+  [r3f hooks (`useFrame`)](https://r3f.docs.pmnd.rs/api/hooks)
+- **Load a model under Suspense** — [r3f: loading models](https://r3f.docs.pmnd.rs/tutorials/loading-models),
+  [`<Suspense>` (react.dev)](https://react.dev/reference/react/Suspense)
+- **Interaction + dispose (no leak)** — [`Raycaster`](https://threejs.org/docs/#api/en/core/Raycaster),
+  [r3f events](https://r3f.docs.pmnd.rs/api/events),
+  [How to dispose of objects](https://threejs.org/docs/#manual/en/introduction/How-to-dispose-of-objects)
+
 ## Done when
 
 - [ ] `buildCubeScene()` returns a `Scene` holding a `Mesh(BoxGeometry, MeshStandardMaterial)` + a

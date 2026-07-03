@@ -38,6 +38,23 @@ reach for — and a **contract test** that catches the shape drift a mocked comp
 | 4   | E2E              | 🟢   | TODO | Playwright: log in → create card → see it                                |
 | 5   | When-to-use note | 🟢   | EXT  | the trophy note + a contract-test example                                |
 
+## Theory & docs
+
+- **Unit + TDD** — [Vitest guide](https://vitest.dev/guide/),
+  [`expect` API](https://vitest.dev/api/expect.html).
+- **Component + MSW** —
+  [React Testing Library intro](https://testing-library.com/docs/react-testing-library/intro/),
+  [queries & priority](https://testing-library.com/docs/queries/about/),
+  [MSW docs](https://mswjs.io/docs/).
+- **Integration** — [Testcontainers for Node](https://node.testcontainers.org/),
+  [PostgreSQL module](https://node.testcontainers.org/modules/postgresql/).
+- **E2E** — [Playwright intro](https://playwright.dev/docs/intro),
+  [writing tests](https://playwright.dev/docs/writing-tests),
+  [test configuration](https://playwright.dev/docs/test-configuration).
+- **When-to-use note** —
+  [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles/) —
+  the "test what the user sees, mock only boundaries" doctrine the trophy note codifies.
+
 ## Done when
 
 - [ ] `turbo test` runs the unit, component, and integration tiers together: the reducer transitions

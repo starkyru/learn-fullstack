@@ -31,6 +31,23 @@ real inputs and assert on real outputs. No dev server, no rendering — just the
 | 2   | Advanced caching               | 🟡   | TODO | tag-based cache + revalidateTag across routes            |
 | 3   | PPR/edge                       | 🟢   | EXT  | opt a route into PPR; move a handler to the edge runtime |
 
+## Theory & docs
+
+- **Parallel + intercepting routes** —
+  [parallel routes](https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes),
+  [intercepting routes](https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes),
+  [linking & navigating](https://nextjs.org/docs/app/getting-started/linking-and-navigating)
+  (soft vs hard navigation).
+- **Advanced caching** — [caching guide](https://nextjs.org/docs/app/guides/caching),
+  [`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag),
+  [`fetch` (tags option)](https://nextjs.org/docs/app/api-reference/functions/fetch).
+- **PPR/edge** —
+  [Partial Prerendering](https://nextjs.org/docs/app/getting-started/partial-prerendering),
+  [Edge runtime](https://nextjs.org/docs/app/api-reference/edge),
+  [route handlers](https://nextjs.org/docs/app/api-reference/file-conventions/route).
+- Background — [Server Components](https://react.dev/reference/rsc/server-components) for the
+  server/client split all three tasks assume.
+
 ## Done when
 
 - [ ] `resolveRoute("/cards/42", "soft")` renders the **modal** slot (`@modal`) but

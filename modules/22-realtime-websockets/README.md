@@ -39,6 +39,21 @@ ways — **SSE** and a **GraphQL subscription** — and write the note on when t
 | 3   | End-to-end round trip  | 🟡   | TODO | client emits → gateway → broadcast → other clients update; authenticate the socket |
 | 4   | SSE & GraphQL-subs alt | 🟢   | EXT  | same feed via SSE and via a GraphQL subscription; write the tradeoff note          |
 
+## Theory & docs
+
+- **Nest WS gateway** — [NestJS gateways](https://docs.nestjs.com/websockets/gateways),
+  [Socket.IO rooms](https://socket.io/docs/v4/rooms/)
+- **`useSocket` client** —
+  [MDN WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API),
+  [react.dev `useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
+- **End-to-end round trip** — [Socket.IO middlewares](https://socket.io/docs/v4/middlewares/)
+  (handshake auth), [RFC 6455 — The WebSocket Protocol](https://www.rfc-editor.org/rfc/rfc6455)
+- **SSE & GraphQL-subs alt** —
+  [MDN Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events),
+  [GraphQL subscriptions](https://graphql.org/learn/subscriptions/)
+- Background: [MDN `WebSocket` interface](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+  — the native socket the transports above are built on.
+
 ## Done when
 
 - [ ] Two clients that `join` the same room see each other's `message` broadcasts in realtime with

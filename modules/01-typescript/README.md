@@ -43,6 +43,22 @@ truth shared by client and server.
 | 9   | Typed property access      | 🟡   | TODO | `getProp(obj, key): T[K]` and `pluck(items, key): T[K][]` via `keyof`           |
 | 10  | Mapped & template types 🔴 | 🔴   | FS   | `Getters<T>` remaps keys to `` `get${Capitalize<K>}` `` + `makeGetters()`       |
 
+## Theory & docs
+
+- **Model & narrow** — [Narrowing (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/narrowing.html),
+  [Everyday Types (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+- **Generic helpers** — [Generics (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+- **One schema, two ends** — [Zod docs](https://zod.dev/)
+- **Exhaustiveness 🔴** — [Exhaustiveness checking (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking)
+- **Const assertions** — [const assertions (TS 3.4 notes)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
+- **Validate without widening** — [The `satisfies` operator (TS 4.9 notes)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html)
+- **Utility types** — [Utility Types (TS Handbook)](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+- **Type guards** — [Type predicates (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+- **Typed property access** — [Keyof Type Operator (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html),
+  [Indexed Access Types (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)
+- **Mapped & template types 🔴** — [Mapped Types (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html),
+  [Template Literal Types (TS Handbook)](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+
 ## Done when
 
 - [ ] `pnpm --filter ./modules/01-typescript typecheck` is clean under `strict` (no `any`).

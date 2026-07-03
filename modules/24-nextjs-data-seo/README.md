@@ -35,6 +35,25 @@ against — no dev server required.
 | 3   | SSG/ISR + metadata         | 🟢   | TODO | static marketing page + ISR + generateMetadata + OG image |
 | 4   | Image/font optimization    | 🟢   | EXT  | next/image + next/font; measure LCP before/after          |
 
+## Theory & docs
+
+- **Fetch caching & revalidate** —
+  [Next.js `fetch`](https://nextjs.org/docs/app/api-reference/functions/fetch),
+  [`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)
+- **Streaming with Suspense** — [react.dev `<Suspense>`](https://react.dev/reference/react/Suspense),
+  [react.dev `use`](https://react.dev/reference/react/use),
+  [`loading.js` (streaming)](https://nextjs.org/docs/app/api-reference/file-conventions/loading)
+- **SSG/ISR + metadata** —
+  [Next.js ISR guide](https://nextjs.org/docs/app/guides/incremental-static-regeneration),
+  [`generateMetadata`](https://nextjs.org/docs/app/api-reference/functions/generate-metadata),
+  [route segment config (`revalidate`)](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
+- **Image/font optimization** —
+  [`next/image`](https://nextjs.org/docs/app/api-reference/components/image),
+  [`next/font`](https://nextjs.org/docs/app/api-reference/components/font),
+  [MDN responsive images](https://developer.mozilla.org/en-US/docs/Web/HTML/Responsive_images)
+- Background: [MDN HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching) — the
+  standard semantics Next's data cache builds on.
+
 ## Done when
 
 - [ ] `cachedFetch` calls the fetcher once per key and reuses the value; `revalidateTag(tag)`

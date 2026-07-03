@@ -37,6 +37,20 @@ in as **artifacts** the module documents but the gate never executes.
 | 3   | CI pipeline   | 🟡   | TODO | GH Actions: install→typecheck→lint→test→build with turbo cache             |
 | 4   | Deploy        | 🟢   | EXT  | Kanban→Vercel, chat API→Railway/Fly; run migrations on deploy              |
 
+## Theory & docs
+
+- **Dockerize** — [multi-stage builds](https://docs.docker.com/build/building/multi-stage/),
+  [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) (`USER`, `EXPOSE`,
+  `HEALTHCHECK`, `COPY --from`).
+- **Compose stack** — [Docker Compose docs](https://docs.docker.com/compose/),
+  [Compose file reference](https://docs.docker.com/reference/compose-file/) (`depends_on`
+  conditions, healthchecks, volumes).
+- **CI pipeline** — [GitHub Actions docs](https://docs.github.com/en/actions),
+  [workflow syntax](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions),
+  [caching dependencies](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows).
+- **Deploy** — [Vercel docs](https://vercel.com/docs), [Railway docs](https://docs.railway.com/),
+  [Fly.io docs](https://fly.io/docs/) — the three targets `buildDeployPlan` emits commands for.
+
 ## Done when
 
 - [ ] `buildDockerfile(opts)` emits stages in `deps → build → runtime` order with `COPY --from=build`,

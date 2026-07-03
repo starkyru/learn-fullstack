@@ -31,6 +31,24 @@ that lives outside React, and a side-by-side of the same feature built three way
 | 3   | Subscribe to an external source | 🟡   | TODO | bridge `window` size + a media query via `useSyncExternalStore`         |
 | 4   | Redux vs Zustand vs Context     | 🟢   | EXT  | the same counter three ways + the "when to use which" note              |
 
+## Theory & docs
+
+- **Zustand store** — [introduction](https://zustand.docs.pmnd.rs/getting-started/introduction),
+  [`createStore` (vanilla)](https://zustand.docs.pmnd.rs/apis/create-store),
+  [updating state](https://zustand.docs.pmnd.rs/guides/updating-state).
+- **Selectors & slices** — [slices pattern](https://zustand.docs.pmnd.rs/guides/slices-pattern),
+  [preventing re-renders with `useShallow`](https://zustand.docs.pmnd.rs/guides/prevent-rerenders-with-use-shallow),
+  [`useShallow` hook](https://zustand.docs.pmnd.rs/hooks/use-shallow).
+- **Subscribe to an external source** —
+  [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore),
+  [`window.matchMedia` (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia).
+- **Redux vs Zustand vs Context** —
+  [Zustand's comparison page](https://zustand.docs.pmnd.rs/getting-started/comparison),
+  [passing data deeply with context](https://react.dev/learn/passing-data-deeply-with-context),
+  [Redux Essentials: overview & concepts](https://redux.js.org/tutorials/essentials/part-1-overview-concepts).
+- Background — [Zustand + TypeScript guide](https://zustand.docs.pmnd.rs/guides/typescript) for the
+  `create<State>()(…)` currying the typed stores here rely on.
+
 ## Done when
 
 - [ ] `createThemeStore` toggles theme/sidebar and notifies subscribers; `createBoardUiStore`

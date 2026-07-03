@@ -40,6 +40,23 @@ query through `graphql-request` to compare cache philosophies.
 | 4   | Typed React client        | 🟢   | WE   | solved codegen'd useCardsQuery + analog mutation-hook stub; normalized cache + optimistic |
 | 5   | graphql-request alt       | 🟢   | EXT  | same query via TanStack Query + graphql-request; compare                                  |
 
+## Theory & docs
+
+- **Nest resolvers** — [Nest GraphQL quick start (code first)](https://docs.nestjs.com/graphql/quick-start) ·
+  [Resolvers](https://docs.nestjs.com/graphql/resolvers) ·
+  [Schemas and types (graphql.org)](https://graphql.org/learn/schema/)
+- **DataLoader batching** — [GraphQL best practices (server-side batching & caching)](https://graphql.org/learn/best-practices/) ·
+  [dataloader README (theory)](https://github.com/graphql/dataloader)
+- **Mutations + subscriptions** — [Mutations](https://docs.nestjs.com/graphql/mutations) ·
+  [Subscriptions](https://docs.nestjs.com/graphql/subscriptions) ·
+  [Other features (guards on the GraphQL context)](https://docs.nestjs.com/graphql/other-features)
+- **Typed React client** — [Caching & global object identity (graphql.org)](https://graphql.org/learn/caching/) ·
+  [`useSyncExternalStore` (react.dev)](https://react.dev/reference/react/useSyncExternalStore)
+- **graphql-request alt** — [Serving over HTTP (graphql.org)](https://graphql.org/learn/serving-over-http/) ·
+  [TanStack Query docs](https://tanstack.com/query/latest)
+- Background — [Queries and mutations (graphql.org)](https://graphql.org/learn/queries/) ·
+  [Execution (how resolvers run)](https://graphql.org/learn/execution/)
+
 ## Done when
 
 - [ ] **Client + server share types.** The code-first `@ObjectType`s drive both the server's resolved

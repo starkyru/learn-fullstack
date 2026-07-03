@@ -32,6 +32,23 @@ preset** driven by design tokens + CSS variables (light/dark), accessible **over
 | 5   | DataTable + styling compare | 🔴   | FS   | headless `useDataTable` (sort + row select) + the styling-tradeoff note          |
 | 6   | Consume in both apps        | 🟢   | EXT  | a `Toolbar` that consumes `Button` — the shape each app wires in                 |
 
+## Theory & docs
+
+- **Primitives + stories** — [How to write stories](https://storybook.js.org/docs/writing-stories),
+  [Component Story Format (CSF)](https://storybook.js.org/docs/api/csf)
+- **Tailwind preset + theming** — [Presets (Tailwind v3)](https://v3.tailwindcss.com/docs/presets),
+  [Dark mode (Tailwind)](https://tailwindcss.com/docs/dark-mode),
+  [Using CSS custom properties (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- **Overlay components** — [`createPortal`](https://react.dev/reference/react-dom/createPortal),
+  [Dialog (modal) pattern (ARIA APG)](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+- **Interaction tests** — [Play functions](https://storybook.js.org/docs/writing-stories/play-function),
+  [Interaction testing](https://storybook.js.org/docs/writing-tests/interaction-testing)
+- **DataTable + styling compare** — [Reusing logic with custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks),
+  [Styling with utility classes (Tailwind)](https://tailwindcss.com/docs/styling-with-utility-classes)
+- **Consume in both apps** — [Importing and exporting components](https://react.dev/learn/importing-and-exporting-components)
+- **Background** — [Storybook docs](https://storybook.js.org/docs),
+  [Tailwind CSS docs](https://tailwindcss.com/docs)
+
 ## Done when
 
 - [ ] `<Button variant>` maps each variant to its classes and every `buttonStories` entry renders;
