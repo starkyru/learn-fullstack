@@ -47,16 +47,22 @@ Concepts: pnpm workspaces, `turbo.json` pipeline, `workspace:*`, the shared `pac
 
 ### 01 — TypeScript for Full-Stack ✅ implemented
 
-Model data so illegal states don't compile, and let one zod schema be the single source of truth shared by client and server. Concepts: discriminated unions + narrowing, generics & utility types, `satisfies`, exhaustiveness with `assertNever`, zod ↔ TS inference.
+Model data so illegal states don't compile, and let one zod schema be the single source of truth shared by client and server. Concepts: discriminated unions + narrowing, generics & utility types, `as const`, `satisfies`, type guards, `keyof`/indexed access, mapped & template-literal types, exhaustiveness with `assertNever`, zod ↔ TS inference.
 
-| #   | Task                 | Lane | Type | Build                                                                          |
-| --- | -------------------- | ---- | ---- | ------------------------------------------------------------------------------ |
-| 1   | Model & narrow       | 🟢   | WE   | `area()` is solved; write the analog `label()` over the same `Shape` union     |
-| 2   | Generic helpers      | 🟡   | TODO | `pick(obj, keys)` and a `Result<T, E>` `ok`/`err` pair — no `any`              |
-| 3   | One schema, two ends | 🟢   | WE   | `parseUser()` is solved (uses `@learn-fullstack/shared`); write `parseLogin()` |
-| 4   | Exhaustiveness 🔴    | 🔴   | FS   | `assertNever` so adding a `Shape` variant fails to compile until handled       |
+| #   | Task                       | Lane | Type | Build                                                                           |
+| --- | -------------------------- | ---- | ---- | ------------------------------------------------------------------------------- |
+| 1   | Model & narrow             | 🟢   | WE   | `area()` is solved; write the analog `label()` over the same `Shape` union      |
+| 2   | Generic helpers            | 🟡   | TODO | `pick(obj, keys)` and a `Result<T, E>` `ok`/`err` pair — no `any`               |
+| 3   | One schema, two ends       | 🟢   | WE   | `parseUser()` is solved (uses `@learn-fullstack/shared`); write `parseLogin()`  |
+| 4   | Exhaustiveness 🔴          | 🔴   | FS   | `assertNever` so adding a `Shape` variant fails to compile until handled        |
+| 5   | Const assertions           | 🟢   | WE   | `indexOfLevel()` is solved; const-assert `PRIORITIES` and write `rankOf()`      |
+| 6   | Validate without widening  | 🟡   | WE   | `endpoint()` is solved; add `satisfies` to `THEME` and write `colorOf()`        |
+| 7   | Utility types              | 🟡   | TODO | `applyPatch()` with `Partial<T>` and `indexById()` returning `Record<string,T>` |
+| 8   | Type guards                | 🟢   | WE   | `isDefined`/`compact` are solved; write the `isString(x): x is string` analog   |
+| 9   | Typed property access      | 🟡   | TODO | `getProp(obj, key): T[K]` and `pluck(items, key): T[K][]` via `keyof`           |
+| 10  | Mapped & template types 🔴 | 🔴   | FS   | `Getters<T>` remaps keys to `` `get${Capitalize<K>}` `` + `makeGetters()`       |
 
-**Done when:** `typecheck` is clean under `strict` (no `any`) · `label()` right for every `Shape`; `pick` fully typed · `parseLogin()` accepts a valid login, rejects a short password · adding a `Shape` variant makes task 4 fail to compile.
+**Done when:** `typecheck` is clean under `strict` (no `any`) · `label()` right for every `Shape`; `pick` fully typed · `parseLogin()` accepts a valid login, rejects a short password · adding a `Shape` variant makes task 4 fail to compile · `rankOf()`/`colorOf()` typed via `as const`/`satisfies` · `applyPatch`/`indexById`/`isString`/`getProp`/`pluck`/`makeGetters` implemented and green.
 
 ### 02 — Modern JavaScript & Async ✅ implemented
 
