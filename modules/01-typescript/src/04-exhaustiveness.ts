@@ -5,10 +5,12 @@ import type { Shape } from "./01-narrowing.js";
  * `assertNever` accepts a value the compiler has proven can only be `never` (every case
  * handled). If a new `Shape` variant is added and a switch forgets it, the leftover value
  * is no longer `never` and this call becomes a COMPILE error — that is the whole point.
- * At runtime it should throw. Return type is `never`.
+ * At runtime it should throw an `Error` whose message starts with `Unhandled variant:` and
+ * includes the offending `value` (serialize it) so a leaked case is diagnosable.
+ * Return type is `never`.
  */
 export function assertNever(_value: never): never {
-  throw new Error("TODO: throw with the unhandled value");
+  throw new Error("TODO: throw an `Unhandled variant:` error that includes the value");
 }
 
 /**
