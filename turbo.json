@@ -13,7 +13,7 @@
     "test:e2e": { "dependsOn": ["build"], "cache": false },
     "db:generate": { "cache": false },
     "migrate:dev": { "cache": false, "persistent": false },
-    "seed": { "cache": false },
+    "seed": { "cache": false, "dependsOn": ["db:generate"] },
     "studio": { "cache": false, "persistent": true }
   }
 }

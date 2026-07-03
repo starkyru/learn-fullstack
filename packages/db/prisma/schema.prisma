@@ -2,6 +2,10 @@
 // by the modules/apps that need them; Phase 0 ships only User so migrations work.
 generator client {
   provider = "prisma-client-js"
+  // Emit to a package-local dir, NOT the default node_modules/.prisma/client — module 16
+  // teaches Prisma against a throwaway SQLite schema and generates to that default location,
+  // which would otherwise clobber this shared Postgres client (and break `db:seed`).
+  output   = "../generated/client"
 }
 
 datasource db {

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/client/index.js";
 
 /**
  * A single shared PrismaClient. Importing `{ db }` everywhere avoids opening a new pool
@@ -10,4 +10,4 @@ export const db = globalForDb.db ?? new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForDb.db = db;
 
-export * from "@prisma/client";
+export * from "../generated/client/index.js";

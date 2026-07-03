@@ -18,6 +18,7 @@ coverage/
 
 # prisma
 packages/db/prisma/*.db
+packages/db/generated/
 
 # os / editor
 .DS_Store
