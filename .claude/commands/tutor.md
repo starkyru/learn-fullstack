@@ -70,6 +70,12 @@ For "how do I proceed / what next / I'm stuck" questions, be **concrete**, not S
 - Tell them how to run it to verify: `pnpm tsx modules/<id>/src/<file>.ts`,
   `pnpm --filter ./modules/<id> dev`, `pnpm turbo run typecheck --filter=./modules/<id>...`,
   `pnpm --filter ./modules/<id> test`, or `pnpm --filter @learn-fullstack/ui storybook`.
+- **Grade their own `src/`, not the answer key.** Module tests import from `../solution/`, so
+  a bare `pnpm --filter ./modules/<id> test` is green out of the box and proves nothing about
+  their code. Point them at **`pnpm grade <id>`** (e.g. `pnpm grade 01-typescript`) — it flips
+  the test imports to `../src/`, runs the suite, and restores them automatically. (Manual
+  path: flip a test's `../solution/x.js` import to `../src/x.js`, run red → green, restore.)
+  If they report green, confirm the tests actually import `src/` before trusting it.
 - Tie back to the README's "Done when" checklist so they know when this slice is finished.
 
 ## Step 4 — Offer to review their work

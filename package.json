@@ -26,7 +26,8 @@
     "db:studio": "pnpm --filter @learn-fullstack/db studio",
     "smoke": "tsx scripts/smoke.ts",
     "docs:sync": "tsx scripts/docs-sync.ts",
-    "progress": "tsx scripts/progress.ts"
+    "progress": "tsx scripts/progress.ts",
+    "grade": "tsx scripts/grade.ts"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs,json,md,yaml,yml,css}": "prettier --write",
