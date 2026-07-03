@@ -10,6 +10,9 @@ export default defineConfig({
     environment: "node",
     globals: true,
     setupFiles: ["./test/setup.ts"],
+    // RSA keygen + bcrypt work here is CPU-heavy and slow on 2-core CI runners; give the
+    // real-crypto tests headroom over the 5s default so they don't flake on a slow keygen.
+    testTimeout: 15000,
   },
   plugins: [swc.vite({ module: { type: "es6" } })],
 });

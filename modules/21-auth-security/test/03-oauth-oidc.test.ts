@@ -1,5 +1,5 @@
 import { generateKeyPair, SignJWT } from "jose";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import {
   buildAuthUrl,
   createPkcePair,
@@ -110,9 +110,13 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
 
     type KeyPair = Awaited<ReturnType<typeof generateKeyPair>>;
 
-    async function keys(): Promise<KeyPair> {
-      return generateKeyPair("RS256");
-    }
+    // One RSA keypair for the whole block — keygen is the slow part and re-running it per test
+    // pushed the last cases past the 5s timeout on CI. Each test still signs its own token.
+    let publicKey: KeyPair["publicKey"];
+    let privateKey: KeyPair["privateKey"];
+    beforeAll(async () => {
+      ({ publicKey, privateKey } = await generateKeyPair("RS256"));
+    });
 
     function baseToken(
       privateKey: KeyPair["privateKey"],
@@ -135,7 +139,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     }
 
     it("returns the user claims for a valid token", async () => {
-      const { publicKey, privateKey } = await keys();
       const token = await baseToken(privateKey);
       const claims = await verifyIdToken(token, {
         key: publicKey,
@@ -152,7 +155,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     });
 
     it("rejects a tampered token (signature no longer matches)", async () => {
-      const { publicKey, privateKey } = await keys();
       const token = await baseToken(privateKey);
       const tampered = token.slice(0, -3) + (token.endsWith("AAA") ? "BBB" : "AAA");
       await expect(
@@ -167,7 +169,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     });
 
     it("rejects an id_token from the wrong issuer (valid signature, correct aud + nonce)", async () => {
-      const { publicKey, privateKey } = await keys();
       const iat = Math.floor(NOW / 1000);
       // A validly-signed token whose ONLY defect is a different `iss` — everything the
       // relying party otherwise trusts (aud, nonce, exp, signature) is correct.
@@ -195,7 +196,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     });
 
     it("rejects a wrong audience", async () => {
-      const { publicKey, privateKey } = await keys();
       const token = await baseToken(privateKey);
       await expect(
         verifyIdToken(token, {
@@ -209,7 +209,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     });
 
     it("rejects a mismatched nonce (replay)", async () => {
-      const { publicKey, privateKey } = await keys();
       const token = await baseToken(privateKey, { nonce: "attacker-nonce" });
       await expect(
         verifyIdToken(token, {
@@ -223,7 +222,6 @@ describe("Task 3 — OAuth/OIDC + PKCE", () => {
     });
 
     it("rejects an expired token by the injected clock", async () => {
-      const { publicKey, privateKey } = await keys();
       const token = await baseToken(privateKey);
       await expect(
         verifyIdToken(token, {
