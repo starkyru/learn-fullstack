@@ -44,6 +44,7 @@
 | 21-auth-security               | 🔴   | not-started | 1          | Kanban: Auth.js; Chat: JWT    |
 | 21b-session-auth               | 🔴   | not-started | 1          |                               |
 | 22-realtime-websockets         | 🔴   | not-started | 1          |                               |
+| 22b-webhook-delivery           | 🔴   | not-started | 1          | B2B webhooks; JD gap module   |
 | 23-nextjs-core                 | 🟢   | not-started | 1          |                               |
 | 23b-mini-router                | 🔴   | not-started | 1          |                               |
 | 24-nextjs-data-seo             | 🟢   | not-started | 1          |                               |

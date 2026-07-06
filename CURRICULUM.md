@@ -468,6 +468,19 @@ Wire realtime from a NestJS gateway to a React `useSocket` client — full round
 
 **Done when:** two browsers see each other's messages in realtime · killing the server triggers backoff reconnect · unauthenticated sockets are rejected · the SSE/subscription alternatives work and are compared.
 
+### 22b — Webhook Delivery (from scratch) (companion 🔴) ✅ implemented
+
+Build the outbound half of a B2B webhook platform — Stripe-level expectations, no SaaS SDK. Concepts: HMAC signature with the **timestamp bound into the signed content**, constant-time compare + anti-replay window; retry with **exponential backoff** on transient failures only; **at-least-once ⇒ idempotent consumer** (dedupe by key, order per endpoint, detect gaps); a delivery log with **replay** + **dead-letter queue**. All over injected boundaries (transport/clock/sleep) — no `svix`/`bullmq`/Stripe SDK.
+
+| #   | Task             | Lane | Type | Build                                                                                |
+| --- | ---------------- | ---- | ---- | ------------------------------------------------------------------------------------ |
+| 1   | Sign & verify    | 🟢   | WE   | solved HMAC `signWebhook` + analog `verifyWebhook` stub (constant-time, anti-replay) |
+| 2   | Delivery & retry | 🟡   | TODO | `deliver` with exponential backoff; retry transient, stop on permanent 4xx           |
+| 3   | Dedup & ordering | 🟡   | TODO | idempotency-key `dedupe` + per-endpoint ordering with gap detection                  |
+| 4   | Replay & DLQ     | 🔴   | FS   | `replay` a delivery by id + a dead-letter queue — no `svix`/`bullmq`/Stripe SDK      |
+
+**Done when:** a tampered payload / wrong secret / stale timestamp are all rejected · retries back off exponentially and skip permanent 4xx · redelivered ids are deduped and endpoint gaps surfaced · a delivery replays by id and exhausted ones land in the DLQ.
+
 ### 23 — Next.js Core (App Router & RSC) ✅ implemented
 
 The App Router mental model: server vs client components. Concepts: file routing, layouts/templates, **RSC** vs client components, route handlers, **middleware**, `loading`/`error` files, navigation, colocated data fetching.
