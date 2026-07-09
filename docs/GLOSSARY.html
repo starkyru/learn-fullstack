@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glossary — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 64rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.2em; padding-top: 0.5em; border-top: 1px solid var(--line); font-size: 1.35rem; scroll-margin-top: 1rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; font-size: 0.9rem; }
+      th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      th { background: var(--code); }
+      td:first-child { white-space: nowrap; font-weight: 600; width: 12rem; }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .toc { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0; }
+      .toc a { background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.15rem 0.7rem; font-size: 0.85rem; text-decoration: none; }
+      .m { color: var(--muted); font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Glossary</h1>
+      <p class="lede">
+        The recurring terms across the course, grouped by area, each with a definition, an external
+        reference, and the module where it's taught. Compare-not-crown topics link to their own doc.
+      </p>
+      <nav class="toc">
+        <a href="#js">JS &amp; runtime</a><a href="#ts">TypeScript</a><a href="#react">React</a>
+        <a href="#render">Rendering / Next</a><a href="#state">State &amp; data</a>
+        <a href="#api">Backend &amp; API</a><a href="#db">Database</a><a href="#sec">Auth &amp; security</a>
+        <a href="#rt">Realtime</a><a href="#test">Testing</a><a href="#build">Tooling / build</a><a href="#css">CSS</a>
+      </nav>
+
+      <h2 id="js">JavaScript &amp; runtime</h2>
+      <table>
+        <tr><td>Closure</td><td>A function bundled with the scope it was created in, so it keeps access to those variables after the outer call returns. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures">MDN</a> <span class="m">· module 02</span></td></tr>
+        <tr><td>Event loop</td><td>The runtime's scheduler: run a task, drain all microtasks, render, repeat. Explains why <code>Promise</code> callbacks beat <code>setTimeout</code>. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop">MDN</a> <span class="m">· module 02</span></td></tr>
+        <tr><td>Microtask / macrotask</td><td>Microtasks (promises, <code>queueMicrotask</code>) run to exhaustion before the next macrotask (timers, I/O). <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide">MDN</a> <span class="m">· module 02</span></td></tr>
+        <tr><td>Hoisting / TDZ</td><td><code>var</code>/functions are hoisted; <code>let</code>/<code>const</code> exist but are unusable in the temporal dead zone until declared. <a href="https://developer.mozilla.org/en-US/docs/Glossary/Hoisting">MDN</a> <span class="m">· module 01/02</span></td></tr>
+        <tr><td>Async iterator / generator</td><td><code>for await…of</code> over a stream of promises; <code>yield*</code> delegates. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of">MDN</a> <span class="m">· module 02</span></td></tr>
+        <tr><td>Debounce / throttle</td><td>Debounce fires after quiet; throttle fires at most once per interval. Both tame bursty events. <a href="https://developer.mozilla.org/en-US/docs/Web/API/setTimeout">MDN</a> <span class="m">· module 07</span></td></tr>
+      </table>
+
+      <h2 id="ts">TypeScript</h2>
+      <table>
+        <tr><td>Structural typing</td><td>Types match by shape, not name — if it has the fields, it fits. <a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html">TS docs</a> <span class="m">· module 01</span></td></tr>
+        <tr><td>Generics</td><td>Type parameters that let a function/type work over many types while staying checked. <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html">TS docs</a> <span class="m">· module 01</span></td></tr>
+        <tr><td>Discriminated union</td><td>A union with a common literal tag so narrowing on the tag picks the variant. <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions">TS docs</a> <span class="m">· module 01</span></td></tr>
+        <tr><td>Type guard / narrowing</td><td>A runtime check (<code>typeof</code>, <code>in</code>, predicate) that refines a type in a branch. <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html">TS docs</a> <span class="m">· module 01</span></td></tr>
+      </table>
+
+      <h2 id="react">React</h2>
+      <table>
+        <tr><td>Reconciliation</td><td>React diffs the new element tree against the old and applies minimal DOM changes; <code>key</code> identity drives it. <a href="https://react.dev/learn/preserving-and-resetting-state">React</a> <span class="m">· module 05/08</span></td></tr>
+        <tr><td>Hook</td><td>A function (<code>use*</code>) that hooks into React state/lifecycle; rules: top-level only, same order every render. <a href="https://react.dev/reference/react/hooks">React</a> <span class="m">· module 06/07</span></td></tr>
+        <tr><td>Memoization</td><td><code>useMemo</code>/<code>useCallback</code>/<code>React.memo</code> skip work when inputs are referentially stable. <a href="https://react.dev/reference/react/useMemo">React</a> <span class="m">· module 07/08 · REACT_PERFORMANCE</span></td></tr>
+        <tr><td>Portal</td><td>Render children into a DOM node outside the parent (modals, toasts). <a href="https://react.dev/reference/react-dom/createPortal">React</a> <span class="m">· module 07/11</span></td></tr>
+        <tr><td>Suspense</td><td>A boundary that shows a fallback while a child "suspends" on data/code. <a href="https://react.dev/reference/react/Suspense">React</a> <span class="m">· module 10</span></td></tr>
+        <tr><td>Transition</td><td><code>useTransition</code>/<code>useDeferredValue</code> mark updates low-priority so input stays responsive. <a href="https://react.dev/reference/react/useTransition">React</a> <span class="m">· module 10</span></td></tr>
+        <tr><td>External store</td><td><code>useSyncExternalStore</code> subscribes React to an outside source (socket, store) with a stable snapshot. <a href="https://react.dev/reference/react/useSyncExternalStore">React</a> <span class="m">· module 13/22</span></td></tr>
+      </table>
+
+      <h2 id="render">Rendering &amp; Next.js</h2>
+      <table>
+        <tr><td>CSR / SSR / SSG / ISR</td><td>Render in the browser / on each request / at build / rebuilt-on-a-timer. <a href="https://nextjs.org/docs/app/building-your-application/rendering">Next.js</a> <span class="m">· module 23/24</span></td></tr>
+        <tr><td>Hydration</td><td>Attaching React event handlers/state to server-rendered HTML to make it interactive. <a href="https://react.dev/reference/react-dom/client/hydrateRoot">React</a> <span class="m">· module 23</span></td></tr>
+        <tr><td>RSC (Server Component)</td><td>A component that runs only on the server, ships no JS; <code>"use client"</code> marks the interactive boundary. <a href="https://react.dev/reference/rsc/server-components">React</a> <span class="m">· module 23/24</span></td></tr>
+        <tr><td>Server Action</td><td>A server function callable from the client as a form action / mutation. <a href="https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations">Next.js</a> <span class="m">· module 25</span></td></tr>
+      </table>
+
+      <h2 id="state">State &amp; data</h2>
+      <table>
+        <tr><td>Flux / unidirectional</td><td>State flows one way: action → reducer → store → view. Redux is the canonical shape. <a href="https://redux.js.org/tutorials/essentials/part-1-overview-concepts">Redux</a> <span class="m">· module 12/13</span></td></tr>
+        <tr><td>Server state / cache</td><td>Async remote data managed separately from UI state — fetch, cache, invalidate. <a href="https://tanstack.com/query/latest/docs/framework/react/overview">TanStack Query</a> <span class="m">· module 14</span></td></tr>
+        <tr><td>Optimistic update</td><td>Apply the change in the UI immediately, roll back if the server rejects. <a href="https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates">TanStack Query</a> <span class="m">· module 10/14</span></td></tr>
+        <tr><td>Cache invalidation</td><td>Marking cached data stale after a mutation so it refetches (<code>invalidateQueries</code>). <a href="https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation">TanStack Query</a> <span class="m">· module 14</span></td></tr>
+      </table>
+
+      <h2 id="api">Backend &amp; API</h2>
+      <table>
+        <tr><td>REST</td><td>Resources + HTTP verbs + status codes; described by OpenAPI, codegen'd into clients. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">MDN HTTP</a> <span class="m">· module 19</span></td></tr>
+        <tr><td>GraphQL</td><td>One typed endpoint; the client asks for exactly the fields it needs. <a href="https://graphql.org/learn/">graphql.org</a> <span class="m">· module 20</span></td></tr>
+        <tr><td>Resolver</td><td>The function that produces a field's value in a GraphQL schema. <a href="https://www.apollographql.com/docs/apollo-server/data/resolvers/">Apollo</a> <span class="m">· module 20</span></td></tr>
+        <tr><td>DataLoader / N+1</td><td>Batches + caches per-request lookups to kill the N+1 query storm. <a href="https://github.com/graphql/dataloader">DataLoader</a> <span class="m">· module 20b</span></td></tr>
+        <tr><td>DI (Nest)</td><td>The framework constructs and injects dependencies; you declare providers, not <code>new</code>. <a href="https://docs.nestjs.com/providers">NestJS</a> <span class="m">· module 18</span></td></tr>
+        <tr><td>Guard / Interceptor / Pipe</td><td>Nest request stages: authorize / wrap &amp; transform / validate &amp; coerce. <a href="https://docs.nestjs.com/guards">NestJS</a> <span class="m">· module 18</span></td></tr>
+        <tr><td>Idempotency</td><td>Same request applied twice = same effect once; keyed so retries don't double-charge. <a href="https://developer.mozilla.org/en-US/docs/Glossary/Idempotent">MDN</a> <span class="m">· module 19/22b</span></td></tr>
+        <tr><td>Webhook</td><td>Server→server HTTP callback on an event; signed, retried, deduped, replayable. <span class="m">· module 22b</span></td></tr>
+      </table>
+
+      <h2 id="db">Database</h2>
+      <table>
+        <tr><td>ORM</td><td>Maps rows ↔ typed objects; Prisma generates a client + migrations from a schema. <a href="https://www.prisma.io/docs">Prisma</a> <span class="m">· module 16</span></td></tr>
+        <tr><td>Migration</td><td>A versioned, ordered schema change applied safely forward (and ideally reversible). <a href="https://www.prisma.io/docs/orm/prisma-migrate">Prisma</a> <span class="m">· module 16</span></td></tr>
+        <tr><td>Transaction / ACID</td><td>A group of statements that commit all-or-nothing with isolation guarantees. <a href="https://www.postgresql.org/docs/current/tutorial-transactions.html">Postgres</a> <span class="m">· module 15</span></td></tr>
+        <tr><td>Index / <code>EXPLAIN</code></td><td>A lookup structure that speeds reads; <code>EXPLAIN ANALYZE</code> shows the query plan. <a href="https://www.postgresql.org/docs/current/using-explain.html">Postgres</a> <span class="m">· module 15/28</span></td></tr>
+        <tr><td>Connection pool</td><td>Reuse a set of open DB connections instead of one per request. <a href="https://node-postgres.com/features/pooling">node-postgres</a> <span class="m">· module 15/16</span></td></tr>
+      </table>
+
+      <h2 id="sec">Auth &amp; security</h2>
+      <table>
+        <tr><td>Session vs JWT</td><td>Opaque server-stored id vs signed self-contained claim. Full comparison → <a href="./AUTH_COMPARISON.html">AUTH_COMPARISON.html</a> <span class="m">· module 21/21b</span></td></tr>
+        <tr><td>OAuth2 / OIDC</td><td>Delegated authorization + an identity layer; Authorization Code + PKCE. <a href="https://oauth.net/2/">oauth.net</a> <span class="m">· module 21/25</span></td></tr>
+        <tr><td>CSRF</td><td>Forged cross-site request riding a cookie; stop with SameSite + double-submit token. <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF">MDN</a> <span class="m">· module 21/21b</span></td></tr>
+        <tr><td>XSS</td><td>Injected script running in your page; stop by escaping output + CSP + not storing tokens in JS. <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">MDN</a> <span class="m">· module 21</span></td></tr>
+        <tr><td>RBAC / ABAC</td><td>Authorize by role vs by attributes (owner, org, context). <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP</a> <span class="m">· module 21</span></td></tr>
+      </table>
+
+      <h2 id="rt">Realtime</h2>
+      <table>
+        <tr><td>WebSocket / SSE</td><td>Duplex socket vs one-way server push. Transport comparison → <a href="./REALTIME.html">REALTIME.html</a> <span class="m">· module 22</span></td></tr>
+        <tr><td>Room / broadcast</td><td>A named channel; a message to a room reaches only its members. <a href="https://socket.io/docs/v4/rooms/">Socket.IO</a> <span class="m">· module 22</span></td></tr>
+        <tr><td>Backoff</td><td>Exponential wait between reconnect/retry attempts to avoid hammering. <a href="https://developer.mozilla.org/en-US/docs/Glossary/Exponential_backoff">MDN</a> <span class="m">· module 22/22b</span></td></tr>
+      </table>
+
+      <h2 id="test">Testing</h2>
+      <table>
+        <tr><td>Trophy / pyramid</td><td>How to weight test levels. Full strategy → <a href="./TESTING.html">TESTING.html</a> <span class="m">· module 26</span></td></tr>
+        <tr><td>Test double / mock</td><td>A stand-in for a real dependency; mock only true boundaries. <a href="https://martinfowler.com/bliki/TestDouble.html">Fowler</a> <span class="m">· module 26</span></td></tr>
+        <tr><td>MSW</td><td>Intercepts network at the boundary so component/integration tests use real fetch code. <a href="https://mswjs.io/">MSW</a> <span class="m">· module 26</span></td></tr>
+      </table>
+
+      <h2 id="build">Tooling &amp; build</h2>
+      <table>
+        <tr><td>Monorepo</td><td>Many packages in one repo, orchestrated together. This repo: pnpm workspaces + Turborepo. <a href="https://turborepo.com/docs">Turborepo</a> <span class="m">· module 00</span></td></tr>
+        <tr><td>Tree-shaking</td><td>Dropping unused exports from the bundle via static analysis of ES modules. <a href="https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking">MDN</a> <span class="m">· module 27/28</span></td></tr>
+        <tr><td>HMR</td><td>Hot module replacement — swap a changed module in the running app without a full reload. <a href="https://vite.dev/guide/features.html#hot-module-replacement">Vite</a> <span class="m">· module 00</span></td></tr>
+        <tr><td>Source map</td><td>Maps built code back to source for debugging/stack traces. <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Performance_API/Source_map">MDN</a> <span class="m">· module 28</span></td></tr>
+      </table>
+
+      <h2 id="css">CSS &amp; UI</h2>
+      <table>
+        <tr><td>Custom property</td><td>A runtime CSS variable (<code>--x</code>) read with <code>var()</code>; the basis of theming. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">MDN</a> <span class="m">· module 05b/11 · THEMING</span></td></tr>
+        <tr><td>Container query</td><td>Respond to the parent's size, not the viewport. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries">MDN</a> <span class="m">· module 05b/05d · RESPONSIVE</span></td></tr>
+        <tr><td>Design token</td><td>A named design decision stored as data, layered primitive→semantic→component. <a href="https://tr.designtokens.org/format/">DTCG</a> <span class="m">· module 11 · THEMING</span></td></tr>
+        <tr><td>Intrinsic layout</td><td>Reflow by content/space (<code>auto-fit</code>/<code>minmax</code>) with no media query. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/minmax">MDN</a> <span class="m">· module 05d · RESPONSIVE</span></td></tr>
+      </table>
+
+      <h2>Related docs</h2>
+      <p>
+        <a href="./AUTH_COMPARISON.html">AUTH_COMPARISON.html</a> ·
+        <a href="./TESTING.html">TESTING.html</a> ·
+        <a href="./REALTIME.html">REALTIME.html</a> ·
+        <a href="./RESPONSIVE.html">RESPONSIVE.html</a> ·
+        <a href="./THEMING.html">THEMING.html</a> ·
+        <a href="./STYLING.html">STYLING.html</a> ·
+        <a href="./REACT_PERFORMANCE.html">REACT_PERFORMANCE.html</a> ·
+        <a href="./CAPSTONES.html">CAPSTONES.html</a>
+      </p>
+    </div>
+  </body>
+</html>

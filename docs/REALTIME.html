@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Realtime transports — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 64rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.4em; padding-top: 0.6em; border-top: 1px solid var(--line); font-size: 1.5rem; }
+      h3 { margin-top: 1.6em; font-size: 1.1rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow: auto; font-size: 0.82rem; }
+      pre code { background: none; padding: 0; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.85rem; }
+      th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      th { background: var(--code); }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .note { border-left: 3px solid var(--brand); padding: 0.5rem 0 0.5rem 1rem; color: var(--muted); }
+      figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.4rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Realtime transports</h1>
+      <p class="lede">
+        Push server → client without polling: WebSockets, Server-Sent Events, GraphQL subscriptions,
+        and when plain polling still wins. The course wires a full round-trip in <code>module 22</code>
+        (a NestJS gateway ↔ a React <code>useSocket</code> built on <code>useSyncExternalStore</code>);
+        GraphQL subscriptions live in <code>module 20/20b</code>. The Chat capstone is the realtime
+        showcase.
+      </p>
+
+      <h2>Directions matter</h2>
+      <figure>
+        <svg viewBox="0 0 560 170" width="100%" role="img" aria-label="Transport directions">
+          <style>
+            .box { fill: #151b30; stroke: #818cf8; }
+            @media (prefers-color-scheme: light) { .box { fill: #eef0f8; } }
+            .t { fill: #818cf8; font: 600 12px system-ui; }
+            .l { fill: #9aa4bf; font: 12px system-ui; }
+            .a { stroke: #818cf8; stroke-width: 2; fill: none; marker-end: url(#ah); }
+          </style>
+          <defs>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#818cf8" /></marker>
+          </defs>
+          <text class="t" x="10" y="20">WebSocket — full duplex</text>
+          <rect class="box" x="10" y="30" width="80" height="30" rx="5" /><text class="l" x="30" y="50">client</text>
+          <rect class="box" x="470" y="30" width="80" height="30" rx="5" /><text class="l" x="492" y="50">server</text>
+          <path class="a" d="M92 40 H468" /><path class="a" d="M468 52 H92" />
+          <text class="t" x="10" y="95">SSE — server → client only</text>
+          <rect class="box" x="10" y="105" width="80" height="30" rx="5" /><text class="l" x="30" y="125">client</text>
+          <rect class="box" x="470" y="105" width="80" height="30" rx="5" /><text class="l" x="492" y="125">server</text>
+          <path class="a" d="M468 120 H92" />
+          <text class="l" x="120" y="150">client → server here is just normal HTTP requests</text>
+        </svg>
+        <figcaption>WebSockets are bidirectional; SSE pushes one way over plain HTTP and auto-reconnects.</figcaption>
+      </figure>
+
+      <h2>The options compared</h2>
+      <table>
+        <tr><th></th><th>WebSocket</th><th>SSE</th><th>GraphQL subscription</th><th>Polling</th></tr>
+        <tr><td>Direction</td><td>duplex</td><td>server→client</td><td>server→client (usually over WS)</td><td>client pulls</td></tr>
+        <tr><td>Protocol</td><td><code>ws://</code> upgrade</td><td>HTTP (<code>text/event-stream</code>)</td><td>WS / SSE transport</td><td>HTTP</td></tr>
+        <tr><td>Auto-reconnect</td><td>DIY (backoff)</td><td>built-in</td><td>client-lib handled</td><td>n/a</td></tr>
+        <tr><td>Binary</td><td>✅</td><td>❌ (text)</td><td>❌</td><td>✅</td></tr>
+        <tr><td>Infra pain</td><td>sticky sessions / adapter</td><td>low (just HTTP)</td><td>medium</td><td>lowest</td></tr>
+        <tr><td>Best for</td><td>chat, presence, games, collab</td><td>feeds, notifications, progress, token streams</td><td>typed pub/sub in a GraphQL app</td><td>infrequent/soft-realtime updates</td></tr>
+      </table>
+
+      <h2>WebSockets — the concepts (module 22)</h2>
+      <ul>
+        <li><strong>Gateway</strong> — a Nest <code>@WebSocketGateway</code> (socket.io) handles connect/message/disconnect.</li>
+        <li><strong>Rooms</strong> — join a channel (<code>board:42</code>) so a broadcast hits only its members.</li>
+        <li><strong>Auth on the socket</strong> — verify the token in the handshake <em>before</em> accepting the connection; don't trust the first message. Order matters: authenticate → then join rooms.</li>
+        <li><strong>Reconnect + backoff</strong> — the client retries with exponential backoff and re-subscribes on reconnect; the server tolerates duplicate joins.</li>
+        <li><strong>Client as external store</strong> — <code>useSocket</code> bridges the socket into React via <code>useSyncExternalStore</code> (subscribe + <code>getSnapshot</code>), so components re-render on push without prop-drilling.</li>
+      </ul>
+      <pre><code>// useSyncExternalStore bridge (the shape module 22 builds)
+useSyncExternalStore(
+  (cb) => { socket.on("message", cb); return () => socket.off("message", cb); },
+  () => store.getSnapshot(),   // MUST be stable — cache it, don't build a fresh object each call
+);</code></pre>
+      <p class="note">Pitfall: a <code>getSnapshot</code> that returns a new object every call → infinite re-render loop. Return a cached reference and only replace it when data actually changes.</p>
+
+      <h2>Scaling realtime</h2>
+      <ul>
+        <li><strong>Sticky sessions</strong> or a shared adapter (<strong>Redis pub/sub</strong>) so a broadcast reaches clients pinned to other server instances.</li>
+        <li><strong>Backpressure</strong> — drop/coalesce on slow consumers; don't unboundedly buffer.</li>
+        <li><strong>Presence/heartbeat</strong> — ping/pong to detect dead connections and reap them.</li>
+      </ul>
+
+      <h2>Choosing — rules of thumb</h2>
+      <ul>
+        <li>Two-way, low-latency (chat, cursors, multiplayer) → <strong>WebSocket</strong>.</li>
+        <li>One-way stream (notifications, live logs, progress bars, LLM token streaming) → <strong>SSE</strong> — simpler, auto-reconnect, no special infra.</li>
+        <li>Already all-in on GraphQL and want typed pub/sub → <strong>subscriptions</strong>.</li>
+        <li>Updates every few seconds are fine → <strong>polling</strong> (or TanStack Query <code>refetchInterval</code>). Don't over-engineer.</li>
+      </ul>
+
+      <h2>Course map &amp; further reading</h2>
+      <ul>
+        <li><code>modules/22</code> — Nest WS gateway, rooms, socket auth, <code>useSocket</code> on <code>useSyncExternalStore</code>, reconnect/backoff, SSE + subscriptions (when-to-use) · <code>modules/20/20b</code> — GraphQL subscriptions · Chat capstone</li>
+      </ul>
+      <h3>External references</h3>
+      <ul>
+        <li><strong>WebSocket</strong> — <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSockets API (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">Writing a WS server (MDN)</a> · <a href="https://socket.io/docs/v4/">Socket.IO</a> · <a href="https://docs.nestjs.com/websockets/gateways">NestJS gateways</a></li>
+        <li><strong>SSE</strong> — <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">Using server-sent events (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource (MDN)</a></li>
+        <li><strong>GraphQL</strong> — <a href="https://www.apollographql.com/docs/react/data/subscriptions/">Apollo subscriptions</a> · <a href="https://the-guild.dev/graphql/ws">graphql-ws</a></li>
+        <li><strong>React</strong> — <a href="https://react.dev/reference/react/useSyncExternalStore">useSyncExternalStore (React)</a> · <a href="https://tanstack.com/query/latest/docs/framework/react/guides/window-focus-refetching">TanStack Query polling/refetch</a></li>
+        <li><strong>Scaling</strong> — <a href="https://socket.io/docs/v4/redis-adapter/">Socket.IO Redis adapter</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism">HTTP upgrade mechanism (MDN)</a></li>
+        <li>Siblings: <a href="./AUTH_COMPARISON.html">AUTH_COMPARISON.html</a> · <a href="./TESTING.html">TESTING.html</a> · <a href="./GLOSSARY.html">GLOSSARY.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

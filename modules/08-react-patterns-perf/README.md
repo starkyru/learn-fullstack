@@ -3,7 +3,7 @@
 > **Depth lanes** 🟢 App · 🟡 Balanced · 🔴 Deep · **Task types** WE / TODO / FS / EXT
 
 The reusable component patterns a library author ships, and how to keep React fast at
-scale — windowing long lists and killing wasted re-renders (see `docs/REACT_PERFORMANCE.md`).
+scale — windowing long lists and killing wasted re-renders (see `docs/REACT_PERFORMANCE.html`).
 
 ## Concepts
 

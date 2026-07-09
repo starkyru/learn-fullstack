@@ -75,8 +75,8 @@ Respect the learner's chosen lane when advising or reviewing.
 Auth, testing, state, realtime, GraphQL, and APIs each teach **multiple approaches** — the
 two capstones deliberately use **different auth stacks** (Kanban = Auth.js/session/OAuth;
 Chat = JWT/Passport). Surface the _tradeoffs between approaches_, don't declare one winner.
-Route auth questions to `docs/AUTH_COMPARISON.md`, testing to `docs/TESTING.md`, realtime
-to `docs/REALTIME.md`, styling to `docs/STYLING.md`.
+Route auth questions to `docs/AUTH_COMPARISON.html`, testing to `docs/TESTING.html`, realtime
+to `docs/REALTIME.html`, styling to `docs/STYLING.html`.
 
 ## The shared packages (import from these, don't hardcode)
 
@@ -102,7 +102,7 @@ ALL of these in the same change:**
 2. the root **`README.md`** module table (+ a companion callout if it's a `NNx` deep-dive);
 3. **`CURRICULUM.md`** (the module's section: title, objective, task table, "Done when");
 4. **`PROGRESS.md`** (add/rename the module's row);
-5. **`docs/CAPSTONES.md`** if a capstone's data model / API surface / milestones changed.
+5. **`docs/CAPSTONES.html`** if a capstone's data model / API surface / milestones changed.
 
 Never leave a lesson that exists on disk but is missing or stale in these files. A CI
 `docs-sync` check (`scripts/docs-sync.ts`) fails the build if a `modules/NN-*` folder has

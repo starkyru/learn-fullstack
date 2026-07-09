@@ -6,7 +6,12 @@
 > `modules/NN-*/README.md` is the in-repo source of truth once written; this file is the
 > master plan they're built from. See also [`README.md`](./README.md),
 > [`AGENTS.md`](./AGENTS.md), [`PROGRESS.md`](./PROGRESS.md), and the capstone specs in
-> [`docs/CAPSTONES.md`](./docs/CAPSTONES.md).
+> [`docs/CAPSTONES.html`](./docs/CAPSTONES.html). Frontend reference docs (live CSS demos):
+> [`docs/RESPONSIVE.html`](./docs/RESPONSIVE.html), [`docs/THEMING.html`](./docs/THEMING.html),
+> [`docs/STYLING.html`](./docs/STYLING.html). Cross-cutting references:
+> [`docs/AUTH_COMPARISON.html`](./docs/AUTH_COMPARISON.html),
+> [`docs/TESTING.html`](./docs/TESTING.html), [`docs/REALTIME.html`](./docs/REALTIME.html),
+> [`docs/GLOSSARY.html`](./docs/GLOSSARY.html).
 
 **Keep in sync (hard rule):** any change to a lesson updates this file **and** the root
 `README.md` table **and** `PROGRESS.md` — see `AGENTS.md`.
@@ -158,7 +163,7 @@ Core stateful hooks and their timing. Concepts: **`useState`**, **`useReducer`**
 
 ### 07 — React Hooks II: Context, Memo & Custom Hooks ✅ implemented
 
-Share state and factor logic into reusable hooks — and learn the best-practices for **minimizing re-renders** (see `docs/REACT_PERFORMANCE.md`). Concepts: **`useContext`** + provider, **split context** (state vs setter), **`useMemo`**, **`useCallback`**, `React.memo`, stable prop identities, **`useImperativeHandle`**, custom hooks, **`createPortal`**.
+Share state and factor logic into reusable hooks — and learn the best-practices for **minimizing re-renders** (see `docs/REACT_PERFORMANCE.html`). Concepts: **`useContext`** + provider, **split context** (state vs setter), **`useMemo`**, **`useCallback`**, `React.memo`, stable prop identities, **`useImperativeHandle`**, custom hooks, **`createPortal`**.
 
 | #   | Task                        | Lane | Type | Build                                                                                  |
 | --- | --------------------------- | ---- | ---- | -------------------------------------------------------------------------------------- |
@@ -183,7 +188,7 @@ Demystify hooks by building a tiny React-like renderer. Concepts: fiber-lite ren
 
 ### 08 — React Patterns & Performance ✅ implemented
 
-Reusable component patterns + keeping React fast (see `docs/REACT_PERFORMANCE.md`). Concepts: compound components, render-props, HOC, `React.memo` + stable identities, virtualization/windowing, identity/keys, profiler.
+Reusable component patterns + keeping React fast (see `docs/REACT_PERFORMANCE.html`). Concepts: compound components, render-props, HOC, `React.memo` + stable identities, virtualization/windowing, identity/keys, profiler.
 
 | #   | Task               | Lane | Type | Build                                                                             |
 | --- | ------------------ | ---- | ---- | --------------------------------------------------------------------------------- |
@@ -431,7 +436,7 @@ Build the batching/caching primitive yourself. Concepts: per-tick batch queue, k
 
 ### 21 — Authentication & Security ✅ implemented
 
-Compare the major auth approaches side-by-side and harden against OWASP. Concepts: **cookie/session** vs **JWT access+refresh rotation** vs **OAuth2/OIDC** vs **Auth.js** vs **Passport+Nest guards** vs **magic-link**; **argon2/bcrypt**; **RBAC vs ABAC**; **CSRF/XSS/OWASP Top-10**; zod validation. Reference: `docs/AUTH_COMPARISON.md`.
+Compare the major auth approaches side-by-side and harden against OWASP. Concepts: **cookie/session** vs **JWT access+refresh rotation** vs **OAuth2/OIDC** vs **Auth.js** vs **Passport+Nest guards** vs **magic-link**; **argon2/bcrypt**; **RBAC vs ABAC**; **CSRF/XSS/OWASP Top-10**; zod validation. Reference: `docs/AUTH_COMPARISON.html`.
 
 | #   | Task                   | Lane | Type | Build                                                                 |
 | --- | ---------------------- | ---- | ---- | --------------------------------------------------------------------- |
@@ -457,7 +462,7 @@ Hand-roll secure sessions to see exactly what libraries do. Concepts: session-id
 
 ### 22 — Realtime: WebSockets End-to-End ✅ implemented
 
-Wire realtime from a NestJS gateway to a React `useSocket` client — full round-trip. Concepts: WS gateway (`@nestjs/websockets`/socket.io), rooms, **auth on the socket**, broadcasting; browser client, **`useSocket` on `useSyncExternalStore`**, connect/reconnect/backoff; **SSE** + **GraphQL subscriptions** (when-to-use). Reference: `docs/REALTIME.md`.
+Wire realtime from a NestJS gateway to a React `useSocket` client — full round-trip. Concepts: WS gateway (`@nestjs/websockets`/socket.io), rooms, **auth on the socket**, broadcasting; browser client, **`useSocket` on `useSyncExternalStore`**, connect/reconnect/backoff; **SSE** + **GraphQL subscriptions** (when-to-use). Reference: `docs/REALTIME.html`.
 
 | #   | Task                   | Lane | Type | Build                                                                              |
 | --- | ---------------------- | ---- | ---- | ---------------------------------------------------------------------------------- |
@@ -546,7 +551,7 @@ Mutations without a separate API using Server Actions. Concepts: **Server Action
 
 ### 26 — Testing (the trophy, end to end) ✅ implemented
 
-Choose and combine testing approaches; wire `packages/testing`. Concepts: testing trophy/pyramid, **unit (Vitest)**, **component (RTL + Storybook play)**, **integration (Nest e2e + Testcontainers/pg)**, **E2E (Playwright)**, **MSW**, **TDD**, snapshot vs assertion, contract testing, when to use each. Reference: `docs/TESTING.md`.
+Choose and combine testing approaches; wire `packages/testing`. Concepts: testing trophy/pyramid, **unit (Vitest)**, **component (RTL + Storybook play)**, **integration (Nest e2e + Testcontainers/pg)**, **E2E (Playwright)**, **MSW**, **TDD**, snapshot vs assertion, contract testing, when to use each. Reference: `docs/TESTING.html`.
 
 | #   | Task             | Lane | Type | Build                                                                      |
 | --- | ---------------- | ---- | ---- | -------------------------------------------------------------------------- |
@@ -611,7 +616,7 @@ Compose an app from independently-deployed remotes — the runtime under Webpack
 
 ### 29 — Capstone Integration ✅ implemented
 
-Finish both apps end-to-end with deliberately different stacks. Concepts: integrating everything; Kanban (Next RSC + Server Actions + Prisma + Auth.js + GraphQL) vs Chat (Vite + Nest REST/WS + JWT/Passport + raw SQL); shared packages; CI/deploy. Full specs (data models, API surface, milestones) in [`docs/CAPSTONES.md`](./docs/CAPSTONES.md).
+Finish both apps end-to-end with deliberately different stacks. Concepts: integrating everything; Kanban (Next RSC + Server Actions + Prisma + Auth.js + GraphQL) vs Chat (Vite + Nest REST/WS + JWT/Passport + raw SQL); shared packages; CI/deploy. Full specs (data models, API surface, milestones) in [`docs/CAPSTONES.html`](./docs/CAPSTONES.html).
 
 | #   | Task                  | Lane | Type | Build                                                                |
 | --- | --------------------- | ---- | ---- | -------------------------------------------------------------------- |

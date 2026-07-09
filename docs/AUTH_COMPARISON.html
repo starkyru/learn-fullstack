@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auth approaches compared — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+        --warn: #f59e0b;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+          --warn: #b45309;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 64rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.4em; padding-top: 0.6em; border-top: 1px solid var(--line); font-size: 1.5rem; }
+      h3 { margin-top: 1.6em; font-size: 1.1rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow: auto; font-size: 0.82rem; }
+      pre code { background: none; padding: 0; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.85rem; }
+      th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      th { background: var(--code); position: sticky; top: 0; }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .note { border-left: 3px solid var(--brand); padding: 0.5rem 0 0.5rem 1rem; color: var(--muted); }
+      .warn { border-left: 3px solid var(--warn); padding: 0.5rem 0 0.5rem 1rem; }
+      .scroll { overflow-x: auto; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Auth approaches compared</h1>
+      <p class="lede">
+        Session cookies vs JWT vs OAuth/OIDC vs Auth.js vs Passport vs magic-link — how each works,
+        what it costs, and when to pick it. The course teaches this by <strong>using different stacks
+        on purpose</strong>: the Kanban capstone runs <strong>Auth.js sessions</strong>, the Chat
+        capstone runs <strong>JWT + Passport</strong>. Modules <code>21</code> (compare + OWASP
+        hardening), <code>21b</code> (hand-rolled sessions, Lucia-style), <code>25</code> (Auth.js in
+        Next). Shared code: <code>packages/auth</code>.
+      </p>
+      <p class="note">Compare, don't crown. There's no single "best" — the right answer is a function of client type, revocation needs, team, and threat model.</p>
+
+      <h2>The lineup at a glance</h2>
+      <div class="scroll">
+        <table>
+          <tr>
+            <th>Approach</th><th>State</th><th>Revoke?</th><th>Where the credential lives</th><th>Main risk</th><th>Best for</th>
+          </tr>
+          <tr>
+            <td><strong>Session cookie</strong></td><td>Stateful (server store)</td><td>✅ delete the row</td><td><code>httpOnly</code> cookie (opaque id)</td><td>CSRF</td><td>Server-rendered apps, one first-party web client</td>
+          </tr>
+          <tr>
+            <td><strong>JWT access + refresh</strong></td><td>Stateless access, stateful refresh</td><td>⚠️ access can't be revoked until expiry; rotate/blacklist refresh</td><td>access in memory; refresh in <code>httpOnly</code> cookie</td><td>Token leak / XSS if stored wrong</td><td>APIs, mobile, multiple clients, microservices</td>
+          </tr>
+          <tr>
+            <td><strong>OAuth2 / OIDC</strong></td><td>Delegated to provider</td><td>Provider-controlled</td><td>Provider tokens → your session/JWT</td><td>Redirect/PKCE misconfig</td><td>"Sign in with Google/GitHub", third-party API access</td>
+          </tr>
+          <tr>
+            <td><strong>Auth.js</strong> (NextAuth)</td><td>Session (DB or JWT strategy)</td><td>✅ (DB sessions)</td><td><code>httpOnly</code> cookie</td><td>Config sprawl</td><td>Next.js apps wanting OAuth + email fast (Kanban capstone)</td>
+          </tr>
+          <tr>
+            <td><strong>Passport + Nest guards</strong></td><td>Strategy-dependent</td><td>Depends on strategy</td><td>Depends (JWT/session)</td><td>Strategy misuse</td><td>NestJS APIs, many strategies behind one guard (Chat capstone)</td>
+          </tr>
+          <tr>
+            <td><strong>Magic link</strong></td><td>Stateful (one-time token)</td><td>✅ single-use, expiring</td><td>emailed token → session</td><td>Email interception / link replay</td><td>Passwordless, low-friction consumer login</td>
+          </tr>
+        </table>
+      </div>
+
+      <h2>Session cookies vs JWT — the core fork</h2>
+      <p>
+        A <strong>session</strong> is an opaque id in an <code>httpOnly</code> cookie; the server holds
+        the truth in a store, so logout = delete the row (instant revocation). A <strong>JWT</strong>
+        is a signed, self-contained claim the server verifies without a lookup — great for scale and
+        stateless services, but you <em>can't</em> un-issue an access token, so you keep it
+        short-lived and pair it with a longer <strong>refresh token</strong>.
+      </p>
+      <pre><code>// JWT: short access + rotating refresh
+access  = sign(claims, { expiresIn: "15m" })   // in memory, sent as Bearer
+refresh = sign({ sub }, { expiresIn: "7d" })   // httpOnly cookie, single-use
+
+// on refresh: verify → issue new pair → invalidate old refresh id.
+// if an already-used refresh id comes back → REUSE DETECTED → revoke the family.</code></pre>
+      <p class="warn">
+        <strong>Refresh-token reuse detection</strong> (module 21): rotate refresh tokens and remember
+        the last valid id per family. A replay of a spent token means it leaked — kill the whole
+        family and force re-login.
+      </p>
+
+      <h2>Where to store a token (and why not localStorage)</h2>
+      <table>
+        <tr><th>Store</th><th>Readable by JS?</th><th>Sent automatically?</th><th>Verdict</th></tr>
+        <tr><td><code>httpOnly</code> cookie</td><td>❌ (XSS-safe)</td><td>✅ (needs CSRF defense)</td><td>Preferred for web</td></tr>
+        <tr><td><code>localStorage</code></td><td>✅ (XSS reads it)</td><td>❌</td><td>Avoid for tokens</td></tr>
+        <tr><td>In-memory (JS var)</td><td>✅ same tab only</td><td>❌</td><td>OK for short-lived access token</td></tr>
+      </table>
+
+      <h2>CSRF vs XSS — which threat, which defense</h2>
+      <ul>
+        <li><strong>Cookie auth → CSRF risk.</strong> The browser attaches the cookie to forged
+          cross-site requests. Defend with <code>SameSite=Lax/Strict</code>, a double-submit CSRF
+          token, and origin checks (module 21b builds the double-submit from scratch).</li>
+        <li><strong>Token-in-JS → XSS risk.</strong> A script injection reads a token from
+          <code>localStorage</code>. Defend by not storing it there + output escaping + CSP.
+          <code>httpOnly</code> cookies sidestep this entirely.</li>
+      </ul>
+
+      <h2>Password hashing</h2>
+      <p>Never store plaintext or fast hashes (MD5/SHA). Use a slow, salted KDF:</p>
+      <table>
+        <tr><th>Algorithm</th><th>Notes</th></tr>
+        <tr><td><strong>argon2id</strong></td><td>Current best default — memory-hard, resists GPU/ASIC cracking. Preferred.</td></tr>
+        <tr><td><strong>bcrypt</strong></td><td>Battle-tested, everywhere, 72-byte input cap. Fine if argon2 isn't available.</td></tr>
+      </table>
+
+      <h2>Authorization: RBAC vs ABAC</h2>
+      <ul>
+        <li><strong>RBAC</strong> — role → permissions (<code>admin</code>, <code>member</code>). Simple, coarse. A Nest guard checks the role (module 21).</li>
+        <li><strong>ABAC</strong> — decide on attributes (owner of the resource, org, time, IP). Fine-grained, more logic. Use when "can edit <em>this</em> row" depends on data, not just role.</li>
+      </ul>
+
+      <h2>OAuth2 / OIDC in one breath</h2>
+      <p>
+        OAuth2 <em>authorizes</em> (delegated access via tokens); <strong>OIDC</strong> adds an
+        identity layer (an <code>id_token</code> = who the user is). Use the <strong>Authorization
+        Code flow + PKCE</strong> for web/mobile. You end up exchanging the provider's tokens for
+        <em>your own</em> session or JWT — OAuth is the front door, not your whole auth system.
+      </p>
+
+      <h2>Choosing — rules of thumb</h2>
+      <ul>
+        <li>One first-party web app, server-rendered → <strong>session cookies</strong> (or Auth.js on Next).</li>
+        <li>Public/mobile/multi-service API → <strong>JWT access + rotating refresh</strong> in <code>httpOnly</code> cookies.</li>
+        <li>"Sign in with Google" / third-party data → <strong>OAuth2/OIDC</strong>, then mint your own session.</li>
+        <li>NestJS with several login methods → <strong>Passport strategies</strong> behind one guard.</li>
+        <li>Consumer, passwordless → <strong>magic link</strong> (single-use, expiring).</li>
+      </ul>
+
+      <h2>Course map &amp; further reading</h2>
+      <ul>
+        <li><code>modules/21</code> — compare all approaches + OWASP hardening (CSRF/XSS, refresh rotation, RBAC guard)</li>
+        <li><code>modules/21b</code> — hand-rolled session auth (entropy, hashing at rest, double-submit CSRF), Lucia-style, no auth library</li>
+        <li><code>modules/25</code> — Auth.js in Next.js · <code>packages/auth</code> — shared helpers · capstones: Kanban (Auth.js) vs Chat (JWT/Passport)</li>
+      </ul>
+      <h3>External references</h3>
+      <ul>
+        <li><strong>Sessions &amp; cookies</strong> — <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">HTTP cookies (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">SameSite (MDN)</a> · <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">Session Management (OWASP)</a></li>
+        <li><strong>CSRF / XSS</strong> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">CSRF Prevention (OWASP)</a> · <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS Prevention (OWASP)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks">Types of attacks (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content Security Policy (MDN)</a></li>
+        <li><strong>JWT</strong> — <a href="https://datatracker.ietf.org/doc/html/rfc7519">RFC 7519 (spec)</a> · <a href="https://jwt.io/introduction">jwt.io intro</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API">WebAuthn / passkeys (MDN)</a></li>
+        <li><strong>OAuth / OIDC</strong> — <a href="https://oauth.net/2/">OAuth 2.0</a> · <a href="https://oauth.net/2/pkce/">PKCE</a> · <a href="https://openid.net/developers/how-connect-works/">How OIDC works</a> · <a href="https://www.oauth.com/">oauth.com guide</a></li>
+        <li><strong>Hashing</strong> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage (OWASP)</a> · <a href="https://github.com/P-H-C/phc-winner-argon2">argon2</a> · <a href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a></li>
+        <li><strong>Libraries</strong> — <a href="https://authjs.dev/">Auth.js</a> · <a href="https://www.passportjs.org/">Passport</a> · <a href="https://lucia-auth.com/">Lucia</a> · <a href="https://docs.nestjs.com/security/authentication">NestJS auth</a></li>
+        <li>Siblings: <a href="./TESTING.html">TESTING.html</a> · <a href="./REALTIME.html">REALTIME.html</a> · <a href="./GLOSSARY.html">GLOSSARY.html</a> · <a href="./RESPONSIVE.html">RESPONSIVE.html</a> · <a href="./THEMING.html">THEMING.html</a> · <a href="./STYLING.html">STYLING.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

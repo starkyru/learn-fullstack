@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Testing strategy — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+        --ok: #4ade80;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+          --ok: #059669;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 64rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.4em; padding-top: 0.6em; border-top: 1px solid var(--line); font-size: 1.5rem; }
+      h3 { margin-top: 1.6em; font-size: 1.1rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow: auto; font-size: 0.82rem; }
+      pre code { background: none; padding: 0; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.85rem; }
+      th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      th { background: var(--code); }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .note { border-left: 3px solid var(--brand); padding: 0.5rem 0 0.5rem 1rem; color: var(--muted); }
+      figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.4rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Testing strategy</h1>
+      <p class="lede">
+        Which test, at which level, for which confidence — unit, component, integration, E2E, plus
+        MSW and contract tests. The course's dedicated lesson is <code>module 26</code>; the shared
+        harness is <code>packages/testing</code>. Every module already ships tests you run with
+        <code>pnpm --filter ./modules/NN test</code> (and <code>pnpm grade &lt;id&gt;</code> to grade
+        your own <code>src/</code>).
+      </p>
+
+      <h2>Trophy, not pyramid</h2>
+      <figure>
+        <svg viewBox="0 0 520 220" width="100%" role="img" aria-label="Testing trophy">
+          <style>
+            .band { stroke: #26304d; }
+            .t { fill: #0b1020; font: 700 13px system-ui; }
+            .lbl { fill: #9aa4bf; font: 12px system-ui; }
+          </style>
+          <rect class="band" x="150" y="10" width="220" height="34" rx="6" fill="#818cf8" opacity="0.55" />
+          <text class="t" x="200" y="32">E2E — few, slow, real</text>
+          <rect class="band" x="110" y="52" width="300" height="46" rx="6" fill="#818cf8" opacity="0.8" />
+          <text class="t" x="150" y="80">Integration — most confidence per test</text>
+          <rect class="band" x="130" y="106" width="260" height="40" rx="6" fill="#818cf8" />
+          <text class="t" x="180" y="131">Component (RTL)</text>
+          <rect class="band" x="170" y="154" width="180" height="30" rx="6" fill="#818cf8" opacity="0.4" />
+          <text class="t" x="205" y="174">Unit — many, fast</text>
+          <rect class="band" x="230" y="184" width="60" height="24" fill="#818cf8" opacity="0.25" />
+          <text class="lbl" x="380" y="80">← invest here: fast enough,</text>
+          <text class="lbl" x="380" y="96">high confidence (Kent C. Dodds)</text>
+        </svg>
+        <figcaption>The "trophy" weights integration highest — tests that exercise real wiring without a full browser.</figcaption>
+      </figure>
+
+      <h2>The levels</h2>
+      <table>
+        <tr><th>Level</th><th>Tool (this repo)</th><th>Speed</th><th>Confidence</th><th>Use for</th></tr>
+        <tr><td><strong>Unit</strong></td><td>Vitest</td><td>⚡⚡⚡</td><td>low–med</td><td>pure logic, resolvers, reducers, utils</td></tr>
+        <tr><td><strong>Component</strong></td><td>RTL + Storybook <code>play</code></td><td>⚡⚡</td><td>med</td><td>a component's behavior from the user's POV</td></tr>
+        <tr><td><strong>Integration</strong></td><td>Nest e2e + Testcontainers (pg)</td><td>⚡</td><td>high</td><td>route → service → real DB wiring</td></tr>
+        <tr><td><strong>E2E</strong></td><td>Playwright</td><td>🐢</td><td>highest</td><td>critical user journeys through the real app</td></tr>
+        <tr><td><strong>Network mock</strong></td><td>MSW</td><td>—</td><td>—</td><td>intercept fetch at the boundary in component/integration tests</td></tr>
+        <tr><td><strong>Contract</strong></td><td>schema/OpenAPI checks</td><td>⚡</td><td>med</td><td>keep provider ↔ consumer API shapes honest</td></tr>
+      </table>
+
+      <h2>What to mock — boundaries only</h2>
+      <p>
+        Mock the true external edges: <strong>network, filesystem, clock, randomness, the browser, an
+        LLM</strong>. Do <strong>not</strong> mock the unit under test or the dependency that holds the
+        logic you're verifying — that's a tautology that passes by construction and catches no
+        regression. Inject the clock/entropy instead of stubbing <code>Date.now</code>.
+      </p>
+      <pre><code>// good: real code, injected clock, network mocked at the boundary (MSW)
+server.use(http.get("/api/cards", () => HttpResponse.json([{ id: "1" }])));
+const result = await loadCards({ now: () => 1_700_000_000 });  // clock injected
+expect(result).toEqual([{ id: "1" }]);   // exact shape, discriminating
+
+// bad: mocking the function you claim to test, then asserting the mock back</code></pre>
+      <p class="note">
+        Assertions must discriminate: assert the exact output/shape, not truthiness or
+        <code>length</code>. A test must fail if the behavior it advertises regresses.
+      </p>
+
+      <h2>TDD, snapshots, and flake</h2>
+      <ul>
+        <li><strong>TDD</strong> — red → green → refactor. Write the failing test that pins the behavior, make it pass minimally, then clean up under a green bar.</li>
+        <li><strong>Snapshot vs assertion</strong> — snapshots catch "did anything change" (good for serialized output/markup); explicit assertions state intent. Prefer assertions for logic; keep snapshots small and reviewed.</li>
+        <li><strong>Kill flake</strong> — no real timers/network/order-dependence. Inject the clock, mock the boundary, isolate DB state per test (Testcontainers), await async settle.</li>
+      </ul>
+
+      <h2>Run it (this repo)</h2>
+      <pre><code>pnpm --filter ./modules/26-testing test      # a module's suite
+pnpm grade 26-testing                        # grade YOUR src/ (flips imports solution→src)
+pnpm turbo run test                          # everything
+pnpm --filter @learn-fullstack/ui storybook  # component play tests</code></pre>
+
+      <h2>Choosing — rules of thumb</h2>
+      <ul>
+        <li>Pure function/logic → <strong>unit</strong>. Cheap, keep lots.</li>
+        <li>"Does this component do the right thing when clicked" → <strong>component (RTL)</strong>, query by role/text, not implementation details.</li>
+        <li>"Does the API actually talk to the DB correctly" → <strong>integration</strong> against a real Postgres (Testcontainers), not a mock.</li>
+        <li>"Can a user complete signup→create→logout" → a few <strong>Playwright E2E</strong> journeys, not hundreds.</li>
+        <li>Component/integration needs HTTP → <strong>MSW</strong> at the boundary, one handler set shared across tests.</li>
+      </ul>
+
+      <h2>Course map &amp; further reading</h2>
+      <ul>
+        <li><code>modules/26</code> — testing trophy, all levels, MSW, TDD, contract testing · <code>packages/testing</code> — shared setup/factories</li>
+      </ul>
+      <h3>External references</h3>
+      <ul>
+        <li><strong>Runners</strong> — <a href="https://vitest.dev/">Vitest</a> · <a href="https://playwright.dev/">Playwright</a></li>
+        <li><strong>Component</strong> — <a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a> · <a href="https://testing-library.com/docs/queries/about/#priority">Query priority (which query to use)</a> · <a href="https://storybook.js.org/docs/writing-tests/interaction-testing">Storybook interaction tests</a></li>
+        <li><strong>Network / DB</strong> — <a href="https://mswjs.io/">MSW</a> · <a href="https://node.testcontainers.org/">Testcontainers for Node</a> · <a href="https://docs.nestjs.com/fundamentals/testing#end-to-end-testing">NestJS e2e testing</a></li>
+        <li><strong>Philosophy</strong> — <a href="https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications">The Testing Trophy (Kent C. Dodds)</a> · <a href="https://kentcdodds.com/blog/write-tests">Write tests. Not too many. Mostly integration.</a> · <a href="https://martinfowler.com/articles/practical-test-pyramid.html">The Practical Test Pyramid (Fowler)</a> · <a href="https://martinfowler.com/bliki/TestDouble.html">Test Doubles (Fowler)</a></li>
+        <li><strong>Contract</strong> — <a href="https://pact.io/">Pact (consumer-driven contracts)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">MDN JS Guide</a></li>
+        <li>Siblings: <a href="./AUTH_COMPARISON.html">AUTH_COMPARISON.html</a> · <a href="./REALTIME.html">REALTIME.html</a> · <a href="./GLOSSARY.html">GLOSSARY.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

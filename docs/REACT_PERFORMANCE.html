@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>React performance — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 60rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.2em; padding-top: 0.5em; border-top: 1px solid var(--line); font-size: 1.3rem; }
+      h3 { margin-top: 1.6em; font-size: 1.05rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow: auto; font-size: 0.82rem; }
+      pre code { background: none; padding: 0; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .note { border-left: 3px solid var(--brand); padding: 0.5rem 0 0.5rem 1rem; color: var(--muted); }
+      .m { color: var(--muted); font-size: 0.9em; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>React performance — minimizing re-renders</h1>
+      <p class="lede">
+        A component re-renders when its own state/props change, its parent re-renders, or a context
+        it consumes changes value. Most "slow React" is <strong>wasted re-renders</strong> — children
+        re-rendering when nothing they depend on changed. The playbook:
+      </p>
+
+      <h2>1. Stable identities + <code>React.memo</code></h2>
+      <p>
+        Inline objects/arrays/functions are a <strong>new reference every render</strong>, so a
+        memoized child sees "changed props" and re-renders anyway.
+      </p>
+      <ul>
+        <li>Wrap pure children in <a href="https://react.dev/reference/react/memo"><code>React.memo</code></a>.</li>
+        <li>Give them <strong>stable props</strong>: <a href="https://react.dev/reference/react/useCallback"><code>useCallback(fn, deps)</code></a> for handlers, <a href="https://react.dev/reference/react/useMemo"><code>useMemo(() =&gt; obj, deps)</code></a> for objects/arrays.</li>
+        <li><span class="m">Taught + tested in module 07 task 4 (a bump to unrelated parent state must NOT re-render the memoized child).</span></li>
+      </ul>
+
+      <h2>2. <code>useMemo</code> for expensive computation</h2>
+      <p>
+        Cache a costly derivation (<code>useMemo(() =&gt; heavy(list), [list])</code>) so it only
+        recomputes when inputs change. Don't memo trivially-cheap values — the bookkeeping can cost
+        more. <a href="https://react.dev/reference/react/useMemo#skipping-expensive-recalculations">When to useMemo (React)</a>.
+      </p>
+
+      <h2>3. Split context (state vs setter)</h2>
+      <p>
+        A context re-renders <strong>all</strong> its consumers when its value changes. Keep the
+        frequently-changing value and the stable setter in <strong>separate contexts</strong> so
+        setter-only consumers never re-render on a value change. Pass <code>children</code> through
+        the provider so the provider's own state change doesn't re-render them.
+        <span class="m">Taught + tested in module 07 task 2.</span>
+        <a href="https://react.dev/learn/scaling-up-with-reducer-and-context">Context (React)</a>.
+      </p>
+
+      <h2>4. Colocate / derive state</h2>
+      <p>
+        Keep state as low in the tree as possible; lifting it re-renders more. Derive values during
+        render instead of mirroring them into extra state.
+        <a href="https://react.dev/learn/you-might-not-need-an-effect#updating-state-based-on-props-or-state">You might not need state/effect (React)</a>.
+      </p>
+
+      <h2>5. Stable keys</h2>
+      <p>
+        Use stable, identity-based <code>key</code>s (an id, not the array index) so React reuses DOM
+        nodes across reorders instead of re-rendering everything.
+        <a href="https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key">Keys (React)</a>.
+      </p>
+
+      <h2>6. External stores + selectors</h2>
+      <p>
+        For global/server state, <a href="https://react.dev/reference/react/useSyncExternalStore"><code>useSyncExternalStore</code></a>
+        (module 13) and <a href="https://tanstack.com/query/latest/docs/framework/react/guides/render-optimizations">TanStack Query selectors</a>
+        (module 14) subscribe a component to just the slice it needs — a re-render fires only when
+        that slice changes. From-scratch versions: modules 13b, 14b.
+      </p>
+
+      <h2>7. Windowing / virtualization</h2>
+      <p>
+        For long lists, render only visible rows (module 08) so the DOM (and render cost) stays
+        bounded regardless of data size. <a href="https://tanstack.com/virtual/latest">TanStack Virtual</a>.
+      </p>
+
+      <p class="note">
+        <strong>Measure, don't guess:</strong> the
+        <a href="https://react.dev/learn/react-developer-tools">React DevTools Profiler</a> shows
+        which components rendered and why (module 28b — Debugging &amp; Profiling).
+      </p>
+
+      <h2>Further reading</h2>
+      <ul>
+        <li><a href="https://react.dev/learn/render-and-commit">Render and commit (React)</a> · <a href="https://react.dev/learn/preserving-and-resetting-state">Preserving &amp; resetting state (React)</a></li>
+        <li><a href="https://react.dev/reference/react/memo#minimizing-props-changes">Minimizing props changes (React)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Performance_API">Web Performance API (MDN)</a></li>
+        <li>Course: modules <code>07</code>, <code>08</code>, <code>13</code>/<code>13b</code>, <code>14</code>/<code>14b</code>, <code>28b</code></li>
+        <li>Related: <a href="./GLOSSARY.html">GLOSSARY.html</a> · <a href="./TESTING.html">TESTING.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

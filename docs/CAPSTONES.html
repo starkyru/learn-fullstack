@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Capstone specs — Trellix &amp; Pulse — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      .wrap { max-width: 68rem; margin-inline: auto; padding: clamp(1rem, 0.5rem + 3vw, 3rem); }
+      h1 { font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); line-height: 1.1; margin: 0 0 0.25em; }
+      h2 { margin-top: 2.4em; padding-top: 0.6em; border-top: 1px solid var(--line); font-size: 1.5rem; }
+      h3 { margin-top: 1.6em; font-size: 1.1rem; }
+      a { color: var(--brand); }
+      code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+      pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow: auto; font-size: 0.78rem; line-height: 1.45; }
+      pre code { background: none; padding: 0; }
+      .lede { color: var(--muted); font-size: 1.1rem; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.84rem; }
+      th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      th { background: var(--code); }
+      td:first-child { font-weight: 600; }
+      .tag { display: inline-block; background: var(--code); border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; color: var(--muted); }
+      .note { border-left: 3px solid var(--brand); padding: 0.5rem 0 0.5rem 1rem; color: var(--muted); }
+      .scroll { overflow-x: auto; }
+      .apps { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 1rem 0; }
+      .appcard { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; }
+      .appcard h3 { margin: 0 0 0.35rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Capstone apps — full specs (Trellix &amp; Pulse)</h1>
+      <p class="lede">
+        The two capstones under <code>apps/</code> exercise <strong>everything</strong> between them,
+        with deliberately <strong>non-overlapping</strong> stacks so the learner practices <em>both</em>
+        of every "pick one of two" decision. This file is the <strong>target design</strong> (data
+        models, API surface, milestones); each app's own README tracks what's actually built so far.
+      </p>
+      <div class="apps">
+        <div class="appcard">
+          <h3>🅰 Kanban "Trellix"</h3>
+          <a href="../apps/kanban-web/README.md">apps/kanban-web</a> (Next.js) +
+          <a href="../apps/kanban-api/README.md">apps/kanban-api</a> (Nest GraphQL)
+        </div>
+        <div class="appcard">
+          <h3>🅱 Chat "Pulse"</h3>
+          <a href="../apps/chat-web/README.md">apps/chat-web</a> (Vite SPA) +
+          <a href="../apps/chat-api/README.md">apps/chat-api</a> (Nest REST/WS)
+        </div>
+      </div>
+      <p>
+        Both consume the same <code>packages/ui</code> (Storybook-documented) — one design system
+        feeding two very different products. Module <strong>29</strong> (see
+        <a href="../CURRICULUM.md">CURRICULUM.md</a>) integrates them.
+      </p>
+
+      <h2>The deliberate split</h2>
+      <div class="scroll">
+        <table>
+          <tr><th>Axis</th><th>🅰 Kanban — "Trellix" (<code>kanban-web</code> + <code>-api</code>)</th><th>🅱 Chat — "Pulse" (<code>chat-web</code> + <code>-api</code>)</th></tr>
+          <tr><td>Frontend</td><td>Next.js App Router (RSC, Server Actions, streaming, ISR)</td><td>Vite React SPA (client-rendered)</td></tr>
+          <tr><td>API style</td><td><strong>GraphQL</strong> end-to-end (Nest code-first ↔ typed client)</td><td><strong>REST</strong> (OpenAPI/Swagger) + <strong>WebSockets</strong></td></tr>
+          <tr><td>Realtime</td><td>GraphQL <strong>subscriptions</strong> + <strong>SSE</strong> activity feed</td><td><strong>WebSockets</strong> (socket.io gateway + <code>useSocket</code>)</td></tr>
+          <tr><td>Server-state</td><td><strong>TanStack Query</strong> (SSR hydration, optimistic, infinite)</td><td><strong>RTK Query</strong> + a socket middleware into the store</td></tr>
+          <tr><td>Client/UI state</td><td><strong>Zustand</strong> (drag, modals, filters, ⌘K)</td><td><strong>Redux Toolkit</strong> slices (auth, channel, composer, presence)</td></tr>
+          <tr><td>Auth</td><td><strong>Auth.js/NextAuth</strong> — OAuth/OIDC + Credentials + RBAC</td><td><strong>Passport + Guards</strong> — JWT access+refresh rotation, argon2, socket-auth; magic-link + hand-rolled 🔴 stretch</td></tr>
+          <tr><td>DB access</td><td><strong>Prisma-first</strong> (relations, nested writes, <code>$transaction</code>)</td><td><strong>Prisma</strong> for writes, <strong>raw <code>postgres.js</code></strong> for the hot read path (keyset + FTS)</td></tr>
+          <tr><td>Styling</td><td><strong>Tailwind</strong> (app-level) + <code>packages/ui</code></td><td><strong>CSS Modules / vanilla CSS</strong> (app-level) + <code>packages/ui</code></td></tr>
+          <tr><td>Testing</td><td>Playwright drag-drop, MSW-for-GraphQL, Storybook play</td><td>Nest e2e + Testcontainers, WS gateway integration, contract, MSW-for-REST</td></tr>
+        </table>
+      </div>
+
+      <h2>🅰 Kanban — "Trellix" (Next.js + GraphQL showcase)</h2>
+      <p>
+        A Trello-lite collaborative board: workspaces → boards → columns → cards, with
+        drag-to-reorder, labels, assignees, due dates, comments, an activity feed, and <strong>live
+        multi-user collaboration</strong>.
+      </p>
+      <h3>Data model (Prisma sketch)</h3>
+      <pre><code>model User   { id String @id @default(cuid()) email String @unique name String?
+               accounts Account[] sessions Session[] memberships BoardMembership[]
+               assigned CardAssignee[] comments Comment[] }        // NextAuth adapter
+model Board  { id String @id @default(cuid()) name String slug String @unique
+               visibility Visibility @default(PRIVATE) ownerId String
+               columns Column[] labels Label[] members BoardMembership[] activities Activity[] }
+model BoardMembership { id String @id @default(cuid()) boardId String userId String
+               role Role @default(MEMBER) @@unique([boardId, userId]) }   // RBAC
+model Column { id String @id @default(cuid()) boardId String name String
+               rank String cards Card[] @@index([boardId, rank]) }        // 🔴 fractional index
+model Card   { id String @id @default(cuid()) columnId String title String description String?
+               rank String dueDate DateTime? archived Boolean @default(false)
+               labels CardLabel[] assignees CardAssignee[] comments Comment[]
+               @@index([columnId, rank]) }
+model Comment{ id String @id @default(cuid()) cardId String authorId String body String
+               createdAt DateTime @default(now()) }
+model Activity{ id String @id @default(cuid()) boardId String actorId String type String
+               payload Json createdAt DateTime @default(now()) @@index([boardId, createdAt]) }
+enum Visibility { PRIVATE PUBLIC }   enum Role { OWNER MEMBER VIEWER }
+// + Label, CardLabel, CardAssignee join tables; + NextAuth Account/Session/VerificationToken</code></pre>
+      <h3>API surface (GraphQL, code-first Nest)</h3>
+      <p>
+        <code>Query { me, board(slug), boards, searchCards, archivedCards(after,first): CardConnection }</code>
+        · <code>Mutation { createBoard, addMember, createColumn, moveColumn, createCard, updateCard,
+        moveCard(cardId, toColumnId, beforeId, afterId), addComment, assignMember }</code> ·
+        <code>Subscription { boardUpdated(boardId): BoardEvent, presence(boardId) }</code>. DataLoader
+        batches <code>card.labels</code>/<code>assignees</code>/<code>comments</code>; a
+        <code>@BoardRole</code> guard reads the GraphQL context; <code>moveCard</code> computes ranks
+        server-side inside a <code>$transaction</code>.
+      </p>
+      <h3>Milestones</h3>
+      <table>
+        <tr><th>M</th><th>Done when</th></tr>
+        <tr><td>M0 Scaffold</td><td><code>turbo dev</code> boots <code>kanban-web</code> (Next) + <code>kanban-api</code> (Nest GraphQL) + Postgres; <code>/graphql</code> playground loads; Storybook runs.</td></tr>
+        <tr><td>M1 Auth &amp; shell</td><td>Sign in with GitHub <strong>and</strong> Credentials; middleware gates <code>/app</code>; RBAC seeded; <code>me</code> returns the session user.</td></tr>
+        <tr><td>M2 Boards CRUD</td><td>Dashboard (RSC/SSR) lists boards; create/rename/delete via <strong>Server Actions</strong> + <code>useOptimistic</code> + zod; board streams columns with <code>&lt;Suspense&gt;</code>; TanStack Query hydrated from RSC.</td></tr>
+        <tr><td>M3 Cards &amp; drag-drop</td><td>Drag reorder within/across columns is <strong>optimistic</strong> and survives reload (ranks persisted); DataLoader kills the labels/assignees N+1; archive uses an infinite query.</td></tr>
+        <tr><td>M4 Realtime collab</td><td>Two browsers on one board: a move/comment in A appears in B &lt; ~200ms over a subscription; presence avatars; SSE activity feed streams.</td></tr>
+        <tr><td>M5 Polish &amp; a11y</td><td>Public board ISR page + <code>generateMetadata</code> + OG image; ⌘K palette; keyboard drag + focus traps; Storybook <strong>play tests</strong> green; Lighthouse a11y ≥ 95.</td></tr>
+        <tr><td>M6 Test &amp; ship</td><td>Playwright drag-drop E2E + Vitest + MSW-GraphQL green in CI; Web on <strong>Vercel</strong>, API on <strong>Railway/Fly</strong>, migrations on deploy.</td></tr>
+      </table>
+      <p class="note">
+        <strong>Stretch (🔴):</strong> LexoRank/fractional indexing from scratch (no lib); a
+        hand-rolled mini query client for the board; swap <code>graphql-request</code> → Apollo
+        (normalized cache) and write the tradeoff note.
+      </p>
+
+      <h2>🅱 Chat — "Pulse" (NestJS REST + WebSockets + Redux showcase)</h2>
+      <p>
+        A Slack-lite: channels (public/private + DMs) with realtime messages, typing indicators,
+        presence, reactions, threads, unread counts, edit/delete, full-text search. <strong>Reuses
+        the module-22 <code>useSocket</code> hook</strong> end-to-end.
+      </p>
+      <h3>Data model (Prisma sketch — reads go raw)</h3>
+      <pre><code>model User    { id String @id @default(cuid()) email String @unique passwordHash String  // argon2
+                displayName String avatarUrl String? status Presence @default(OFFLINE)
+                lastSeenAt DateTime @default(now()) refreshTokens RefreshToken[]
+                memberships ChannelMember[] messages Message[] }
+model RefreshToken { id String @id @default(cuid()) userId String tokenHash String
+                family String expiresAt DateTime revokedAt DateTime? @@index([userId]) }  // rotation family; reuse ⇒ revoke
+model Channel { id String @id @default(cuid()) name String slug String @unique topic String?
+                isPrivate Boolean @default(false) isDm Boolean @default(false)
+                members ChannelMember[] messages Message[] }
+model ChannelMember { id String @id @default(cuid()) channelId String userId String
+                role ChannelRole @default(MEMBER) lastReadAt DateTime @default(now())
+                @@unique([channelId, userId]) }                          // unread counts
+model Message { id String @id @default(cuid()) channelId String senderId String body String
+                parentId String? editedAt DateTime? deletedAt DateTime? createdAt DateTime @default(now())
+                reactions Reaction[] @@index([channelId, createdAt]) }    // + tsvector GIN for FTS
+model Reaction{ id String @id @default(cuid()) messageId String userId String emoji String
+                @@unique([messageId, userId, emoji]) }
+enum Presence { ONLINE AWAY OFFLINE }   enum ChannelRole { ADMIN MEMBER }</code></pre>
+      <p class="note">
+        Schema/writes via <strong>Prisma</strong>; the hot read path
+        (<code>GET /channels/:id/messages</code>) is <strong>raw <code>postgres.js</code></strong> — a
+        keyset query (<code>WHERE (created_at, id) &lt; ($cursor) ORDER BY … LIMIT n</code>) against
+        <code>@@index([channelId, createdAt])</code> + a <code>to_tsvector</code> GIN index for search.
+        Where the index/pooling/N+1 lessons pay off.
+      </p>
+      <h3>API surface (REST + WS)</h3>
+      <p>
+        REST (<code>/v1</code>, Swagger at <code>/docs</code>) — <code>POST
+        /auth/{register,login,refresh,logout}</code>, <code>GET /auth/me</code>, <code>POST
+        /auth/magic-link</code> (stretch); <code>GET/POST /channels</code>, <code>.../:id/members</code>,
+        <code>GET /channels/:id/messages?cursor=&amp;limit=</code> (raw), <code>POST/PATCH/DELETE
+        /messages/...</code>, <code>POST /messages/:id/reactions</code>, <code>GET
+        /search/messages?q=</code>. <strong>WS gateway</strong> (<code>/chat</code>, authenticated on
+        handshake): client→server <code>channel:join/leave</code>, <code>message:send/edit</code>,
+        <code>typing:start/stop</code>, <code>reaction:add</code>; server→client
+        <code>message:new/updated/deleted</code>, <code>typing</code>, <code>presence</code>,
+        <code>reaction</code>, <code>unread</code>. One socket.io room per channel; a
+        <code>WsAuthGuard</code> validates the JWT on connect; a Redux <strong>socket middleware</strong>
+        turns inbound events into store actions.
+      </p>
+      <h3>Milestones</h3>
+      <table>
+        <tr><th>M</th><th>Done when</th></tr>
+        <tr><td>M0 Scaffold</td><td><code>turbo dev</code> boots <code>chat-web</code> (Vite) + <code>chat-api</code> (Nest) + Postgres; Swagger <code>/docs</code> renders; Storybook runs.</td></tr>
+        <tr><td>M1 Auth</td><td>Register/login issues JWT + rotating refresh in httpOnly cookies; argon2 verified; refresh-reuse revokes the family; <code>GET /auth/me</code> gated by a Guard; RTK Query <code>authApi</code> wired.</td></tr>
+        <tr><td>M2 Channels &amp; messages</td><td>Create/join channels; post/edit/delete; history via <strong>keyset pagination</strong> (raw <code>postgres.js</code>) newest-first; unread counts correct.</td></tr>
+        <tr><td>M3 Realtime</td><td>WS authenticated on handshake; two clients see each other's <code>message:new</code>/<code>typing</code>/<code>presence</code> live; <code>useSocket</code> reconnects with backoff and re-joins rooms.</td></tr>
+        <tr><td>M4 Reactions/threads/search</td><td>Emoji reactions broadcast live; threads render; <code>GET /search/messages</code> returns FTS hits highlighted; optimistic send reconciles on ack.</td></tr>
+        <tr><td>M5 Polish &amp; resilience</td><td>Virtualized list 60fps at 5k messages; offline queue flushes on reconnect; Storybook play tests for composer/list green.</td></tr>
+        <tr><td>M6 Test &amp; ship</td><td>Nest <strong>e2e vs ephemeral Postgres</strong> (Testcontainers) + WS integration + Vitest + MSW-REST green in CI; Web static, API on Railway/Fly, migrations on deploy.</td></tr>
+      </table>
+      <p class="note">
+        <strong>Stretch (🔴):</strong> <code>useSocket</code> from scratch (raw <code>WebSocket</code> +
+        heartbeat + backoff+jitter + offline queue, no socket.io-client); hand-rolled Lucia-style
+        session auth replacing Passport-JWT (compare security tradeoffs); magic-link/passwordless as a
+        second auth method.
+      </p>
+
+      <h2>Coverage note</h2>
+      <p>
+        Between the two apps: <strong>all React hooks</strong> (<code>useSyncExternalStore</code> is
+        the star of both — Zustand impl <em>and</em> <code>useSocket</code>); <strong>full Next.js
+        surface</strong> (Kanban); <strong>RTK+RTK Query+middleware</strong> (Chat) vs <strong>Zustand
+        + TanStack Query</strong> (Kanban); <strong>the whole Nest pipeline</strong> exercised via REST
+        (Chat) <em>and</em> GraphQL (Kanban); <strong>REST</strong> (Chat) vs <strong>GraphQL both
+        ends</strong> (Kanban); <strong>Prisma</strong> (both) + <strong>raw <code>postgres.js</code></strong>
+        (Chat); <strong>auth compared</strong> (Auth.js/OAuth/RBAC vs Passport/JWT-rotation/socket-auth
+        + 🔴 hand-rolled — see <a href="./AUTH_COMPARISON.html">AUTH_COMPARISON.html</a>);
+        <strong>realtime compared</strong> (WS vs subscriptions vs SSE — see
+        <a href="./REALTIME.html">REALTIME.html</a>); <strong>Storybook <code>packages/ui</code></strong>
+        consumed by both; <strong>styling split</strong> (Tailwind vs CSS Modules — see
+        <a href="./STYLING.html">STYLING.html</a>); <strong>the full testing trophy</strong> (see
+        <a href="./TESTING.html">TESTING.html</a>).
+      </p>
+      <p class="note">
+        Related: <a href="../CURRICULUM.md">CURRICULUM.md</a> ·
+        <a href="./GLOSSARY.html">GLOSSARY.html</a> ·
+        <a href="./RESPONSIVE.html">RESPONSIVE.html</a> ·
+        <a href="./THEMING.html">THEMING.html</a>
+      </p>
+    </div>
+  </body>
+</html>

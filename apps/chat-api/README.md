@@ -14,7 +14,7 @@ DI, with a passing test suite and clean typecheck.
 - **Auth: JWT / Passport-style** — `JwtAuthGuard` verifies an `Authorization: Bearer`
   token with **jose** (HS256) against an **injected** secret + clock, hydrating
   `req.user`. Missing/invalid/expired → **401**. (Contrast the Kanban capstone, which
-  uses Auth.js **sessions** — see `docs/AUTH_COMPARISON.md`.)
+  uses Auth.js **sessions** — see `docs/AUTH_COMPARISON.html`.)
 - **Persistence (target): Prisma-writes / raw-read** — the real app writes messages
   through Prisma and reads recent history back with a hand-written raw SQL query. The
   slice uses an in-memory `Map` so it runs with no database.

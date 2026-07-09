@@ -23,7 +23,7 @@ whole point: one capstone is not "more correct" than the other, they teach diffe
 - **Two auth stacks, one contract.** Kanban authorizes mutations with an Auth.js-style
   `requireSession(session)`; Chat authorizes every socket action with a `jose` JWT verified against
   an injected clock. Same goal (reject the unauthenticated caller before any work), different
-  mechanism — compare, don't crown (`docs/AUTH_COMPARISON.md`).
+  mechanism — compare, don't crown (`docs/AUTH_COMPARISON.html`).
 - **Realtime = a store + a broadcast fan-out.** The gateway keeps `room → members` and pushes a
   posted message to that room's members ONLY. Each connection is a `useSocket`-style store
   (`subscribe`/`getSnapshot`) — the shape `useSyncExternalStore` consumes (module 22).
@@ -42,7 +42,7 @@ whole point: one capstone is not "more correct" than the other, they teach diffe
 
 ## Theory & docs
 
-- **Capstone specs** — this repo's [docs/CAPSTONES.md](../../docs/CAPSTONES.md), the briefs both
+- **Capstone specs** — this repo's [docs/CAPSTONES.html](../../docs/CAPSTONES.html), the briefs both
   slices integrate against.
 - **Kanban stack** — [Next.js docs](https://nextjs.org/docs),
   [Server Components](https://react.dev/reference/rsc/server-components),

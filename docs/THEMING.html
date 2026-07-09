@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Theming &amp; Design Tokens — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .wrap {
+        max-width: 60rem;
+        margin-inline: auto;
+        padding: clamp(1rem, 0.5rem + 3vw, 3rem);
+      }
+      h1 {
+        font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem);
+        line-height: 1.1;
+        margin: 0 0 0.25em;
+      }
+      h2 {
+        margin-top: 2.4em;
+        padding-top: 0.6em;
+        border-top: 1px solid var(--line);
+        font-size: 1.5rem;
+      }
+      a {
+        color: var(--brand);
+      }
+      code {
+        background: var(--code);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 0.9em;
+      }
+      pre {
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 1rem;
+        overflow: auto;
+        font-size: 0.85rem;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 0.5rem 0.6rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--code);
+      }
+      .tag {
+        display: inline-block;
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.05rem 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      figcaption {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+      }
+
+      /* ---- Live theme demo: ONE variable map drives the whole card ---- */
+      .demo {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+      .swatches {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+      .swatches button {
+        cursor: pointer;
+        border: 1px solid var(--line);
+        background: var(--code);
+        color: var(--ink);
+        border-radius: 8px;
+        padding: 0.4rem 0.9rem;
+        font: inherit;
+        font-size: 0.85rem;
+      }
+      .swatches button[aria-pressed="true"] {
+        border-color: var(--brand);
+        outline: 2px solid var(--brand);
+      }
+      /* the themed preview: every color is var(--token); themes only override the values */
+      .preview {
+        --action: #4f46e5;
+        --action-fg: #ffffff;
+        --surface: #f3f4f6;
+        --surface-fg: #111827;
+        background: var(--surface);
+        color: var(--surface-fg);
+        border-radius: 10px;
+        padding: 1.25rem;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .preview[data-theme="dark"] {
+        --action: #818cf8;
+        --action-fg: #0b1020;
+        --surface: #1f2937;
+        --surface-fg: #f9fafb;
+      }
+      .preview[data-theme="brand"] {
+        --action: #059669;
+        --action-fg: #ffffff;
+        --surface: #ecfdf5;
+        --surface-fg: #064e3b;
+      }
+      .preview__btn {
+        background: var(--action);
+        color: var(--action-fg);
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+      }
+      /* tier diagram */
+      .tiers {
+        display: grid;
+        gap: 0;
+        grid-template-columns: 1fr;
+        margin: 1rem 0;
+      }
+      .tier {
+        border: 1px solid var(--line);
+        padding: 0.75rem 1rem;
+      }
+      .tier b {
+        color: var(--brand);
+      }
+      .tier:nth-child(1) {
+        border-radius: 8px 8px 0 0;
+      }
+      .tier:nth-child(3) {
+        border-radius: 0 0 8px 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Theming &amp; Design Tokens</h1>
+      <p class="lede">
+        How UIs get themed — tokens, tiers, the swap mechanisms, and the library landscape. Taught
+        end-to-end in <code>modules/05b</code> (hand-rolled) and <code>modules/11</code> (tokens →
+        Tailwind + tiers + DTCG build). Siblings: <a href="./RESPONSIVE.html">RESPONSIVE.html</a>,
+        <a href="./STYLING.html">STYLING.html</a>.
+      </p>
+
+      <h2>Live: a theme is one variable map</h2>
+      <p>
+        Every color in the card below is <code>var(--token)</code>. Switching theme only overrides
+        the <em>values</em> on the root — no markup changes, no re-render, no rebuild. That's the
+        whole trick behind <code>themeVars()</code> in module 11.
+      </p>
+      <div class="demo">
+        <div class="swatches" role="group" aria-label="Theme">
+          <button data-set="light" aria-pressed="true">☀️ light</button>
+          <button data-set="dark" aria-pressed="false">🌙 dark</button>
+          <button data-set="brand" aria-pressed="false">🌿 brand</button>
+        </div>
+        <div class="preview" id="preview" data-theme="light">
+          <h3 style="margin: 0 0 0.5rem">Warranty claim #4821</h3>
+          <p style="margin: 0 0 1rem; opacity: 0.85">Approved — covered under powertrain plan.</p>
+          <button class="preview__btn">View details</button>
+        </div>
+      </div>
+      <pre><code>.preview            { --action: #4f46e5; --surface: #f3f4f6; }
+.preview[data-theme="dark"]  { --action: #818cf8; --surface: #1f2937; }
+.preview__btn       { background: var(--action); }   /* references the role, not a hex */</code></pre>
+
+      <h2>Token tiers — the part most people skip</h2>
+      <p>
+        A <strong>design token</strong> is a named design decision stored as data —
+        <code>color.action</code>, <code>space.4</code>, <code>radius.md</code> — spanning color,
+        spacing, type, radius, shadow, motion, and z-index, not just color. It's a
+        <em>contract</em>: change the token, every consumer moves. Flat tokens don't scale, so real
+        systems layer three tiers so retheming is one edit:
+      </p>
+      <div class="tiers">
+        <div class="tier"><b>Primitive</b> — the raw palette, only place a hex lives: <code>indigo-600 = #4f46e5</code></div>
+        <div class="tier"><b>Semantic</b> — the role, what it means: <code>action = indigo-600</code></div>
+        <div class="tier"><b>Component</b> — the slot: <code>button-bg = action</code></div>
+      </div>
+      <p>
+        A component references <code>button-bg</code>; dark mode / a partner brand / high-contrast is
+        editing the <em>semantic</em> mapping — primitives and components don't move. This aliasing is
+        what <code>resolveToken()</code> (module 11, task 7) builds by hand.
+      </p>
+      <p class="note">
+        <strong>Modes vs themes:</strong> a <em>mode</em> (light / dark / high-contrast) swaps the
+        value a semantic token resolves to; a <em>theme/brand</em> swaps the primitive palette the
+        semantic layer points at. Both are "change one tier, keep the rest."
+      </p>
+
+      <h2>DTCG — the interchange format</h2>
+      <p>
+        The <a href="https://tr.designtokens.org/format/">W3C DTCG</a> JSON is what Figma / Tokens
+        Studio export and Style Dictionary consumes. A token is <code>{ "$value", "$type" }</code>; a
+        value can alias another by dotted path:
+      </p>
+      <pre><code>{ "color": {
+    "blue":   { "600": { "$value": "#4f46e5", "$type": "color" } },
+    "action": { "$value": "{color.blue.600}", "$type": "color" }
+} }</code></pre>
+      <p>
+        A build flattens + resolves aliases and emits per-platform output (CSS vars for web). Module
+        11 task 8 hand-rolls that (🔴 no <code>style-dictionary</code>).
+      </p>
+
+      <h2>Two mechanisms swap a theme</h2>
+      <p>Everything in the landscape below is one of these under the hood:</p>
+      <ol>
+        <li>
+          <strong>CSS custom properties (runtime, zero-JS).</strong> Semantic tokens are
+          <code>--action: …</code> on a root; a themed root (<code>[data-theme]</code>,
+          <code>prefers-color-scheme</code>) overrides the value. Components use
+          <code>var(--action)</code>, so the theme flips with no re-render and no rebuild — the demo
+          above, and what 05b/11 teach.
+        </li>
+        <li>
+          <strong>JS theme object + Context (runtime CSS-in-JS).</strong> A
+          <code>ThemeProvider</code> holds a JS object; styled components read it. Flexible, but ships
+          a runtime and fights React Server Components.
+        </li>
+      </ol>
+      <p class="note">
+        Build-time engines (vanilla-extract, Panda, Tailwind v4) compile a token object <em>down
+        to</em> mechanism #1 — JS-object ergonomics with plain-CSS-variable runtime cost.
+      </p>
+
+      <h2>The library landscape</h2>
+      <p>Six families, roughly ordered runtime-cheap → batteries-included:</p>
+      <ul>
+        <li><strong>Hand-rolled CSS vars + <code>data-theme</code></strong> — no dependency, RSC-safe, tiny; you build the tiers + toggle + no-flash SSR yourself (<code>05b</code>).</li>
+        <li><strong>Tailwind + CSS vars</strong> — utilities point at <code>var(--x)</code>; one class themes every mode. v4 moves tokens into CSS via <code>@theme</code> (<code>11</code>).</li>
+        <li><strong>Runtime CSS-in-JS</strong> (Emotion, styled-components, Stitches) — dynamic, JS-driven; runtime bundle + serialization on render, awkward under RSC. Trending out for new work.</li>
+        <li><strong>Zero-/build-time</strong> (vanilla-extract, Panda, Tailwind v4) — author tokens + variants in TS, compile to static CSS + variables; type-safe, no runtime, RSC-friendly.</li>
+        <li><strong>Batteries-included kits</strong> (MUI, Chakra, Mantine, Radix Themes) — the theme ships with the components; fast to ship, opinionated to redesign.</li>
+        <li><strong>Variants + tokens</strong> (cva + shadcn/ui) — <code>variant</code>/<code>size</code> props → Tailwind classes, colors via CSS vars, and you copy the component source into your repo.</li>
+      </ul>
+      <table>
+        <tr><th>Approach</th><th>Runtime</th><th>RSC-safe</th><th>Multi-brand</th><th>You own it</th></tr>
+        <tr><td>Hand-rolled CSS vars (<code>05b</code>)</td><td>none</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Tailwind + CSS vars (<code>11</code>)</td><td>none</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Runtime CSS-in-JS (Emotion/styled)</td><td>high</td><td>⚠️ hard</td><td>✅</td><td>✅</td></tr>
+        <tr><td>vanilla-extract / Panda (build-time)</td><td>none</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>MUI / Chakra / Radix Themes</td><td>med</td><td>varies</td><td>⚠️ opinionated</td><td>❌</td></tr>
+        <tr><td>cva + shadcn/ui</td><td>none</td><td>✅</td><td>✅</td><td>✅ (copied)</td></tr>
+      </table>
+      <p><strong>Rules of thumb:</strong> new RSC app → CSS variables (hand-rolled, Tailwind/shadcn, or vanilla-extract/Panda). Ship-yesterday internal tool → MUI/Chakra. White-label platform → token tiers + a DTCG build, swap the primitive palette per brand. Avoid runtime CSS-in-JS in Server Components.</p>
+
+      <h2>Legibility is half the job</h2>
+      <p>
+        Every foreground/background token pair must clear WCAG contrast (4.5:1 body). Build the check
+        into the pipeline — <code>modules/11b-accessibility-wcag</code> derives
+        <code>contrastRatio()</code> by hand. Prefer <strong>OKLCH</strong> palettes: perceptually
+        uniform lightness makes tint/shade ramps and dark modes predictable.
+      </p>
+
+      <h2>More</h2>
+      <ul>
+        <li>Refs: <a href="https://tr.designtokens.org/format/">W3C DTCG format</a> · <a href="https://styledictionary.com">Style Dictionary</a> · <a href="https://vanilla-extract.style">vanilla-extract</a> · <a href="https://panda-css.com">Panda</a> · <a href="https://www.radix-ui.com/themes">Radix Themes</a></li>
+        <li>Siblings: <a href="./RESPONSIVE.html">RESPONSIVE.html</a> · <a href="./STYLING.html">STYLING.html</a></li>
+        <li>Course: <code>modules/05b</code>, <code>modules/11</code> (tasks 2/7/8), <code>modules/11b</code></li>
+      </ul>
+    </div>
+    <script>
+      const preview = document.getElementById("preview");
+      for (const btn of document.querySelectorAll(".swatches button")) {
+        btn.addEventListener("click", () => {
+          preview.dataset.theme = btn.dataset.set;
+          for (const b of document.querySelectorAll(".swatches button"))
+            b.setAttribute("aria-pressed", String(b === btn));
+        });
+      }
+    </script>
+  </body>
+</html>

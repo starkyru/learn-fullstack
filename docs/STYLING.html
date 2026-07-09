@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Styling tradeoffs — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #fff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .wrap {
+        max-width: 60rem;
+        margin-inline: auto;
+        padding: clamp(1rem, 0.5rem + 3vw, 3rem);
+      }
+      h1 {
+        font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem);
+        line-height: 1.1;
+        margin: 0 0 0.25em;
+      }
+      h2 {
+        margin-top: 2.4em;
+        padding-top: 0.6em;
+        border-top: 1px solid var(--line);
+        font-size: 1.5rem;
+      }
+      a {
+        color: var(--brand);
+      }
+      code {
+        background: var(--code);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 0.9em;
+      }
+      pre {
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.85rem;
+        overflow: auto;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1rem 0;
+        font-size: 0.88rem;
+      }
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 0.5rem 0.6rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--code);
+      }
+      .tag {
+        display: inline-block;
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.05rem 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .note {
+        border-left: 3px solid var(--brand);
+        padding: 0.5rem 0 0.5rem 1rem;
+        color: var(--muted);
+      }
+      /* three-ways: same button, three skins, identical result */
+      .grid3 {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        margin: 1rem 0;
+      }
+      .col {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1rem;
+      }
+      .col h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+      }
+      .btn {
+        display: inline-block;
+        background: var(--brand);
+        color: #0b1020;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Styling: Tailwind vs CSS Modules vs CSS-in-JS</h1>
+      <p class="lede">
+        Companion to <strong>module 11</strong>, task 5. The headless <code>useDataTable</code> hook
+        is styled once each way — the behavior is identical, only the skin changes. Pick per
+        constraint, not fashion. Siblings: <a href="./THEMING.html">THEMING.html</a>,
+        <a href="./RESPONSIVE.html">RESPONSIVE.html</a>.
+      </p>
+
+      <h2>Same button, three skins</h2>
+      <p>The rendered result is the same; the <em>source</em> differs:</p>
+      <div class="grid3">
+        <div class="col">
+          <h3>Tailwind (utility)</h3>
+          <button class="btn">Save</button>
+          <pre><code>&lt;button
+  class="bg-brand
+    text-brand-fg
+    rounded-lg px-4 py-2
+    font-semibold"&gt;
+  Save
+&lt;/button&gt;</code></pre>
+        </div>
+        <div class="col">
+          <h3>CSS Modules</h3>
+          <button class="btn">Save</button>
+          <pre><code>/* Button.module.css */
+.btn {
+  background: var(--brand);
+  border-radius: 8px;
+  padding: .5rem 1rem;
+}
+/* → className={s.btn} */</code></pre>
+        </div>
+        <div class="col">
+          <h3>CSS-in-JS (runtime)</h3>
+          <button class="btn">Save</button>
+          <pre><code>const Btn = styled.button`
+  background: ${t =&gt;
+    t.colors.brand};
+  border-radius: 8px;
+  padding: .5rem 1rem;
+`;</code></pre>
+        </div>
+      </div>
+
+      <h2>The three approaches</h2>
+      <table>
+        <tr>
+          <th>Aspect</th>
+          <th>Tailwind (utility)</th>
+          <th>CSS Modules</th>
+          <th>CSS-in-JS (runtime)</th>
+        </tr>
+        <tr><td>Where styles live</td><td>inline <code>className</code> utilities</td><td>co-located <code>.module.css</code>, hashed</td><td>JS template literals / objects</td></tr>
+        <tr><td>Scoping</td><td>global utilities, no leakage</td><td>locally scoped by build</td><td>locally scoped by generated class</td></tr>
+        <tr><td>Theming</td><td>tokens → preset → <strong>CSS vars</strong></td><td>CSS vars / <code>:root</code></td><td>theme object via <code>ThemeProvider</code></td></tr>
+        <tr><td>Dynamic / prop-driven</td><td>awkward (class perms, <code>cn</code>)</td><td>awkward (toggle classes)</td><td>natural (props → styles)</td></tr>
+        <tr><td>Runtime cost</td><td><strong>zero</strong> (static classes)</td><td>zero (plain CSS)</td><td>non-zero: serialize+inject on render (<strong>RSC-hostile</strong>)</td></tr>
+        <tr><td>Bundle</td><td>one purged utility sheet</td><td>per-component CSS, code-split</td><td>JS grows with styles</td></tr>
+        <tr><td>Learning curve</td><td>memorize utilities; noisy markup</td><td>plain CSS you know</td><td>new API + theme plumbing</td></tr>
+      </table>
+
+      <h2>When to use which</h2>
+      <ul>
+        <li>
+          <strong>Tailwind</strong> — default for app UI and a shared library skinned per app. Static
+          classes → <strong>no runtime</strong>, purge keeps the sheet tiny, and a
+          token→preset→CSS-var pipeline (module 11 task 2) themes light/dark by swapping variables.
+          Cost: verbose markup — extract repetition into components, not <code>@apply</code> soup.
+        </li>
+        <li>
+          <strong>CSS Modules</strong> — when you want <strong>plain CSS</strong> with local scoping
+          and zero runtime, or a design that's more "stylesheet" than "utilities." Great for a second
+          app that shouldn't inherit the first app's Tailwind config. Cost: prop-driven variance is
+          manual.
+        </li>
+        <li>
+          <strong>CSS-in-JS (runtime)</strong> — only when styles are <strong>genuinely dynamic from
+          props</strong> and colocated logic wins. Beware React Server Components: runtime CSS-in-JS
+          needs a client boundary and adds per-render work. Prefer <strong>zero-runtime</strong>
+          (vanilla-extract, or Tailwind) under RSC.
+        </li>
+      </ul>
+
+      <h2>Rule of thumb</h2>
+      <p class="note">
+        Headless logic (a hook like <code>useDataTable</code>) should never care which of these
+        renders it. Keep behavior in hooks; keep styling swappable. If switching skins forces a logic
+        change, the seam is in the wrong place.
+      </p>
+
+      <h2>Course map &amp; further reading</h2>
+      <ul>
+        <li>Course: <code>modules/11-component-library-storybook</code> (task 5, <code>solution/05-datatable.ts</code>)</li>
+      </ul>
+      <h3>External references</h3>
+      <ul>
+        <li><strong>Utility</strong> — <a href="https://tailwindcss.com/docs/styling-with-utility-classes">Tailwind: styling with utilities</a> · <a href="https://tailwindcss.com/docs/theme">Tailwind theme/tokens</a></li>
+        <li><strong>CSS Modules</strong> — <a href="https://github.com/css-modules/css-modules">css-modules spec</a> · <a href="https://vite.dev/guide/features.html#css-modules">Vite CSS Modules</a></li>
+        <li><strong>CSS-in-JS</strong> — <a href="https://emotion.sh/docs/introduction">Emotion</a> · <a href="https://styled-components.com/docs">styled-components</a> · <a href="https://vanilla-extract.style/">vanilla-extract (zero-runtime)</a></li>
+        <li><strong>Fundamentals</strong> — <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity">CSS specificity (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Cascade">The cascade (MDN)</a> · <a href="https://cva.style/docs">cva (variants)</a></li>
+        <li>Siblings: <a href="./THEMING.html">THEMING.html</a> · <a href="./RESPONSIVE.html">RESPONSIVE.html</a> · <a href="./GLOSSARY.html">GLOSSARY.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

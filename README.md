@@ -11,7 +11,9 @@ Each module's `README.md` **is** the lesson: concepts → a numbered task table 
 workspace packages (`@learn-fullstack/*`) is the spine every exercise imports from.
 
 - 🗂️ **Detailed curriculum:** [`CURRICULUM.md`](./CURRICULUM.md)
-- 🅰🅱 **Capstone specs:** [`docs/CAPSTONES.md`](./docs/CAPSTONES.md) (data models, API surface, milestones)
+- 🅰🅱 **Capstone specs:** [`docs/CAPSTONES.html`](./docs/CAPSTONES.html) (data models, API surface, milestones)
+- 🎨 **Frontend reference docs:** [`RESPONSIVE.html`](./docs/RESPONSIVE.html) · [`THEMING.html`](./docs/THEMING.html) · [`STYLING.html`](./docs/STYLING.html) (open in a browser — live, resizable CSS demos) · [`REACT_PERFORMANCE.html`](./docs/REACT_PERFORMANCE.html)
+- 📚 **Reference docs:** [`AUTH_COMPARISON.html`](./docs/AUTH_COMPARISON.html) · [`TESTING.html`](./docs/TESTING.html) · [`REALTIME.html`](./docs/REALTIME.html) · [`GLOSSARY.html`](./docs/GLOSSARY.html)
 - 🤖 **Agent context:** [`AGENTS.md`](./AGENTS.md) (canonical, agent-agnostic)
 - ✅ **Your progress:** [`PROGRESS.md`](./PROGRESS.md)
 
@@ -149,7 +151,7 @@ pnpm --filter ./modules/06-react-hooks-i dev
 apps/        # the two capstones: kanban-web/-api, chat-web/-api
 packages/    # shared spine: config, ui, db, auth, api-client, testing, shared, tsconfig
 modules/     # the lessons (00-29 + companions); each: README.md + src/ + solution/
-docs/        # CAPSTONES + AUTH_COMPARISON, TESTING, REALTIME, STYLING, GLOSSARY
+docs/        # all HTML: CAPSTONES, RESPONSIVE/THEMING/STYLING, AUTH_COMPARISON, TESTING, REALTIME, REACT_PERFORMANCE, GLOSSARY
 .claude/     # /tutor, /exam commands + check-progress, jd-gap-analysis, scaffold-module skills
 ```
 

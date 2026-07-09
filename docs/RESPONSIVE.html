@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Responsive Design — learn-fullstack</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #151b30;
+        --ink: #e6e9f2;
+        --muted: #9aa4bf;
+        --brand: #818cf8;
+        --line: #26304d;
+        --ok: #4ade80;
+        --code: #0e1424;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fc;
+          --panel: #ffffff;
+          --ink: #1a2238;
+          --muted: #5a6488;
+          --brand: #4f46e5;
+          --line: #e2e6f0;
+          --code: #f0f2f8;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .wrap {
+        max-width: 60rem;
+        margin-inline: auto;
+        padding: clamp(1rem, 0.5rem + 3vw, 3rem);
+      }
+      h1 {
+        font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem);
+        line-height: 1.1;
+        margin: 0 0 0.25em;
+      }
+      h2 {
+        margin-top: 2.4em;
+        padding-top: 0.6em;
+        border-top: 1px solid var(--line);
+        font-size: 1.5rem;
+      }
+      h3 {
+        margin-top: 1.8em;
+        font-size: 1.15rem;
+      }
+      a {
+        color: var(--brand);
+      }
+      code {
+        background: var(--code);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.9em;
+      }
+      pre {
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 1rem;
+        overflow: auto;
+        font-size: 0.85rem;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+      .demo {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+      .demo__hint {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin: 0 0 0.75rem;
+      }
+      .resizable {
+        resize: horizontal;
+        overflow: auto;
+        min-width: 240px;
+        max-width: 100%;
+        width: 70%;
+        border: 2px dashed var(--brand);
+        border-radius: 8px;
+        padding: 0.75rem;
+        container-type: inline-size;
+      }
+      .resizable::after {
+        content: "↔ drag my right edge";
+        display: block;
+        color: var(--muted);
+        font-size: 0.75rem;
+        text-align: right;
+      }
+      /* Demo: intrinsic auto-fit grid — reflows with NO media query */
+      .cards {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      .card {
+        background: var(--brand);
+        color: #0b1020;
+        border-radius: 8px;
+        padding: 1rem 0.75rem;
+        font-weight: 600;
+        text-align: center;
+      }
+      /* Demo: mobile-first container-query layering */
+      .cq {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 1fr;
+      }
+      .cq > div {
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 0.6rem;
+      }
+      @container (min-width: 400px) {
+        .cq {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @container (min-width: 600px) {
+        .cq {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+      /* Demo: clamp fluid heading */
+      .fluid {
+        font-size: clamp(1rem, 0.5rem + 4cqi, 2.5rem);
+        font-weight: 800;
+        margin: 0;
+        color: var(--brand);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 0.5rem 0.6rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--code);
+      }
+      .tag {
+        display: inline-block;
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.05rem 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      figure {
+        margin: 1.25rem 0;
+      }
+      figcaption {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+      }
+      .note {
+        border-left: 3px solid var(--brand);
+        padding: 0.5rem 0 0.5rem 1rem;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="tag">learn-fullstack · docs</p>
+      <h1>Responsive Design</h1>
+      <p class="lede">
+        The principles behind layouts that work on any screen — mobile-first direction, breakpoint
+        strategy, intrinsic (content-out) design, fluid scales, and unit choices — with live,
+        resizable demos. Companion to <code>modules/05d-responsive-design</code> (pure CSS +
+        Tailwind) and <code>modules/05b-css-layout</code> (container queries + <code>clamp()</code>
+        mechanics).
+      </p>
+
+      <h2>1. Responsive vs adaptive vs fluid</h2>
+      <p>Three words people blur together:</p>
+      <table>
+        <tr>
+          <th>Term</th>
+          <th>What it means</th>
+          <th>Tell</th>
+        </tr>
+        <tr>
+          <td><strong>Fluid</strong></td>
+          <td>Sizes flex continuously with the container (%, <code>fr</code>, <code>vw</code>, <code>clamp()</code>).</td>
+          <td>No jumps — smooth at every width.</td>
+        </tr>
+        <tr>
+          <td><strong>Adaptive</strong></td>
+          <td>A few fixed layouts that snap at breakpoints (e.g. 3 hand-tuned designs).</td>
+          <td>Discrete jumps; gaps between breakpoints.</td>
+        </tr>
+        <tr>
+          <td><strong>Responsive</strong></td>
+          <td>The umbrella: fluid base + breakpoints where the design needs to re-flow.</td>
+          <td>Both — smooth, with a few deliberate snaps.</td>
+        </tr>
+      </table>
+      <p class="note">
+        Modern best practice: go fluid + intrinsic first, and add a breakpoint only where the
+        content actually breaks — not on device sizes.
+      </p>
+
+      <h2>2. Mobile-first is a direction</h2>
+      <p>
+        Write the <strong>smallest screen first</strong> as your base styles, then layer up with
+        <code>min-width</code>. The alternative — desktop-first with <code>max-width</code> — walks
+        the cascade backwards and tends to pile up overrides.
+      </p>
+      <figure>
+        <svg viewBox="0 0 640 150" width="100%" role="img" aria-label="Mobile-first cascade diagram">
+          <style>
+            .b {
+              fill: #818cf8;
+            }
+            .t {
+              fill: #0b1020;
+              font: 700 13px system-ui;
+            }
+            .l {
+              fill: #9aa4bf;
+              font: 12px system-ui;
+            }
+            .a {
+              stroke: #818cf8;
+              stroke-width: 2;
+              marker-end: url(#h);
+            }
+          </style>
+          <defs>
+            <marker id="h" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#818cf8" />
+            </marker>
+          </defs>
+          <rect class="b" x="10" y="55" width="110" height="40" rx="6" opacity="0.5" />
+          <text class="t" x="30" y="80">base (phone)</text>
+          <rect class="b" x="180" y="55" width="120" height="40" rx="6" opacity="0.7" />
+          <text class="t" x="196" y="80">≥640 sm</text>
+          <rect class="b" x="360" y="55" width="120" height="40" rx="6" opacity="0.85" />
+          <text class="t" x="378" y="80">≥1024 lg</text>
+          <rect class="b" x="540" y="55" width="90" height="40" rx="6" />
+          <text class="t" x="556" y="80">≥1280</text>
+          <line class="a" x1="120" y1="75" x2="178" y2="75" />
+          <line class="a" x1="300" y1="75" x2="358" y2="75" />
+          <line class="a" x1="480" y1="75" x2="538" y2="75" />
+          <text class="l" x="10" y="30">min-width layers ADD as the viewport grows — you never undo the base.</text>
+        </svg>
+        <figcaption>Each breakpoint enhances the one before it. That's <code>minWidthQuery</code> in module 05d.</figcaption>
+      </figure>
+      <pre><code>/* mobile-first: base is the phone, one min-width layer adds the sidebar */
+.shell { grid-template-columns: 1fr; }              /* base */
+@media (min-width: 1024px) {                        /* layer up */
+  .shell { grid-template-columns: 20rem 1fr; }
+}</code></pre>
+
+      <h2>3. Intrinsic layout — reflow with zero media queries</h2>
+      <p>
+        The most powerful responsive tool isn't a breakpoint. <code>repeat(auto-fit, minmax(min,
+        1fr))</code> fits as many columns of at least <code>min</code> as the container allows and
+        stretches them to fill; when one can't fit, the grid drops a column by itself.
+        <strong>Drag the dashed box below</strong> — the cards reflow with no <code>@media</code> at
+        all.
+      </p>
+      <div class="demo">
+        <p class="demo__hint">Live: <code>grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))</code></p>
+        <div class="resizable">
+          <div class="cards">
+            <div class="card">1</div>
+            <div class="card">2</div>
+            <div class="card">3</div>
+            <div class="card">4</div>
+            <div class="card">5</div>
+            <div class="card">6</div>
+          </div>
+        </div>
+      </div>
+      <p>
+        That's exactly what module 05d's <code>autoFitGrid()</code> emits, and
+        <code>columnsAt(width, min, gap)</code> is the same decision in numbers so it's unit-testable
+        without a browser.
+      </p>
+
+      <h2>4. Container queries &gt; viewport queries</h2>
+      <p>
+        A media query asks "how wide is the <em>screen</em>?" A container query asks "how wide is
+        <em>my parent</em>?" — so a component is responsive wherever you drop it. Below, the same card
+        list snaps 1 → 2 → 3 columns based on the <strong>box width, not the window</strong>.
+      </p>
+      <div class="demo">
+        <p class="demo__hint">Live: <code>@container (min-width: 400px / 600px)</code> on a resizable container</p>
+        <div class="resizable">
+          <div class="cq">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+          </div>
+        </div>
+      </div>
+      <pre><code>.wrapper { container-type: inline-size; }
+.cq { grid-template-columns: 1fr; }
+@container (min-width: 400px) { .cq { grid-template-columns: 1fr 1fr; } }
+@container (min-width: 600px) { .cq { grid-template-columns: 1fr 1fr 1fr; } }</code></pre>
+
+      <h2>5. Fluid type &amp; space — <code>clamp()</code> + scales</h2>
+      <p>
+        <code>clamp(min, preferred, max)</code> gives type a floor and ceiling with smooth flex
+        between. Pair it with a <strong>modular scale</strong> (multiply a base by a ratio per step)
+        so headings and spacing grow in tune. Drag the box — the heading scales with the container
+        (<code>cqi</code> units), clamped between 1rem and 2.5rem.
+      </p>
+      <div class="demo">
+        <p class="demo__hint">Live: <code>font-size: clamp(1rem, 0.5rem + 4cqi, 2.5rem)</code></p>
+        <div class="resizable">
+          <p class="fluid">Fluid heading</p>
+        </div>
+      </div>
+      <p>
+        <strong>Units matter.</strong> Size in <code>rem</code>, not <code>px</code>, so the scale
+        honors the user's root font-size and browser zoom — the accessibility principle behind
+        <code>pxToRem()</code> and <code>modularScale()</code> in module 05d.
+      </p>
+      <table>
+        <tr><th>Unit</th><th>Use for</th></tr>
+        <tr><td><code>rem</code></td><td>Type, spacing — zoom-safe, respects root font-size.</td></tr>
+        <tr><td><code>%</code> / <code>fr</code></td><td>Fluid track/column widths inside a layout.</td></tr>
+        <tr><td><code>ch</code></td><td>Line length (<code>max-inline-size: 65ch</code> for readable prose).</td></tr>
+        <tr><td><code>svh/lvh/dvh</code></td><td>Full-height sections on mobile without the URL-bar jump (<code>vh</code> lies).</td></tr>
+        <tr><td><code>cqi</code></td><td>Sizing relative to a query container, not the viewport.</td></tr>
+      </table>
+
+      <h2>6. Breakpoint strategy</h2>
+      <ul>
+        <li><strong>Content-driven, not device-driven.</strong> Resize until the layout looks bad; put a breakpoint there. Chasing exact phone/tablet widths is a losing game.</li>
+        <li><strong>Fewer is better.</strong> Intrinsic layout (§3) removes most breakpoints. Many designs need only one or two real snaps.</li>
+        <li><strong>Name by size, not device.</strong> <code>sm/md/lg/xl</code> (module 05d's scale: 640/768/1024/1280) — never <code>.phone</code>/<code>.ipad</code>.</li>
+        <li><strong>Don't forget the meta tag.</strong> <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> — without it, mobile browsers render at a fake 980px and none of this works.</li>
+      </ul>
+
+      <h2>7. Same principle, two toolchains</h2>
+      <p>Module 05d builds the <em>same</em> responsive grid twice:</p>
+      <table>
+        <tr><th>Pure CSS (task 4, 🔴 no Tailwind)</th><th>Tailwind (task 5)</th></tr>
+        <tr>
+          <td><pre style="margin:0"><code>.grid {
+  grid-template-columns: 1fr;
+}
+@media (min-width:640px){
+  .grid{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1024px){
+  .grid{grid-template-columns:1fr 1fr 1fr}
+}</code></pre></td>
+          <td><pre style="margin:0"><code>&lt;div class="grid
+  grid-cols-1
+  sm:grid-cols-2
+  lg:grid-cols-3"&gt;</code></pre></td>
+        </tr>
+      </table>
+      <p>
+        Tailwind's <code>sm:</code>/<code>lg:</code> prefixes <em>are</em> mobile-first
+        <code>min-width</code> queries — an unprefixed class is the phone base. Same cascade, terser
+        syntax. That mapping is <code>responsiveGridClasses()</code> in the module.
+      </p>
+
+      <h2>8. Checklist</h2>
+      <ul>
+        <li>Base styles are the smallest screen; <code>min-width</code> only.</li>
+        <li>Reach for <code>auto-fit</code>/<code>minmax</code> and <code>flex-wrap</code> before a media query.</li>
+        <li>Component responsiveness → container queries, not viewport.</li>
+        <li>Type/space on a <code>rem</code> modular scale; <code>clamp()</code> for fluid headings.</li>
+        <li>Line length capped (<code>~65ch</code>); tap targets ≥ 44px; test at 200% zoom.</li>
+        <li>Viewport meta present; full-height uses <code>dvh</code>, not <code>vh</code>.</li>
+      </ul>
+
+      <h2>Further reading</h2>
+      <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design">Responsive design (MDN)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries">Container queries (MDN)</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp">clamp() (MDN)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/minmax">minmax() (MDN)</a> · <a href="https://tailwindcss.com/docs/responsive-design">Responsive design (Tailwind)</a></li>
+        <li>Course: <code>modules/05d-responsive-design</code>, <code>modules/05b-css-layout</code> · siblings <a href="./THEMING.html">THEMING.html</a>, <a href="./STYLING.html">STYLING.html</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

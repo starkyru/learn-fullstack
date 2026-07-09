@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
  * A HEADLESS DataTable: it owns behavior (sort + selection) and returns state + handlers,
  * but renders nothing. The same hook drives a Tailwind table or a CSS-Modules table — the
  * skin is swappable, the logic is not duplicated. That separation is the whole point of the
- * "styling compare" task: identical behavior, two presentations (see docs/STYLING.md).
+ * "styling compare" task: identical behavior, two presentations (see docs/STYLING.html).
  */
 
 export type SortDir = "asc" | "desc";

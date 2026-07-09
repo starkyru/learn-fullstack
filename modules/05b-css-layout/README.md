@@ -43,7 +43,8 @@ functions you can unit-test with exact assertions, and ships the matching hand-w
   [clamp() (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp)
 - **Theming with custom properties** —
   [Using CSS custom properties (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties),
-  [prefers-color-scheme (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+  [prefers-color-scheme (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme),
+  `docs/THEMING.html` (design tokens + the full theming-system landscape; token tiers land in module 11)
 - **Animations & motion** —
   [Using CSS animations (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations),
   [Using CSS transitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions),

@@ -16,7 +16,7 @@ best-practices for **minimizing re-renders** along the way.
   state change.
 - **Portals & `useImperativeHandle`** — render outside the DOM tree (`createPortal`) and
   expose an imperative API (`focus()`) to a parent via a ref.
-- **Minimizing re-renders** (see `docs/REACT_PERFORMANCE.md`): stable prop identities
+- **Minimizing re-renders** (see `docs/REACT_PERFORMANCE.html`): stable prop identities
   (`useCallback`/`useMemo`) + `React.memo` stop a child re-rendering when unrelated parent
   state changes; `useMemo` caches expensive computations; don't create objects/arrays/
   functions inline as props to memoized children.
