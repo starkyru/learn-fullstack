@@ -30,12 +30,12 @@ registry, and derive a typed client from that spec.
 
 ## Tasks
 
-| #   | Task                   | Lane | Type | What you build                                             |
-| --- | ---------------------- | ---- | ---- | ---------------------------------------------------------- |
-| 1   | Resource design        | 🟢   | WE   | solved `/boards/:id/cards` design + analog `/lists` stub   |
-| 2   | Pagination & filtering | 🟡   | TODO | cursor pagination + filter/sort query params               |
-| 3   | OpenAPI/Swagger        | 🟢   | TODO | generate Swagger from Nest decorators; export the spec     |
-| 4   | Typed client from spec | 🟡   | EXT  | generate `packages/api-client` types from the OpenAPI spec |
+| #   | Task                   | Lane | Type | What you build                                              |
+| --- | ---------------------- | ---- | ---- | ----------------------------------------------------------- |
+| 1   | Resource design        | 🟢   | WE   | solved `/boards/:id/cards` design + analog `/lists` stub    |
+| 2   | Pagination & filtering | 🟡   | TODO | cursor pagination + filter/sort query params                |
+| 3   | OpenAPI/Swagger        | 🟢   | TODO | build OpenAPI 3.1 from an in-code route registry; export it |
+| 4   | Typed client from spec | 🟡   | EXT  | derive a typed client from the OpenAPI spec (built locally) |
 
 ## Theory & docs
 

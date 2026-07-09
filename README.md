@@ -8,7 +8,8 @@
 
 Each module's `README.md` **is** the lesson: concepts → a numbered task table → a
 "Done when" checklist. Exercises are code you run, break, and extend. A set of shared
-workspace packages (`@learn-fullstack/*`) is the spine every exercise imports from.
+workspace packages (`@learn-fullstack/*`) is the spine; the capstone apps bind its real
+primitives, while module exercises stay self-contained behind injected fakes.
 
 - 🗂️ **Detailed curriculum:** [`CURRICULUM.md`](./CURRICULUM.md)
 - 🅰🅱 **Capstone specs:** [`docs/CAPSTONES.html`](./docs/CAPSTONES.html) (data models, API surface, milestones)
@@ -26,8 +27,9 @@ workspace packages (`@learn-fullstack/*`) is the spine every exercise imports fr
     that constraint is the point).
 - **Task types** — `WE` worked-example+analog · `TODO` cold hint-only stub · `FS`
   from-scratch 🔴 · `EXT` extend/refactor.
-- **Shared spine** — exercises import from `@learn-fullstack/{config,ui,db,auth,
-api-client,testing}` instead of hardcoding.
+- **Shared spine** — the apps bind the real `@learn-fullstack/{db,auth,ui,api-client,
+testing}` primitives; module exercises inject in-memory fakes at the same boundaries
+  (building or faking the primitive is usually the lesson).
 
 ## Interactive tools (slash commands & skills)
 
@@ -42,13 +44,13 @@ api-client,testing}` instead of hardcoding.
 
 ## The module map
 
-30 numbered modules (00–29) + 14 lettered companion deep-dives. Full detail in
+30 numbered modules (00–29) + 16 lettered companion deep-dives. Full detail in
 [`CURRICULUM.md`](./CURRICULUM.md).
 
 | #       | Module                                            | #       | Module                                              |
 | ------- | ------------------------------------------------- | ------- | --------------------------------------------------- |
 | 00      | Setup & Monorepo Tooling                          | 15      | SQL & Postgres (raw)                                |
-| 01      | TypeScript for Full-Stack                         | 16      | Prisma & `packages/db`                              |
+| 01      | TypeScript for Full-Stack                         | 16      | Prisma                                              |
 | 02      | Modern JavaScript & Async                         | 17      | Node HTTP & Express                                 |
 | 03      | HTTP & the Web Platform                           | 18      | NestJS Fundamentals                                 |
 | 04      | Node.js Fundamentals                              | 19      | REST API Design                                     |
@@ -65,7 +67,7 @@ api-client,testing}` instead of hardcoding.
 | 11      | Component Library · **11b** Accessibility & WCAG  | 27      | Ops: Docker, CI/CD & Deploy                         |
 | 12      | State: Redux Toolkit                              | 28      | Performance, Observability & Debugging              |
 | 13      | State: Zustand · **13b** Mini store 🔴            | **28b** | Debugging & Profiling                               |
-| 14      | TanStack Query · **14b** Mini query client 🔴     | **28c** | Microfrontends: Module Federation 🔴                |
+| 14      | TanStack Query · **14b** Mini query client 🔴     | **28c** | Micro-Frontend Runtime (Module Federation) 🔴       |
 |         |                                                   | 29      | Capstone Integration                                |
 
 **Companions:** 05b, 05c, 05d, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 23b, 24b, 28b, 28c (deep-dives;
@@ -153,7 +155,7 @@ apps/        # the two capstones: kanban-web/-api, chat-web/-api
 packages/    # shared spine: config, ui, db, auth, api-client, testing, shared, tsconfig
 modules/     # the lessons (00-29 + companions); each: README.md + src/ + solution/
 docs/        # all HTML: CAPSTONES, RESPONSIVE/THEMING/STYLING, AUTH_COMPARISON, TESTING, REALTIME, REACT_PERFORMANCE, GLOSSARY
-.claude/     # /tutor, /exam commands + check-progress, jd-gap-analysis, scaffold-module skills
+.claude/     # /tutor, /exam commands + check-progress, jd-gap-analysis, learning-plan, scaffold-module skills
 ```
 
 ## License

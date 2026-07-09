@@ -373,7 +373,7 @@ Real SQL against Postgres with a raw driver. Concepts: schema/DDL, joins/aggrega
 
 **Done when:** parameterized queries block an injection attempt · `EXPLAIN` shows the index used · the transaction rolls back cleanly.
 
-### 16 — Prisma & `packages/db` ✅ implemented
+### 16 — Prisma ✅ implemented
 
 Type-safe data access with Prisma as the shared db package. Concepts: schema/models/relations, migrations, Client queries, transactions, seeding, pooling, N+1 via `include`/`select`, Drizzle (alt note).
 
@@ -416,12 +416,12 @@ The Nest building blocks powering the chat API. Concepts: modules, DI/providers,
 
 Design a clean, versioned REST API with docs. Concepts: resource modeling, status codes, idempotency, **versioning**, **pagination** (cursor/offset), filtering/sorting, **OpenAPI/Swagger**, RFC 7807 errors.
 
-| #   | Task                   | Lane | Type | Build                                                      |
-| --- | ---------------------- | ---- | ---- | ---------------------------------------------------------- |
-| 1   | Resource design        | 🟢   | WE   | solved `/boards/:id/cards` design + analog `/lists` stub   |
-| 2   | Pagination & filtering | 🟡   | TODO | cursor pagination + filter/sort query params               |
-| 3   | OpenAPI/Swagger        | 🟢   | TODO | generate Swagger from Nest decorators; export the spec     |
-| 4   | Typed client from spec | 🟡   | EXT  | generate `packages/api-client` types from the OpenAPI spec |
+| #   | Task                   | Lane | Type | Build                                                       |
+| --- | ---------------------- | ---- | ---- | ----------------------------------------------------------- |
+| 1   | Resource design        | 🟢   | WE   | solved `/boards/:id/cards` design + analog `/lists` stub    |
+| 2   | Pagination & filtering | 🟡   | TODO | cursor pagination + filter/sort query params                |
+| 3   | OpenAPI/Swagger        | 🟢   | TODO | build OpenAPI 3.1 from an in-code route registry; export it |
+| 4   | Typed client from spec | 🟡   | EXT  | derive a typed client from the OpenAPI spec (built locally) |
 
 **Done when:** endpoints use correct status codes + `problem+json` errors · cursor pagination is stable under inserts · Swagger UI lists every route · the generated client type-checks.
 
@@ -619,7 +619,7 @@ The dedicated "how to find and fix it" toolbox, both ends. Concepts: **Chrome De
 
 **Done when:** the wasted render is gone (Profiler confirms) · a breakpoint stops across the stack · the flame graph + `EXPLAIN` pinpoint the slow line · the leak's retaining path is identified and fixed.
 
-### 28c — Microfrontends: Module Federation & Shell Orchestration (companion 🔴) ✅ implemented
+### 28c — Build a Micro-Frontend Runtime (Module-Federation-like) (companion 🔴) ✅ implemented
 
 Compose an app from independently-deployed remotes — the runtime under Webpack/Vite Module Federation, built from scratch. Concepts: host vs remote, `remoteEntry`/dynamic remote loading, **shared-scope singleton negotiation** (one React across remotes, semver-highest-wins), **shell/host orchestration** (mount/unmount lifecycle, error isolation), independent deployability, import maps as an alternative, when microfrontends are (and aren't) worth the cost.
 

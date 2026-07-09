@@ -8,6 +8,6 @@ commands, the **keep-docs-in-sync HARD RULE**, and the exercise-scaffold rules.
 Claude Code specifics:
 
 - Slash commands: `/tutor` (learn a topic), `/exam` (knowledge check) — `.claude/commands/`.
-- Skills: `check-progress` (`/progress`), `jd-gap-analysis`, `scaffold-module` — `.claude/skills/`.
+- Skills: `check-progress` (`/progress`), `jd-gap-analysis`, `learning-plan`, `scaffold-module` — `.claude/skills/`.
 
 Do not duplicate guidance here — update AGENTS.md and let this file point to it.

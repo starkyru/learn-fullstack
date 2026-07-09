@@ -24,7 +24,7 @@
 | 07-react-hooks-ii              | 🟡   | not-started | 1          |                               |
 | 07b-hand-rolled-hooks          | 🔴   | not-started | 1          |                               |
 | 08-react-patterns-perf         | 🟡   | not-started | 1          |                               |
-| 08b-react-advanced-patterns    | 🟡   | not-started | 1          |                               |
+| 08b-advanced-patterns          | 🟡   | not-started | 1          |                               |
 | 09-forms                       | 🟢   | not-started | 1          |                               |
 | 10-concurrent-suspense         | 🟡   | not-started | 1          |                               |
 | 10b-threejs-r3f                | 🟡   | not-started | 1          | Three.js/r3f, GLTF, dispose   |
@@ -34,7 +34,7 @@
 | 13-zustand                     | 🟢   | not-started | 1          |                               |
 | 13b-mini-store                 | 🔴   | not-started | 1          |                               |
 | 14-tanstack-query              | 🟢   | not-started | 1          |                               |
-| 14b-mini-query-client          | 🔴   | not-started | 1          |                               |
+| 14b-mini-query                 | 🔴   | not-started | 1          |                               |
 | 15-sql-postgres                | 🟡   | not-started | 1          |                               |
 | 16-prisma                      | 🟢   | not-started | 1          |                               |
 | 17-express                     | 🟢   | not-started | 1          |                               |

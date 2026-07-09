@@ -2,7 +2,10 @@
  * Enforces the "keep docs in sync" hard rule (see AGENTS.md). Fails if:
  *   (a) a modules/NN-* folder is not referenced in BOTH README.md and CURRICULUM.md, or
  *   (b) a built module's task-table titles disagree between its own README.md and its
- *       CURRICULUM.md section (catches silent content drift, not just id presence).
+ *       CURRICULUM.md section (catches silent content drift, not just id presence), or
+ *   (c) PROGRESS.md rows and modules/ folders don't match 1:1 by full slug, or
+ *   (d) a module id is missing from AGENTS.md (the module map), or
+ *   (e) a docs/*.html file is never named in AGENTS.md.
  * Run in CI.
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -47,16 +50,43 @@ function curriculumSection(curriculum: string, id: string): string | null {
   return lines.slice(start, end).join("\n");
 }
 
+// PROGRESS.md table rows carry the FULL folder slug (`| 08b-advanced-patterns | … |`).
+function progressSlugs(progress: string): string[] {
+  return progress
+    .split("\n")
+    .map((line) => line.match(/^\|\s*(\d{2}[a-z]?-[a-z0-9-]+)\s*\|/)?.[1])
+    .filter((slug): slug is string => slug !== undefined);
+}
+
 const readme = existsSync("README.md") ? readFileSync("README.md", "utf8") : "";
 const curriculum = existsSync("CURRICULUM.md")
   ? readFileSync("CURRICULUM.md", "utf8")
   : "";
+const progress = existsSync("PROGRESS.md") ? readFileSync("PROGRESS.md", "utf8") : "";
+const agents = existsSync("AGENTS.md") ? readFileSync("AGENTS.md", "utf8") : "";
 
 const problems: string[] = [];
+const progressRows = new Set(progressSlugs(progress));
+const dirSlugs = new Set(moduleDirs().map(({ dir }) => dir));
+for (const slug of progressRows) {
+  if (!dirSlugs.has(slug))
+    problems.push(`  - PROGRESS.md row "${slug}": no matching modules/ folder`);
+}
+
+for (const doc of existsSync("docs") ? readdirSync("docs") : []) {
+  const stem = doc.replace(/\.html$/, "");
+  if (doc.endsWith(".html") && !agents.includes(stem))
+    problems.push(`  - docs/${doc}: not named in AGENTS.md`);
+}
+
 for (const { id, dir } of moduleDirs()) {
   if (!mentions(readme, id)) problems.push(`  - module ${id}: missing from README.md`);
   if (!mentions(curriculum, id))
     problems.push(`  - module ${id}: missing from CURRICULUM.md`);
+  if (!mentions(agents, id))
+    problems.push(`  - module ${id}: missing from AGENTS.md module map`);
+  if (!progressRows.has(dir))
+    problems.push(`  - module ${dir}: no row in PROGRESS.md (full slug must match)`);
 
   const readmePath = join(MODULES_DIR, dir, "README.md");
   if (!existsSync(readmePath)) continue;

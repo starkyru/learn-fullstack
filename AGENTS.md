@@ -26,11 +26,11 @@ learn-fullstack/
 │   ├── tsconfig/  eslint-config/  config/  shared/
 │   ├── ui/        # the Storybook-documented sample component library (Tailwind preset)
 │   ├── db/        # Prisma client + schema + migrations + seed (exports `db`)
-│   ├── auth/      # hashing, JWT rotate, sessions, CSRF, RBAC/ABAC helpers
+│   ├── auth/      # scrypt password hashing (Phase 0 — module 21 builds JWT/sessions/CSRF and compares)
 │   ├── api-client/# typed REST + codegen GraphQL client, useSocket(), MSW handlers
 │   └── testing/   # RTL render, MSW server, Testcontainers Postgres, factories
 ├── modules/               # THE LESSONS — each: README.md (the lesson) + src/ + solution/ (gated)
-├── docs/                  # CAPSTONES + REACT_PERFORMANCE, AUTH_COMPARISON, TESTING, REALTIME, STYLING, GLOSSARY
+├── docs/                  # CAPSTONES + RESPONSIVE, THEMING, STYLING, REACT_PERFORMANCE, AUTH_COMPARISON, TESTING, REALTIME, GLOSSARY
 ├── scripts/               # smoke.ts, docs-sync.ts, progress.ts, …
 ├── AGENTS.md  CLAUDE.md  README.md  CURRICULUM.md  PROGRESS.md
 └── turbo.json  pnpm-workspace.yaml  package.json  docker-compose.yml
@@ -43,17 +43,17 @@ fall back to `README.md` / `CURRICULUM.md` and say so rather than inventing cont
 ## The module map (00–29 + companions)
 
 00 Setup · 01 TypeScript · 02 Modern JS · 03 HTTP · 04 Node · 05 React Core · **05b CSS &
-Layout** · **05c CSS & React Animations** · 06 Hooks I · 07 Hooks II · **07b Hand-rolled
+Layout** · **05c CSS & React Animations** · **05d Responsive Design** · 06 Hooks I · 07 Hooks II · **07b Hand-rolled
 hooks 🔴** · 08 Patterns/Perf · **08b Advanced patterns** · 09 Forms · 10
 Concurrent/Suspense/React 19 · **10b 3D: Three.js & react-three-fiber** · 11 Component
 Library + Storybook + Tailwind · **11b Accessibility & WCAG** · 12 Redux Toolkit · 13
 Zustand · **13b Mini store 🔴** ·
 14 TanStack Query · **14b Mini query client 🔴** · 15 SQL/Postgres raw · 16 Prisma · 17
 Express · 18 NestJS · 19 REST design · 20 GraphQL E2E · **20b DataLoader 🔴** · 21 Auth &
-Security · **21b Session auth 🔴** · 22 Realtime WebSockets E2E · 23 Next.js Core · **23b
+Security · **21b Session auth 🔴** · 22 Realtime WebSockets E2E · **22b Webhook delivery 🔴** · 23 Next.js Core · **23b
 Mini router 🔴** · 24 Next.js Data/SEO · **24b Next advanced** · 25 Server Actions · 26
 Testing · 27 Ops/Docker/CI/CD · 28 Perf/Observability/Debugging · **28b Debugging &
-Profiling** · 29 Capstone Integration. Full detail: `CURRICULUM.md`.
+Profiling** · **28c Microfrontends 🔴** · 29 Capstone Integration. Full detail: `CURRICULUM.md`.
 
 ## Depth-level convention (🟢 / 🟡 / 🔴)
 
@@ -78,20 +78,29 @@ Chat = JWT/Passport). Surface the _tradeoffs between approaches_, don't declare 
 Route auth questions to `docs/AUTH_COMPARISON.html`, testing to `docs/TESTING.html`, realtime
 to `docs/REALTIME.html`, styling to `docs/STYLING.html`.
 
-## The shared packages (import from these, don't hardcode)
+## The shared packages (where the spine binds)
 
-Exercise code that needs a primitive goes through the spine — **never** hardcode a DB/HTTP
-client or re-declare a component:
+The spine binds at two levels — don't mix them up when advising:
 
-- DB → `import { db } from "@learn-fullstack/db"` (never `new PrismaClient()` inline).
-- Components → `import { Button } from "@learn-fullstack/ui"`.
-- API calls → `@learn-fullstack/api-client`. Hashing/tokens → `@learn-fullstack/auth`.
-- Tests → fixtures + `withEphemeralPostgres()` + MSW handlers from `@learn-fullstack/testing`.
-- Every tsconfig/eslint/tailwind `extends` `@learn-fullstack/config`.
-
-**Exceptions:** 🔴 tasks whose whole point is to _build_ one of these primitives, and
-modules that deliberately teach where the abstraction leaks (raw SQL in 15, native socket
-in 22).
+- **Apps (`apps/*`) bind the real primitives.** DB → `import { db } from
+"@learn-fullstack/db"` (never `new PrismaClient()` inline) · components →
+  `@learn-fullstack/ui` · API calls → `@learn-fullstack/api-client` · password hashing →
+  `@learn-fullstack/auth` · tests → `withEphemeralPostgres()` + MSW from
+  `@learn-fullstack/testing`. Real-DB/auth wiring lands at the apps' composition roots
+  (milestone M1+ — the swap points are marked in `apps/kanban-*`/`chat-*` source).
+- **Exercise modules (`modules/*`) are deliberately self-contained.** Every stateful or
+  effectful collaborator (repo, clock, id source, session, transport) is an **injected
+  in-memory fake**, so the test gate stays fast, deterministic, and Docker-free — and
+  building or faking that primitive is usually the lesson itself: raw SQL (15) · own
+  throwaway SQLite Prisma schema (16) · injected in-memory repos (17–19) · no-DB GraphQL
+  with a countable batch boundary (20) · hand-rolled auth primitives (21, 21b) · native
+  socket (22) · HMAC webhooks (22b) · Next.js logic behind injected fakes because the
+  runtime isn't unit-testable (23–25) · zero-dep observability/profiling (28, 28b) ·
+  from-scratch runtimes (🔴 companions) · repo-shaped DI boundaries the capstone later
+  binds for real (29). **Don't retrofit `db`/`auth` into a module** — that inverts the
+  dependency-injection lesson.
+- Every tsconfig/eslint/tailwind still `extends` `@learn-fullstack/config`, and modules
+  use `@learn-fullstack/tsconfig`/`shared` where useful.
 
 ## Keep docs in sync — HARD RULE
 
@@ -179,8 +188,9 @@ fs, clock, DB, browser) — e.g. MSW for network, `withEphemeralPostgres()` for 
    hint-not-handover docstrings; worked-example references shown in full next to their analogs.
 3. A **gated reference solution** (`modules/NN/solution/`, off the learner's default path)
    that **passes the module's tests** — this is what CI runs to prove solvability.
-4. Exercises **import from `@learn-fullstack/*`** (except the 🔴 build-from-scratch task and
-   the documented leak-teaching modules — raw SQL in 15, native socket in 22).
+4. Module boundaries follow the **self-containment rule** (see "The shared packages"):
+   stateful/effectful collaborators are injected in-memory fakes; the real spine
+   `db`/`auth` bind only in `apps/*`. Config/tsconfig still extend `@learn-fullstack/*`.
 5. Wired into **both** `README.md` and `CURRICULUM.md`; a `PROGRESS.md` row added.
 6. `turbo run typecheck test --filter=./modules/NN-*` **green**; any Storybook stories build
    and their play tests pass.
