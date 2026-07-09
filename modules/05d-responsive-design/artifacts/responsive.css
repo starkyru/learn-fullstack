@@ -1,0 +1,68 @@
+/*
+ * Reference artifact for task 4 (🔴 pure CSS, no Tailwind). Mobile-first: every rule below is the
+ * PHONE layout; the single `min-width` block is the only place the design "layers up". Read it
+ * alongside the pure functions — `sidebarMode`, `autoFitGrid`/`columnsAt`, `modularScale` — which
+ * model the decisions this CSS encodes.
+ */
+
+:root {
+  --root-font: 16px;
+  --gap: 16px;
+  --card-min: 240px;
+}
+
+/* ---- Mobile-first base (no media query) ------------------------------------------------ */
+
+.shell {
+  display: grid;
+  grid-template-columns: 1fr; /* one column on phones */
+  min-block-size: 100svh; /* svh, not vh: excludes the mobile URL bar */
+}
+
+/* The nav is an off-canvas DRAWER by default — slid out, toggled by a button. */
+.shell__nav {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: min(80vw, 20rem);
+  transform: translateX(-100%);
+  transition: transform 200ms ease;
+}
+.shell__nav[data-open="true"] {
+  transform: translateX(0);
+}
+
+/* Intrinsic content grid — reflows by itself, zero breakpoints (see autoFitGrid / columnsAt). */
+.content-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
+  padding: var(--gap);
+}
+
+/* Fluid heading — scales between 1.5rem and 2.5rem across the viewport (see modularScale idea). */
+.title {
+  font-size: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+  text-wrap: balance;
+}
+
+/* ---- One min-width layer: at lg the drawer becomes a persistent FIXED sidebar --------- */
+
+@media (min-width: 1024px) {
+  .shell {
+    grid-template-columns: 20rem 1fr; /* sidebar rail + content */
+  }
+  .shell__nav {
+    position: static;
+    inline-size: auto;
+    transform: none; /* always visible — matches sidebarMode(width >= lg) === "fixed" */
+  }
+}
+
+/* ---- Motion honored ------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .shell__nav {
+    transition: none;
+  }
+}

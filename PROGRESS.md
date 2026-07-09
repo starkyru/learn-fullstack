@@ -19,6 +19,7 @@
 | 05-react-core                  | 🟢   | not-started | 1          |                               |
 | 05b-css-layout                 | 🟡   | not-started | 1          |                               |
 | 05c-animations                 | 🟡   | not-started | 1          | FLIP, Framer Motion, VT API   |
+| 05d-responsive-design          | 🟡   | not-started | 1          | mobile-first; pure CSS + TW   |
 | 06-react-hooks-i               | 🟡   | not-started | 1          |                               |
 | 07-react-hooks-ii              | 🟡   | not-started | 1          |                               |
 | 07b-hand-rolled-hooks          | 🔴   | not-started | 1          |                               |

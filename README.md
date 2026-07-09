@@ -55,6 +55,7 @@ api-client,testing}` instead of hardcoding.
 | 05      | React Core                                        | 20      | GraphQL End-to-End · **20b** DataLoader 🔴          |
 | **05b** | CSS & Modern Layout                               | 21      | Authentication & Security · **21b** Session auth 🔴 |
 | **05c** | CSS & React Animations                            |         |                                                     |
+| **05d** | Responsive Design                                 |         |                                                     |
 | 06      | React Hooks I                                     | 22      | Realtime: WebSockets · **22b** Webhook delivery 🔴  |
 | 07      | React Hooks II · **07b** Hand-rolled hooks 🔴     | 23      | Next.js Core (App Router) · **23b** Mini router 🔴  |
 | 08      | React Patterns & Perf · **08b** Advanced patterns | 24      | Next.js Data & SEO · **24b** Next advanced          |
@@ -67,7 +68,7 @@ api-client,testing}` instead of hardcoding.
 | 14      | TanStack Query · **14b** Mini query client 🔴     | **28c** | Microfrontends: Module Federation 🔴                |
 |         |                                                   | 29      | Capstone Integration                                |
 
-**Companions:** 05b, 05c, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 23b, 24b, 28b, 28c (deep-dives;
+**Companions:** 05b, 05c, 05d, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 23b, 24b, 28b, 28c (deep-dives;
 optional, don't block the main path).
 
 ## How to learn
@@ -111,7 +112,7 @@ converge. A safe linear path (companions `NNx` are optional deep-dives — take 
 skip):
 
 1. **Foundations** — `00 → 01 → 02 → 03 → 04`
-2. **Frontend core** — `05 (+05b, 05c) → 06 → 07 (+07b) → 08 (+08b) → 09 → 10 (+10b) → 11 (+11b)`
+2. **Frontend core** — `05 (+05b, 05c, 05d) → 06 → 07 (+07b) → 08 (+08b) → 09 → 10 (+10b) → 11 (+11b)`
 3. **Client state & data** — `12 → 13 (+13b) → 14 (+14b)`
 4. **Backend & data** — `15 → 16 → 17 → 18 → 19 → 20 (+20b)`
 5. **Cross-cutting** — `21 (+21b) → 22 (+22b) → 23 (+23b) → 24 (+24b) → 25 → 26`

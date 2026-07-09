@@ -148,6 +148,20 @@ Motion done right — performant, accessible, interruptible. Concepts: CSS trans
 
 **Done when:** animations run on `transform`/`opacity` (no layout thrash) · `flip()` animates a reorder with no library · exit animations fire before unmount · everything collapses to instant under `prefers-reduced-motion`.
 
+### 05d — Responsive Design (companion) ✅ implemented
+
+The principles of responsive design, in pure CSS **and** Tailwind, extracted as pure decision functions. Concepts: **mobile-first vs desktop-first** (min-width vs max-width direction), breakpoint strategy, **intrinsic/content-out layout** (`auto-fit`/`minmax` reflow with zero media queries), **modular type/space scales**, **rem** units for zoom, and the same grid built once by hand and once in Tailwind. Companion theory doc: `docs/RESPONSIVE.html` (live CSS demos).
+
+| #   | Task                              | Lane | Type | Build                                                                        |
+| --- | --------------------------------- | ---- | ---- | ---------------------------------------------------------------------------- |
+| 1   | Mobile-first breakpoints          | 🟢   | WE   | solved `minWidthQuery` + analog `maxWidthQuery` (desktop-first) stub         |
+| 2   | Intrinsic grid (no media queries) | 🟡   | TODO | `autoFitGrid` string + `columnsAt(width,min,gap)` column-count math          |
+| 3   | Fluid type & space scale          | 🟡   | TODO | `modularScale(base,ratio,step)` + `pxToRem` for zoom-safe sizing             |
+| 4   | Pure-CSS responsive layout        | 🔴   | FS   | `sidebarMode` + hand-written `artifacts/responsive.css` — no Tailwind/UI kit |
+| 5   | Tailwind responsive utilities     | 🟢   | EXT  | `responsiveGridClasses` → mobile-first `sm:`/`lg:` grid-col class string     |
+
+**Done when:** `minWidthQuery`/`maxWidthQuery` emit non-overlapping min/max queries · `autoFitGrid` reflows with no media query and `columnsAt` matches the column math · `modularScale` + `pxToRem` size in rem · `sidebarMode` flips drawer→fixed at `lg` matching `artifacts/responsive.css` · `responsiveGridClasses` builds the mobile-first Tailwind grid.
+
 ### 06 — React Hooks I: State, Refs & Effects ✅ implemented
 
 Core stateful hooks and their timing. Concepts: **`useState`**, **`useReducer`**, **`useEffect`** vs **`useLayoutEffect`**, **`useRef`**, **`useId`**, dependency arrays/cleanup, batching.
@@ -254,14 +268,14 @@ Render 3D on the web and drive it declaratively from React — r3f leans on modu
 
 Ship `packages/ui` as a real, documented library **and** learn the styling options. Concepts: stories/args/controls, **a11y addon**, **`@storybook/test`** play/interaction tests, **Tailwind** preset/tokens/theming, **CSS Modules vs Tailwind vs CSS-in-JS — when to use which**, publishing/consuming across apps.
 
-| #   | Task                        | Lane | Type | Build                                                                                                                               |
-| --- | --------------------------- | ---- | ---- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Primitives + stories        | 🟢   | WE   | solved Button (variants)+story + analog Input stub+story                                                                            |
-| 2   | Tailwind preset + theming   | 🟢   | TODO | design tokens → Tailwind preset; theme via CSS vars; dark mode                                                                      |
-| 3   | Overlay components          | 🟡   | TODO | Modal/Toast on the portal + a11y patterns from module 07                                                                            |
-| 4   | Interaction tests           | 🟡   | TODO | `@storybook/test` play functions (focus trap, click)                                                                                |
-| 5   | DataTable + styling compare | 🔴   | FS   | a headless DataTable (sort/select), styled once in Tailwind and once in CSS Modules — write the tradeoff note (→ `docs/STYLING.md`) |
-| 6   | Consume in both apps        | 🟢   | EXT  | wire `packages/ui` into `apps/kanban-web` (Tailwind) and `apps/chat-web` (CSS Modules)                                              |
+| #   | Task                        | Lane | Type | Build                                                                                                                                 |
+| --- | --------------------------- | ---- | ---- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Primitives + stories        | 🟢   | WE   | solved Button (variants)+story + analog Input stub+story                                                                              |
+| 2   | Tailwind preset + theming   | 🟢   | TODO | design tokens → Tailwind preset; theme via CSS vars; dark mode                                                                        |
+| 3   | Overlay components          | 🟡   | TODO | Modal/Toast on the portal + a11y patterns from module 07                                                                              |
+| 4   | Interaction tests           | 🟡   | TODO | `@storybook/test` play functions (focus trap, click)                                                                                  |
+| 5   | DataTable + styling compare | 🔴   | FS   | a headless DataTable (sort/select), styled once in Tailwind and once in CSS Modules — write the tradeoff note (→ `docs/STYLING.html`) |
+| 6   | Consume in both apps        | 🟢   | EXT  | wire `packages/ui` into `apps/kanban-web` (Tailwind) and `apps/chat-web` (CSS Modules)                                                |
 
 **Done when:** Storybook builds with a11y checks green · play tests assert focus trap + interactions · the Tailwind preset themes both light/dark · both apps import the same `Button` · the styling-tradeoff note is committed.
 
