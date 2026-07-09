@@ -84,16 +84,17 @@ The language + async model under React and Node. Concepts: ES modules, closures/
 
 ### 03 — HTTP & the Web Platform ✅ implemented
 
-The wire protocol + browser primitives full-stack apps sit on. Concepts: methods/status/headers, cookies (HttpOnly/SameSite/Secure), CORS + preflight, caching/ETag, `fetch`/`Request`/`Response`, `URL`/`searchParams`.
+The wire protocol + browser primitives full-stack apps sit on, plus the REST conventions on top. Concepts: methods/status/headers, cookies (HttpOnly/SameSite/Secure), CORS + preflight, caching/ETag, `fetch`/`Request`/`Response`, `URL`/`searchParams`, **REST** (resources, verbs↔CRUD, safe/idempotent, status-code contract — deep design deferred to Module 19).
 
-| #   | Task                   | Lane | Type | Build                                                              |
-| --- | ---------------------- | ---- | ---- | ------------------------------------------------------------------ |
-| 1   | Raw HTTP client        | 🟢   | WE   | solved `httpGet` + analog `httpPost` over `fetch`                  |
-| 2   | CORS & cookies lab     | 🟡   | TODO | set a SameSite cookie; reproduce then fix a CORS preflight failure |
-| 3   | HTTP cache semantics   | 🟢   | TODO | add ETag/Cache-Control; verify 304s with `curl`                    |
-| 4   | Mini fetch retry/queue | 🔴   | FS   | wrap `fetch` with timeout + retry + in-flight dedupe — no axios    |
+| #   | Task                   | Lane | Type | Build                                                               |
+| --- | ---------------------- | ---- | ---- | ------------------------------------------------------------------- |
+| 1   | Raw HTTP client        | 🟢   | WE   | solved `httpGet` + analog `httpPost` over `fetch`                   |
+| 2   | CORS & cookies lab     | 🟡   | TODO | set a SameSite cookie; reproduce then fix a CORS preflight failure  |
+| 3   | HTTP cache semantics   | 🟢   | TODO | add ETag/Cache-Control; verify 304s with `curl`                     |
+| 4   | Mini fetch retry/queue | 🔴   | FS   | wrap `fetch` with timeout + retry + in-flight dedupe — no axios     |
+| 5   | REST resource handler  | 🟡   | TODO | `restHandler(req, store)` — verbs↔CRUD + status codes + idempotency |
 
-**Done when:** you can name every header's job · the CORS repro fails then passes · conditional requests return 304.
+**Done when:** you can name every header's job · the CORS repro fails then passes · conditional requests return 304 · `restHandler` maps verbs to CRUD with correct status codes and `POST`/`PUT`/`DELETE` respect (non-)idempotency.
 
 ### 04 — Node.js Fundamentals ✅ implemented
 
