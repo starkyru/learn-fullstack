@@ -8,20 +8,22 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
-  "devDependencies": {
+  "dependencies": {
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
     "@nestjs/platform-socket.io": "catalog:",
-    "@nestjs/testing": "catalog:",
     "@nestjs/websockets": "catalog:",
-    "@swc/core": "catalog:",
-    "@types/node": "catalog:",
-    "@types/supertest": "catalog:",
     "jose": "catalog:",
     "reflect-metadata": "catalog:",
     "rxjs": "catalog:",
-    "socket.io": "catalog:",
+    "socket.io": "catalog:"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "catalog:",
+    "@swc/core": "catalog:",
+    "@types/node": "catalog:",
+    "@types/supertest": "catalog:",
     "socket.io-client": "catalog:",
     "supertest": "catalog:",
     "typescript": "catalog:",

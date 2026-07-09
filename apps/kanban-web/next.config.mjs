@@ -1,4 +1,5 @@
 // @ts-check
+import { fileURLToPath } from "node:url";
 
 /**
  * Next.js App Router config. Transpiles the workspace packages the app consumes so their
@@ -9,6 +10,9 @@
  */
 const nextConfig = {
   reactStrictMode: true,
+  // Pin file tracing to the monorepo root — otherwise Next walks up past it and can pick a
+  // stray lockfile in the home directory as the workspace root.
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
   transpilePackages: [
     "@learn-fullstack/ui",
     "@learn-fullstack/shared",

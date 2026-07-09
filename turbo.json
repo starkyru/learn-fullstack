@@ -9,7 +9,7 @@
     },
     "dev": { "dependsOn": ["^build", "db:generate"], "cache": false, "persistent": true },
     "typecheck": { "dependsOn": ["^build", "db:generate"] },
-    "test": { "dependsOn": ["^build", "db:generate"], "outputs": ["coverage/**"] },
+    "test": { "dependsOn": ["^build", "db:generate"] },
     "test:e2e": { "dependsOn": ["build"], "cache": false },
     "db:generate": { "cache": false },
     "migrate:dev": { "cache": false, "persistent": false },
