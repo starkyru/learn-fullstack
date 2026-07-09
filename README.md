@@ -128,7 +128,7 @@ target role/capstone), then writes a personalized, prereq-respecting order to
 
 ## Getting started
 
-Prerequisites: Node ≥ 20, pnpm, Docker Desktop, git. Comfortable with JavaScript basics.
+Prerequisites: Node ≥ 22.5 (pnpm 11 needs `node:sqlite`), pnpm, Docker Desktop, git. Comfortable with JavaScript basics.
 
 ```bash
 pnpm install                 # + registers Husky hooks
