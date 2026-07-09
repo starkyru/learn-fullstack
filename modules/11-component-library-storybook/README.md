@@ -13,6 +13,13 @@ preset** driven by design tokens + CSS variables (light/dark), accessible **over
 - **Tailwind preset + tokens** — design tokens (colors/space) compile to a Tailwind preset whose
   colors point at **CSS variables**, so one class (`bg-brand`) themes light/dark by swapping vars on
   a `[data-theme]` root — no rebuild, no duplicate classes.
+- **Token tiers** — flat tokens don't scale. Layer them **primitive** (`indigo-600 = #4f46e5`) →
+  **semantic** (`action = indigo-600`) → **component** (`button-bg = action`). Components reference a
+  role, so reskinning (dark, a brand, high-contrast) is one edit at the semantic tier. See
+  `docs/THEMING.html` for the whole landscape (CSS vars vs CSS-in-JS vs vanilla-extract/Panda vs kits).
+- **DTCG build** — the W3C token JSON (`{ "$value", "$type" }`, `{alias}` refs) that Figma/Tokens
+  Studio export. A build flattens the tree, resolves aliases, and emits CSS custom properties — the
+  job Style Dictionary does, hand-rolled here.
 - **Overlay a11y** — a Modal is `role="dialog" aria-modal`, traps focus, closes on `Escape`, and
   **restores focus** to the trigger. A Toast is `role="status"` (polite) so screen readers announce
   it without stealing focus.
@@ -31,6 +38,8 @@ preset** driven by design tokens + CSS variables (light/dark), accessible **over
 | 4   | Interaction tests           | 🟡   | TODO | a `play` function that tabs through the modal and asserts the focus trap + close |
 | 5   | DataTable + styling compare | 🔴   | FS   | headless `useDataTable` (sort + row select) + the styling-tradeoff note          |
 | 6   | Consume in both apps        | 🟢   | EXT  | a `Toolbar` that consumes `Button` — the shape each app wires in                 |
+| 7   | Semantic token tiers        | 🟡   | TODO | `resolveToken`/`resolveTokens` — primitive→semantic→component alias resolution   |
+| 8   | Token build (DTCG)          | 🔴   | FS   | flatten + resolve W3C DTCG JSON → CSS vars, no `style-dictionary`                |
 
 ## Theory & docs
 
@@ -46,6 +55,11 @@ preset** driven by design tokens + CSS variables (light/dark), accessible **over
 - **DataTable + styling compare** — [Reusing logic with custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks),
   [Styling with utility classes (Tailwind)](https://tailwindcss.com/docs/styling-with-utility-classes)
 - **Consume in both apps** — [Importing and exporting components](https://react.dev/learn/importing-and-exporting-components)
+- **Semantic token tiers** — `docs/THEMING.html` §2 (tiers) + §6 (choosing an approach),
+  [Design tokens 101 (Figma)](https://www.figma.com/blog/design-tokens/)
+- **Token build (DTCG)** — [Design Tokens Format (W3C DTCG)](https://tr.designtokens.org/format/),
+  [Style Dictionary](https://styledictionary.com) (the library this 🔴 forbids),
+  `docs/THEMING.html` §3
 - **Background** — [Storybook docs](https://storybook.js.org/docs),
   [Tailwind CSS docs](https://tailwindcss.com/docs)
 
@@ -59,8 +73,12 @@ preset** driven by design tokens + CSS variables (light/dark), accessible **over
       `Escape`, and restores focus to the element that opened it.
 - [ ] the `modalPlay` function drives the mounted modal and asserts the trap + Escape-to-close.
 - [ ] `useDataTable` sorts by a column (toggling asc/desc) and tracks a row-selection set; the
-      `docs/STYLING.md` tradeoff note (Tailwind vs CSS Modules vs CSS-in-JS) is written.
+      `docs/STYLING.html` tradeoff note (Tailwind vs CSS Modules vs CSS-in-JS) is written.
 - [ ] `<Toolbar>` renders library `Button`s and fires its callbacks — the consume shape both apps use.
+- [ ] `resolveToken("button-bg", tokens)` walks component→semantic→primitive to its `{light,dark}`
+      value, throws on an unknown name / alias cycle, and `resolveTokens` emits the `--name` map per scheme.
+- [ ] `resolveDtcg` flattens a DTCG doc and resolves every `{alias}` (throwing on unknown/cyclic refs),
+      and `toCssVars` renders `:root { --dashed-path: value; }` — no `style-dictionary`.
 
 > Worked-example tasks show a solved reference in `src/`; you complete the sibling stub.
 > Tests import the reference from `solution/` — flip to `../src/...` to grade your own work.

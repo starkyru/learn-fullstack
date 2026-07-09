@@ -276,8 +276,10 @@ Ship `packages/ui` as a real, documented library **and** learn the styling optio
 | 4   | Interaction tests           | 🟡   | TODO | `@storybook/test` play functions (focus trap, click)                                                                                  |
 | 5   | DataTable + styling compare | 🔴   | FS   | a headless DataTable (sort/select), styled once in Tailwind and once in CSS Modules — write the tradeoff note (→ `docs/STYLING.html`) |
 | 6   | Consume in both apps        | 🟢   | EXT  | wire `packages/ui` into `apps/kanban-web` (Tailwind) and `apps/chat-web` (CSS Modules)                                                |
+| 7   | Semantic token tiers        | 🟡   | TODO | `resolveToken`/`resolveTokens` resolve a primitive→semantic→component alias chain (→ `docs/THEMING.html`)                             |
+| 8   | Token build (DTCG)          | 🔴   | FS   | flatten + resolve W3C DTCG token JSON to CSS custom properties by hand — no `style-dictionary`                                        |
 
-**Done when:** Storybook builds with a11y checks green · play tests assert focus trap + interactions · the Tailwind preset themes both light/dark · both apps import the same `Button` · the styling-tradeoff note is committed.
+**Done when:** Storybook builds with a11y checks green · play tests assert focus trap + interactions · the Tailwind preset themes both light/dark · both apps import the same `Button` · the styling-tradeoff note is committed · `resolveToken` walks the tier chain (throwing on cycle/unknown) · `resolveDtcg` + `toCssVars` build DTCG tokens into `:root` CSS variables.
 
 ### 11b — Accessibility & WCAG (companion) ✅ implemented
 
