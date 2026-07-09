@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "prisma generate --schema prisma/schema.prisma",
-    "pretypecheck": "prisma generate --schema prisma/schema.prisma",
+    "prepare": "prisma generate",
+    "db:generate": "prisma generate",
     "typecheck": "tsc --noEmit",
-    "pretest": "prisma generate --schema prisma/schema.prisma",
     "test": "vitest run"
   },
   "devDependencies": {
+    "@prisma/adapter-better-sqlite3": "catalog:",
     "@prisma/client": "catalog:",
     "@types/node": "catalog:",
     "prisma": "catalog:",

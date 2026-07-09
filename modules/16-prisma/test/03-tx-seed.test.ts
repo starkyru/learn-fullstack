@@ -3,7 +3,8 @@ import { existsSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "../generated/client/client.js";
 import { moveCard, seed } from "../solution/03-tx-seed.js";
 
 const moduleRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -20,12 +21,12 @@ function removeDb(): void {
 
 beforeAll(() => {
   removeDb();
-  execSync("prisma db push --skip-generate --schema prisma/schema.prisma", {
+  execSync("prisma db push", {
     cwd: moduleRoot,
     env: { ...process.env, DATABASE_URL: DB_URL },
     stdio: "ignore",
   });
-  prisma = new PrismaClient({ datasourceUrl: DB_URL });
+  prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: DB_URL }) });
 });
 
 afterAll(async () => {

@@ -3,7 +3,8 @@ import { existsSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "../generated/client/client.js";
 import {
   countQueries,
   getListsWithCardsFast,
@@ -24,14 +25,14 @@ function removeDb(): void {
 
 beforeAll(() => {
   removeDb();
-  execSync("prisma db push --skip-generate --schema prisma/schema.prisma", {
+  execSync("prisma db push", {
     cwd: moduleRoot,
     env: { ...process.env, DATABASE_URL: DB_URL },
     stdio: "ignore",
   });
   // `log: [{ emit: "event", level: "query" }]` is what makes `$on("query")` fire.
   prisma = new PrismaClient({
-    datasourceUrl: DB_URL,
+    adapter: new PrismaBetterSqlite3({ url: DB_URL }),
     log: [{ emit: "event", level: "query" }],
   });
 });

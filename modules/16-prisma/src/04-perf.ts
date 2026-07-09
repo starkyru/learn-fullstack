@@ -13,7 +13,7 @@
  * EXT: this file ships complete — read the two implementations, then extend them (add a `select` to
  * fetch only `title`, page the cards, or add another naive→fast pair).
  */
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { Prisma, PrismaClient } from "../generated/client/client.js";
 
 /** A list with its cards attached — the shape both implementations return. */
 export type ListWithCards = Prisma.ListGetPayload<{ include: { cards: true } }>;

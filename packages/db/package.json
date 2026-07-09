@@ -18,6 +18,7 @@
     "studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "catalog:",
     "@prisma/client": "catalog:"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@
  *
  * Both functions below throw `TODO` — implement them. Tests import from `solution/`.
  */
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../generated/client/client.js";
 import type { Card } from "./01-schema.js";
 
 export interface MoveCardInput {

@@ -8,7 +8,7 @@
  * Both functions below throw `TODO` — implement them. Tests import from `solution/`; flip to
  * `../src/02-relations.js` to grade your own build.
  */
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { Prisma, PrismaClient } from "../generated/client/client.js";
 
 export interface CardInput {
   title: string;

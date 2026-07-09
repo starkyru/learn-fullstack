@@ -1,25 +1,27 @@
 // Module 16 — Prisma schema.
 //
 // This module is self-contained: it does NOT use the repo-wide `packages/db`
-// client. It has its OWN schema here and generates the client into the default
-// location (`node_modules/.prisma/client`, re-exported by `@prisma/client`),
-// which every `solution/*` and `test/*` file imports. Generation runs on
+// client. It has its OWN schema here and generates its client into a local
+// `generated/client` directory (Prisma 7 requires an explicit `output`), which
+// every `src/*`, `solution/*` and `test/*` file imports. Generation runs on
 // `pnpm install` via the package's `prepare` script.
 //
 // Datasource is SQLite so the test gate is fast + deterministic with no Docker.
 // Prisma abstracts the engine — the modelling, relations, nested reads/writes,
 // transactions and N+1 concepts are identical on Postgres.
 //
-// The connection string comes from env `DATABASE_URL`. The test harness sets it
-// to a per-file temp file (e.g. `file:./.tmp-test-01.db`) before `db push`.
+// The connection string comes from env `DATABASE_URL`, wired up in
+// `prisma.config.ts` (for the CLI) and the `PrismaBetterSQLite3` driver adapter
+// (at runtime). The test harness sets it to a per-file temp file (e.g.
+// `file:./.tmp-test-01.db`) before `db push`.
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/client"
 }
 
 model User {

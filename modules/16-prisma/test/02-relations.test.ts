@@ -3,7 +3,8 @@ import { existsSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "../generated/client/client.js";
 import { createUser } from "../solution/01-schema.js";
 import {
   createBoardWithListsAndCards,
@@ -25,12 +26,12 @@ function removeDb(): void {
 
 beforeAll(() => {
   removeDb();
-  execSync("prisma db push --skip-generate --schema prisma/schema.prisma", {
+  execSync("prisma db push", {
     cwd: moduleRoot,
     env: { ...process.env, DATABASE_URL: DB_URL },
     stdio: "ignore",
   });
-  prisma = new PrismaClient({ datasourceUrl: DB_URL });
+  prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: DB_URL }) });
 });
 
 afterAll(async () => {
@@ -119,7 +120,7 @@ describe("createBoardWithListsAndCards + getBoardView", () => {
     // ordering deterministic in production (where the planner may pick a different plan), and it
     // fails the moment `orderBy: { position: "asc" }` is removed from the solution.
     const logged = new PrismaClient({
-      datasourceUrl: DB_URL,
+      adapter: new PrismaBetterSqlite3({ url: DB_URL }),
       log: [{ emit: "event", level: "query" }],
     });
     const sql: string[] = [];
@@ -128,10 +129,12 @@ describe("createBoardWithListsAndCards + getBoardView", () => {
     });
 
     // The include read-back SELECTs (present in BOTH createBoardWithListsAndCards and getBoardView).
+    // Prisma 7's query compiler emits `parentId = ?` when there is a single parent row and
+    // `parentId IN (...)` for many — accept either filter shape.
     const listRead = (q: string) =>
-      /FROM `main`\.`List`/.test(q) && /`main`\.`List`\.`boardId` IN/.test(q);
+      /FROM `main`\.`List`/.test(q) && /`main`\.`List`\.`boardId` (?:IN|=)/.test(q);
     const cardRead = (q: string) =>
-      /FROM `main`\.`Card`/.test(q) && /`main`\.`Card`\.`listId` IN/.test(q);
+      /FROM `main`\.`Card`/.test(q) && /`main`\.`Card`\.`listId` (?:IN|=)/.test(q);
     const listOrderBy = /ORDER BY `main`\.`List`\.`position` ASC/;
     const cardOrderBy = /ORDER BY `main`\.`Card`\.`position` ASC/;
 

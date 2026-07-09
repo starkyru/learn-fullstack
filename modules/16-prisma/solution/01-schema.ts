@@ -11,7 +11,7 @@
  * Every function takes a `PrismaClient` so tests inject one bound to a throwaway SQLite database —
  * no global client, no hidden connection.
  */
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../generated/client/client.js";
 
 // Row types re-derived from the client so callers don't reach into generated internals.
 export type User = { id: number; email: string; name: string };

@@ -8,7 +8,7 @@
  * `seed` populates DETERMINISTIC data (fixed emails/titles/positions, no `Date.now`/`Math.random`)
  * — the shared fixture both the web and worker apps build on.
  */
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../generated/client/client.js";
 import type { Card } from "./01-schema.js";
 
 export interface MoveCardInput {

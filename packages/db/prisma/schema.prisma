@@ -1,16 +1,17 @@
 // The single shared schema for the whole course. Domain slices (kanban, chat) are added
 // by the modules/apps that need them; Phase 0 ships only User so migrations work.
 generator client {
-  provider = "prisma-client-js"
-  // Emit to a package-local dir, NOT the default node_modules/.prisma/client — module 16
-  // teaches Prisma against a throwaway SQLite schema and generates to that default location,
-  // which would otherwise clobber this shared Postgres client (and break `db:seed`).
+  // Prisma 7 generator: emits plain TypeScript. `output` is required — we keep it
+  // package-local so module 16's own throwaway SQLite client (generated inside that
+  // module) can never clobber this shared Postgres client (or break `db:seed`).
+  provider = "prisma-client"
   output   = "../generated/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Prisma 7: the connection URL lives in prisma.config.ts (for the CLI) and in the
+  // PrismaPg driver adapter (at runtime), not in the schema.
 }
 
 model User {

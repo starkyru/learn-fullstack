@@ -13,8 +13,13 @@ engine: the schema, relations, transactions and query-planning lessons are ident
 - **The schema is the source of truth** — models + relations in `prisma/schema.prisma` compile to a
   fully-typed client. A relation is one `@relation(fields, references)` on the child plus a back-list
   on the parent; `prisma migrate dev` (or `prisma db push` for a throwaway DB) turns the schema into
-  tables. This module generates its client into a **local** `src/generated/client`, so you
-  `import { PrismaClient } from "../src/generated/client/index.js"` — not from `@prisma/client`.
+  tables. Prisma 7's `prisma-client` generator emits plain TypeScript into a **local**
+  `generated/client` directory (an explicit `output` is required), so you
+  `import { PrismaClient } from "../generated/client/client.js"` — not from `@prisma/client`.
+  The CLI reads the schema path and connection URL from `prisma.config.ts`, and the client talks to
+  the database through a **driver adapter** — here `@prisma/adapter-better-sqlite3`:
+  `new PrismaClient({ adapter: new PrismaBetterSqlite3({ url }) })` (Postgres swaps in
+  `@prisma/adapter-pg`, nothing else changes).
 - **Nested reads and writes are one round-trip each** — `board.create({ data: { lists: { create:
 [{ cards: { create: [...] } }] } } })` inserts a whole board→lists→cards tree, and `findUnique({
 include: { lists: { include: { cards: true } } } })` reads it back **fully typed**: the return type
@@ -29,15 +34,19 @@ include: { lists: { include: { cards: true } } } })` reads it back **fully typed
 
 ## Prisma commands
 
+The schema path and datasource URL live in `prisma.config.ts` (Prisma 7 — no `--schema` flags, no
+automatic `.env` loading; `DATABASE_URL` from the environment wins over the config's fallback).
+
 ```bash
 # One-off, for a throwaway DB (what the test harness runs): push the schema, no migration history.
-DATABASE_URL="file:./dev.db" pnpm exec prisma db push --schema prisma/schema.prisma
+DATABASE_URL="file:./dev.db" pnpm exec prisma db push
 
 # The real workflow: create + apply a named migration, recording it under prisma/migrations/.
-DATABASE_URL="file:./dev.db" pnpm exec prisma migrate dev --name init --schema prisma/schema.prisma
+DATABASE_URL="file:./dev.db" pnpm exec prisma migrate dev --name init
 
-# Regenerate the local typed client after any schema change (also runs automatically as `pretest`).
-pnpm exec prisma generate --schema prisma/schema.prisma
+# Regenerate the local typed client after any schema change (runs automatically on
+# `pnpm install` and — via the turbo `db:generate` task — before `typecheck`/`test`).
+pnpm exec prisma generate
 ```
 
 ## Tasks

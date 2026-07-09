@@ -36,5 +36,6 @@ jobs:
       - run: pnpm test
       - run: pnpm docs:sync
       # exercise the Postgres service: apply the schema and run the seed
-      - run: pnpm --filter @learn-fullstack/db exec prisma db push --skip-generate
+      # (Prisma 7 dropped `--skip-generate`: `db push` never runs generate anymore)
+      - run: pnpm --filter @learn-fullstack/db exec prisma db push
       - run: pnpm db:seed

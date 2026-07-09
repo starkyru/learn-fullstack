@@ -5,7 +5,7 @@
  * FULLY TYPED. The return type is `Prisma.BoardGetPayload<{ include: … }>`, so
  * `board.lists[0]?.cards[0]?.title` is checked at compile time — no `any`, no manual joins.
  */
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { Prisma, PrismaClient } from "../generated/client/client.js";
 
 export interface CardInput {
   title: string;
