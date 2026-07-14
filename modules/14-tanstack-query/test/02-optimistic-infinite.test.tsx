@@ -121,7 +121,12 @@ describe("Task 2 — optimistic card move", () => {
     await user.click(screen.getByRole("button", { name: "Move" }));
 
     // Optimistic patch applied by onMutate before the (delayed) write resolves.
-    expect((await screen.findByText("in-progress")).textContent).toBe("in-progress");
+    // `findByText` matching an element whose exact text is "in-progress" IS the assertion that the
+    // optimistic flash rendered. Do NOT re-read `.textContent` after the await: the span is a live
+    // node a following re-render (reconcile to "doing", or the failure-path rollback to "todo") can
+    // mutate in the microtask between the match and the read — that flaked on CI ("expected 'todo' to
+    // be 'in-progress'").
+    expect(await screen.findByText("in-progress")).toBeInTheDocument();
     // After settle → invalidate → refetch, the server's canonical "doing" replaces the guess.
     expect((await screen.findByText("doing")).textContent).toBe("doing");
   });
@@ -138,7 +143,12 @@ describe("Task 2 — optimistic card move", () => {
 
     await user.click(screen.getByRole("button", { name: "Move" }));
     // Optimistic value flashes...
-    expect((await screen.findByText("in-progress")).textContent).toBe("in-progress");
+    // `findByText` matching an element whose exact text is "in-progress" IS the assertion that the
+    // optimistic flash rendered. Do NOT re-read `.textContent` after the await: the span is a live
+    // node a following re-render (reconcile to "doing", or the failure-path rollback to "todo") can
+    // mutate in the microtask between the match and the read — that flaked on CI ("expected 'todo' to
+    // be 'in-progress'").
+    expect(await screen.findByText("in-progress")).toBeInTheDocument();
 
     // ...then the move rejects. Because `failCardsRefetch` makes the onSettled refetch fail too,
     // React Query keeps whatever is already in the cache. So the ONLY thing that can put "todo"

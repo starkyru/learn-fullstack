@@ -276,3 +276,17 @@ Migrating the lessons to Express 5 is a curriculum rewrite, not a security fix �
 be a separate task if wanted.
 
 **Gate after the follow-ups:** build ✓, typecheck ✓ (68/68), lint ✓, test ✓ (68/68), `audit --prod` = 0.
+
+## CI flake fixed (surfaced on the first CI run)
+
+The first GitHub Actions run (Node 22/24) failed on `modules/14-tanstack-query`
+`test/02-optimistic-infinite.test.tsx`: `expected 'todo' to be 'in-progress'`. Not a regression from
+this upgrade — the module's test-relevant deps (`@tanstack/react-query`, React, jsdom,
+`@testing-library`) are byte-identical before/after (empty lockfile delta), and it passes locally.
+Root cause is a pre-existing **test race**: the assertion re-read `.textContent` off the live `col`
+span _after_ `await screen.findByText("in-progress")`, and on slower CI the failure-path rollback
+(`in-progress` → `todo`) mutated that same node in the microtask between the match and the read. Fixed
+by asserting on the resolved element (`toBeInTheDocument()`) instead of re-reading the mutable node —
+`findByText` matching the exact text is itself the "flash appeared" assertion. Applied to both
+transient-flash assertions; the terminal `"doing"`/`"todo"` reads are on stable values and left as is.
+A repo-wide scan found no other `(await findBy…).textContent` live-node re-reads.
