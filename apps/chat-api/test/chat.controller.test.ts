@@ -60,6 +60,51 @@ describe("ChatController — REST over MessageService, guarded by JwtAuthGuard",
     expect(res.body).toEqual({ id: "1", room: "r1", from: "alice", text: "hi bob" });
   });
 
+  it("400s a POST whose `text` is a non-string (JSON object) — no non-string message is stored", async () => {
+    const res = await request(app.getHttpServer())
+      .post("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ text: { evil: "object" } });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("`text` must be a non-empty string");
+
+    // and nothing was persisted for the room
+    const history = await request(app.getHttpServer())
+      .get("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`);
+    expect(history.body).toEqual([]);
+  });
+
+  it("400s a POST with missing or empty `text`", async () => {
+    const missing = await request(app.getHttpServer())
+      .post("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+    expect(missing.status).toBe(400);
+
+    const blank = await request(app.getHttpServer())
+      .post("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ text: "   " });
+    expect(blank.status).toBe(400);
+  });
+
+  it("400s a POST whose `text` exceeds the max length (4000)", async () => {
+    const res = await request(app.getHttpServer())
+      .post("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ text: "x".repeat(4001) });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("`text` must be at most 4000 characters");
+
+    // a message exactly at the limit is accepted
+    const ok = await request(app.getHttpServer())
+      .post("/rooms/r1/messages")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ text: "y".repeat(4000) });
+    expect(ok.status).toBe(201);
+  });
+
   it("GET → 200 returns the history for that room, ids incrementing 1,2", async () => {
     await request(app.getHttpServer())
       .post("/rooms/r1/messages")
