@@ -70,7 +70,7 @@ catalogs:
       specifier: ^10.16.0
       version: 10.28.0
     '@testing-library/jest-dom':
-      specifier: ^6.6.3
+      specifier: ^6.9.1
       version: 6.9.1
     '@testing-library/react':
       specifier: ^16.1.0
