@@ -1,8 +1,8 @@
 import { Client } from "pg";
 import { describe, expect, it } from "vitest";
-import { withEphemeralPostgres } from "./index.js";
+import { hasDocker, withEphemeralPostgres } from "./index.js";
 
-describe("withEphemeralPostgres", () => {
+describe.skipIf(!hasDocker())("withEphemeralPostgres", () => {
   it("provisions a real, queryable Postgres and tears it down", async () => {
     let capturedUrl = "";
     const version = await withEphemeralPostgres(async (url) => {

@@ -6,11 +6,16 @@ import {
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createBoardsSchema, createCards } from "../solution/01-schema.js";
 import { boardView, keysetPageCards } from "../solution/02-joins.js";
+import { hasDocker } from "@learn-fullstack/testing";
+
+// Skip the container-backed suite when no Docker daemon is reachable (CI always has one).
+const dockerUp = hasDocker();
 
 let container: StartedPostgreSqlContainer;
 let client: Client;
 
 beforeAll(async () => {
+  if (!dockerUp) return;
   container = await new PostgreSqlContainer("postgres:16-alpine").start();
   client = new Client({ connectionString: container.getConnectionUri() });
   await client.connect();
@@ -27,7 +32,7 @@ beforeEach(async () => {
   await createCards(client);
 });
 
-describe("boardView (3-table join)", () => {
+describe.skipIf(!dockerUp)("boardView (3-table join)", () => {
   it("flattens boards ⋈ lists ⋈ cards ordered by list.position then card.position", async () => {
     await client.query("INSERT INTO boards (id, title) VALUES (1, 'Sprint')");
     await client.query(
@@ -75,7 +80,7 @@ describe("boardView (3-table join)", () => {
   });
 });
 
-describe("keysetPageCards", () => {
+describe.skipIf(!dockerUp)("keysetPageCards", () => {
   beforeEach(async () => {
     await client.query("INSERT INTO boards (id, title) VALUES (1, 'B')");
     await client.query(
@@ -108,42 +113,45 @@ describe("keysetPageCards", () => {
   });
 });
 
-describe("keysetPageCards is stable under inserts between page fetches", () => {
-  // Sparse ids leave a gap (15) below the page-1 boundary (20) so we can insert a row that sorts
-  // BEFORE the cursor after page 1 has already been read.
-  beforeEach(async () => {
-    await client.query("INSERT INTO boards (id, title) VALUES (1, 'B')");
-    await client.query(
-      "INSERT INTO lists (id, board_id, title, position) VALUES (1, 1, 'L', 1)",
-    );
-    await client.query(
-      "INSERT INTO cards (id, list_id, title, position) VALUES (10, 1, 'c10', 1), (20, 1, 'c20', 2), (30, 1, 'c30', 3), (40, 1, 'c40', 4), (50, 1, 'c50', 5)",
-    );
-  });
+describe.skipIf(!dockerUp)(
+  "keysetPageCards is stable under inserts between page fetches",
+  () => {
+    // Sparse ids leave a gap (15) below the page-1 boundary (20) so we can insert a row that sorts
+    // BEFORE the cursor after page 1 has already been read.
+    beforeEach(async () => {
+      await client.query("INSERT INTO boards (id, title) VALUES (1, 'B')");
+      await client.query(
+        "INSERT INTO lists (id, board_id, title, position) VALUES (1, 1, 'L', 1)",
+      );
+      await client.query(
+        "INSERT INTO cards (id, list_id, title, position) VALUES (10, 1, 'c10', 1), (20, 1, 'c20', 2), (30, 1, 'c30', 3), (40, 1, 'c40', 4), (50, 1, 'c50', 5)",
+      );
+    });
 
-  it("skips no row and duplicates none when a card is inserted below the cursor mid-walk", async () => {
-    // Page 1: first two ids ascending.
-    const page1 = await keysetPageCards(client, { afterId: 0, limit: 2 });
-    expect(page1.map((r) => r.id)).toEqual([10, 20]);
+    it("skips no row and duplicates none when a card is inserted below the cursor mid-walk", async () => {
+      // Page 1: first two ids ascending.
+      const page1 = await keysetPageCards(client, { afterId: 0, limit: 2 });
+      expect(page1.map((r) => r.id)).toEqual([10, 20]);
 
-    // The cursor for page 2 is the last id of page 1.
-    const cursor = page1[page1.length - 1]!.id;
-    expect(cursor).toBe(20);
+      // The cursor for page 2 is the last id of page 1.
+      const cursor = page1[page1.length - 1]!.id;
+      expect(cursor).toBe(20);
 
-    // Insert a card that sorts BEFORE the page-2 boundary (id 15 < cursor 20). Under OFFSET paging
-    // this shifts the window and would duplicate id 20 (or, if afterId is treated as an offset,
-    // skip past the remaining rows). Keyset (WHERE id > cursor) is immune.
-    await client.query(
-      "INSERT INTO cards (id, list_id, title, position) VALUES (15, 1, 'c15', 6)",
-    );
+      // Insert a card that sorts BEFORE the page-2 boundary (id 15 < cursor 20). Under OFFSET paging
+      // this shifts the window and would duplicate id 20 (or, if afterId is treated as an offset,
+      // skip past the remaining rows). Keyset (WHERE id > cursor) is immune.
+      await client.query(
+        "INSERT INTO cards (id, list_id, title, position) VALUES (15, 1, 'c15', 6)",
+      );
 
-    // Page 2: keyset walk from the cursor.
-    const page2 = await keysetPageCards(client, { afterId: cursor, limit: 2 });
-    expect(page2.map((r) => r.id)).toEqual([30, 40]);
+      // Page 2: keyset walk from the cursor.
+      const page2 = await keysetPageCards(client, { afterId: cursor, limit: 2 });
+      expect(page2.map((r) => r.id)).toEqual([30, 40]);
 
-    // No row skipped or duplicated across the two pages: the id sequence is exactly [10, 20, 30, 40].
-    const seen = [...page1, ...page2].map((r) => r.id);
-    expect(seen).toEqual([10, 20, 30, 40]);
-    expect(new Set(seen).size).toBe(seen.length); // no duplicates
-  });
-});
+      // No row skipped or duplicated across the two pages: the id sequence is exactly [10, 20, 30, 40].
+      const seen = [...page1, ...page2].map((r) => r.id);
+      expect(seen).toEqual([10, 20, 30, 40]);
+      expect(new Set(seen).size).toBe(seen.length); // no duplicates
+    });
+  },
+);

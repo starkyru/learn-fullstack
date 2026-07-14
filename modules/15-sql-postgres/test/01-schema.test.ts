@@ -11,11 +11,16 @@ import {
   getUser,
   seedUsers,
 } from "../solution/01-schema.js";
+import { hasDocker } from "@learn-fullstack/testing";
+
+// Skip the container-backed suite when no Docker daemon is reachable (CI always has one).
+const dockerUp = hasDocker();
 
 let container: StartedPostgreSqlContainer;
 let client: Client;
 
 beforeAll(async () => {
+  if (!dockerUp) return;
   container = await new PostgreSqlContainer("postgres:16-alpine").start();
   client = new Client({ connectionString: container.getConnectionUri() });
   await client.connect();
@@ -30,7 +35,7 @@ beforeEach(async () => {
   await client.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
 });
 
-describe("users schema (worked example)", () => {
+describe.skipIf(!dockerUp)("users schema (worked example)", () => {
   it("createUsersSchema + seedUsers + getUser round-trips an exact row", async () => {
     await createUsersSchema(client);
     await seedUsers(client, [
@@ -68,7 +73,7 @@ describe("users schema (worked example)", () => {
   });
 });
 
-describe("boards/cards schema (analog)", () => {
+describe.skipIf(!dockerUp)("boards/cards schema (analog)", () => {
   it("createBoardsSchema + createCards produce FK-linked tables that accept a full row", async () => {
     await createBoardsSchema(client);
     await createCards(client);

@@ -77,4 +77,6 @@ reach for — and a **contract test** that catches the shape drift a mocked comp
 > never collects them; the logic beneath them is unit-tested instead.
 >
 > **Task 3 needs a running Docker daemon** (Testcontainers pulls `postgres:16-alpine` once). Its
-> `testTimeout` is 60 s to cover container startup.
+> `testTimeout` is 60 s to cover container startup. Without Docker the suite **auto-skips** via
+> `hasDocker()` (from `@learn-fullstack/testing`) and prints a warning instead of erroring — but
+> CI always has Docker, so it runs there for real. Start Docker to exercise it locally.

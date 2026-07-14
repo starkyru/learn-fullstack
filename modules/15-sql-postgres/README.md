@@ -80,3 +80,8 @@ transaction, the index — and you watch the query planner change its mind in `E
 > the signature and return shape, implement the body. **FS** tasks (4, 5) throw from an empty
 > `src/` — build them from scratch. Tests import from `solution/`; point them at `../src/…` to
 > grade your own build.
+
+> **Tasks 1–4 need a running Docker daemon** — their tests boot a real ephemeral Postgres
+> (Testcontainers, `postgres:16-alpine`). Without Docker they **auto-skip** with a warning via
+> `hasDocker()` (from `@learn-fullstack/testing`) instead of erroring; task 5 (the query builder)
+> is pure and always runs. Start Docker to exercise 1–4 locally — CI always has it.

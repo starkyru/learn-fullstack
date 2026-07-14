@@ -6,11 +6,16 @@ import {
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createBoardsSchema, createCards } from "../solution/01-schema.js";
 import { moveCard } from "../solution/03-transactions.js";
+import { hasDocker } from "@learn-fullstack/testing";
+
+// Skip the container-backed suite when no Docker daemon is reachable (CI always has one).
+const dockerUp = hasDocker();
 
 let container: StartedPostgreSqlContainer;
 let client: Client;
 
 beforeAll(async () => {
+  if (!dockerUp) return;
   container = await new PostgreSqlContainer("postgres:16-alpine").start();
   client = new Client({ connectionString: container.getConnectionUri() });
   await client.connect();
@@ -51,7 +56,7 @@ async function listCount(id: number): Promise<number | undefined> {
   return res.rows[0]?.card_count;
 }
 
-describe("moveCard", () => {
+describe.skipIf(!dockerUp)("moveCard", () => {
   it("moves the card and rebalances both card_counts atomically", async () => {
     const result = await moveCard(client, { cardId: 1, toListId: 2 });
 

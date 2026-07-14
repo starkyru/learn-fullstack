@@ -15,6 +15,10 @@ import {
   type BoardCards,
   type QueryCounter,
 } from "../solution/04-index-n1.js";
+import { hasDocker } from "@learn-fullstack/testing";
+
+// Skip the container-backed suite when no Docker daemon is reachable (CI always has one).
+const dockerUp = hasDocker();
 
 let container: StartedPostgreSqlContainer;
 let client: Client;
@@ -45,6 +49,7 @@ function makeQuerySpy(real: Client): { spied: Client; spy: { calls: number } } {
 }
 
 beforeAll(async () => {
+  if (!dockerUp) return;
   container = await new PostgreSqlContainer("postgres:16-alpine").start();
   client = new Client({ connectionString: container.getConnectionUri() });
   await client.connect();
@@ -60,7 +65,7 @@ beforeEach(async () => {
   await createN1Schema(client);
 });
 
-describe("N+1 vs batched loader", () => {
+describe.skipIf(!dockerUp)("N+1 vs batched loader", () => {
   const expected: BoardCards = [
     {
       listId: 1,
@@ -121,7 +126,7 @@ describe("N+1 vs batched loader", () => {
   });
 });
 
-describe("index flips the query plan", () => {
+describe.skipIf(!dockerUp)("index flips the query plan", () => {
   beforeEach(async () => {
     // 5000 cards across 500 list_ids → ~10 rows per list_id: selective enough for an index scan.
     await seedCardsBulk(client, { total: 5000, lists: 500 });

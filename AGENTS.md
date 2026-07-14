@@ -138,7 +138,10 @@ pnpm test:e2e                         # Playwright (needs Docker)
 clone (before any `pnpm build`/`pnpm dev`) fails to resolve the workspace packages because
 their `dist/` doesn't exist yet — run `pnpm build` once after install to avoid this.
 
-Slow modules (Nest e2e via Testcontainers, Playwright) need Docker running.
+Slow modules (Nest e2e via Testcontainers, Playwright) need Docker running. The Testcontainers
+suites (module 15 SQL, module 26 integration, `packages/testing`) gate on `hasDocker()` from
+`@learn-fullstack/testing`: no daemon → they **skip with a warning** instead of erroring, so
+`pnpm test` stays green locally without Docker. CI always has Docker, so it runs them for real.
 
 ## Interactive learning tools
 
