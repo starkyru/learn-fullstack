@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig, configDefaults } from "vitest/config";
 
 export default defineConfig({
   // Override PostCSS discovery so Vitest never loads `postcss.config.mjs` (a `next dev`/`next
@@ -13,5 +13,8 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./test/setup.ts"],
+    // `e2e/*.spec.ts` are Playwright tests, run by `pnpm test:e2e` (playwright.config.ts).
+    // Vitest's default glob would otherwise collect them and throw "test() not expected here".
+    exclude: [...configDefaults.exclude, "e2e/**"],
   },
 });

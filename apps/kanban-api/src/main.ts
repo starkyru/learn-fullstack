@@ -7,7 +7,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT ?? "3000";
   await app.listen(port);
-  // GraphQL playground / endpoint at http://localhost:<port>/graphql
+  // GraphQL endpoint at http://localhost:<port>/graphql (GraphiQL explorer in dev; see app.module.ts)
 }
 
 void bootstrap();

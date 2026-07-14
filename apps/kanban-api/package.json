@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/server": "catalog:",
+    "@as-integrations/express5": "catalog:",
     "@learn-fullstack/shared": "workspace:*",
     "@nestjs/apollo": "catalog:",
     "@nestjs/common": "catalog:",
