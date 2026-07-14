@@ -1,7 +1,7 @@
 # @learn-fullstack/kanban-web
 
 Next.js **App Router** web front-end for the Kanban capstone (Trello-lite). This package is
-an **M0+ vertical slice**, not the finished app: one board route rendered by a React Server
+an **M0 validated vertical slice**, not the finished app: one board route rendered by a React Server
 Component, one Server Action, and the Tailwind wiring — enough to be genuinely runnable and
 fully covered by a typecheck + test gate that needs **no server, no DB, and no `next build`**.
 
@@ -53,6 +53,9 @@ pnpm --filter @learn-fullstack/kanban-web exec vitest run
 ```
 
 ## Milestones (TODO)
+
+M0 is an executable baseline, not a shipped app. Track the M1–M6 production acceptance evidence in
+[Module 29](../../modules/29-capstone/README.md) and the [capstone spec](../../docs/CAPSTONES.html).
 
 - **M1 — Persistence:** replace `InMemoryBoardStore` with the Prisma `BoardRepo` from
   `@learn-fullstack/db`; bind it at the composition root in `app/board/page.tsx`.

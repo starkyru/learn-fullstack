@@ -22,8 +22,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await client.end();
-  await container.stop();
+  await client?.end();
+  await container?.stop();
 });
 
 beforeEach(async () => {

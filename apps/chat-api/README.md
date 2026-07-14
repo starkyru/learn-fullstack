@@ -1,7 +1,7 @@
 # chat-api — Pulse (realtime chat) backend
 
 `@learn-fullstack/chat-api` is the **NestJS** backend for the **Pulse** chat capstone
-(the Slack-lite app). This package is an **M0+ vertical slice**, not the finished
+(the Slack-lite app). This package is an **M0 validated vertical slice**, not the finished
 service: one authenticated message feature over REST **and** WebSockets, wired with Nest
 DI, with a passing test suite and clean typecheck.
 
@@ -62,6 +62,9 @@ emits the decorator metadata Nest's DI needs; `test/setup.ts` polyfills
 (`app.listen(0)`) and closes both clients + the app in `afterAll` for a clean exit.
 
 ## Milestones (TODO)
+
+M0 is an executable baseline, not a shipped service. Track M1–M6 production acceptance evidence in
+[Module 29](../../modules/29-capstone/README.md) and the [capstone spec](../../docs/CAPSTONES.html).
 
 - **M1** — swap the in-memory store for **Prisma writes** + a raw SQL recent-history read;
   `Room` / `Message` / `User` schema in `@learn-fullstack/db`.

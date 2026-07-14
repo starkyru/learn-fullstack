@@ -10,6 +10,8 @@ import { fileURLToPath } from "node:url";
  */
 const nextConfig = {
   reactStrictMode: true,
+  // Playwright reaches the development server through 127.0.0.1 during the E2E gate.
+  allowedDevOrigins: ["127.0.0.1"],
   // Pin file tracing to the monorepo root — otherwise Next walks up past it and can pick a
   // stray lockfile in the home directory as the workspace root.
   outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),

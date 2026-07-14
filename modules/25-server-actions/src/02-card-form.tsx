@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 /**
  * YOUR TURN — build a <CardForm> that posts to a Server Action via `useActionState`,
@@ -11,7 +12,8 @@ import { useActionState } from "react";
  * 1. `const [state, formAction, isPending] = useActionState(action, INITIAL)`.
  * 2. Render `<form action={formAction}>` with a `<label htmlFor="card-title">` bound to
  *    `<input id="card-title" name="title" />` and a submit `<button>`.
- * 3. While `isPending`, disable the button and show "Saving…" (else "Create card").
+ * 3. Put a submit-button child inside the form. It reads `pending` with `useFormStatus()`;
+ *    compare that signal with `isPending` from `useActionState`.
  * 4. When `state.status === "error"`, render `state.error` in a `<p role="alert">`.
  * 5. When `state.status === "success"`, render `Created {state.title}` in a
  *    `<p role="status">`.
@@ -31,6 +33,7 @@ export type CardFormAction = (
 
 export function CardForm(_props: { action: CardFormAction }) {
   void useActionState;
+  void useFormStatus;
   void INITIAL;
   throw new Error("TODO: wire useActionState → pending + error/success UI");
 }

@@ -10,7 +10,7 @@ guidance there.
 `learn-fullstack` is a **personal, hands-on full-stack TypeScript course** — a
 project-based curriculum that takes one person from TypeScript basics to shipping two
 real apps: a **Kanban board** (Trello-lite) and a **realtime chat** (Slack-lite). It
-covers React (all hooks), Next.js, Node/NestJS, REST **and** GraphQL, Postgres raw
+covers React's core and app-facing hooks, Next.js, Node/NestJS, REST **and** GraphQL, Postgres raw
 **and** via Prisma, CSS/Tailwind, auth, realtime, testing, and deploy. The reader is the
 **learner**; you are their tutor / pair-programmer. **Favor teaching over just shipping
 code** (see `/tutor`).
@@ -42,17 +42,17 @@ fall back to `README.md` / `CURRICULUM.md` and say so rather than inventing cont
 
 ## The module map (00–29 + companions)
 
-00 Setup · 01 TypeScript · 02 Modern JS · 03 HTTP · 04 Node · 05 React Core · **05b CSS &
-Layout** · **05c CSS & React Animations** · **05d Responsive Design** · 06 Hooks I · 07 Hooks II · **07b Hand-rolled
+00 Setup · **00b Git & collaboration** · 01 TypeScript · 02 Modern JS · 03 HTTP · 04 Node · 05 React Core · **05b CSS &
+Layout** · **05c CSS & React Animations** · **05d Responsive Design** · **05e i18n/locales/time** · 06 Hooks I · 07 Hooks II · **07b Hand-rolled
 hooks 🔴** · 08 Patterns/Perf · **08b Advanced patterns** · 09 Forms · 10
 Concurrent/Suspense/React 19 · **10b 3D: Three.js & react-three-fiber** · 11 Component
 Library + Storybook + Tailwind · **11b Accessibility & WCAG** · 12 Redux Toolkit · 13
 Zustand · **13b Mini store 🔴** ·
 14 TanStack Query · **14b Mini query client 🔴** · 15 SQL/Postgres raw · 16 Prisma · 17
 Express · 18 NestJS · 19 REST design · 20 GraphQL E2E · **20b DataLoader 🔴** · 21 Auth &
-Security · **21b Session auth 🔴** · 22 Realtime WebSockets E2E · **22b Webhook delivery 🔴** · 23 Next.js Core · **23b
+Security · **21b Session auth 🔴** · 22 Realtime WebSockets E2E · **22b Webhook delivery 🔴** · **22c Uploads & background work** · 23 Next.js Core · **23b
 Mini router 🔴** · 24 Next.js Data/SEO · **24b Next advanced** · 25 Server Actions · 26
-Testing · 27 Ops/Docker/CI/CD · 28 Perf/Observability/Debugging · **28b Debugging &
+Testing · 27 Ops/Docker/CI/CD · **27b Supply-chain security** · 28 Perf/Observability/Debugging · **28b Debugging &
 Profiling** · **28c Microfrontends 🔴** · 29 Capstone Integration. Full detail: `CURRICULUM.md`.
 
 ## Depth-level convention (🟢 / 🟡 / 🔴)

@@ -1,6 +1,6 @@
 # @learn-fullstack/chat-web
 
-The **Chat (Slack-lite)** capstone client — a **Vite React SPA**. This package is the **M0+
+The **Chat (Slack-lite)** capstone client — a **Vite React SPA**. This package is the **M0 validated
 vertical slice**, not the finished app: one working Chat view (a room's message log + a composer)
 wired to a reconnecting socket store and a Redux Toolkit slice.
 
@@ -33,7 +33,7 @@ to `sent`.
 pnpm --filter @learn-fullstack/chat-web exec tsc --noEmit
 pnpm --filter @learn-fullstack/chat-web exec vitest run
 
-# Dev server (artifact — add `vite` + `@vitejs/plugin-react` first; needs the Chat API on :3001):
+# Dev server (Vite + its React plugin are installed; needs the Chat API on :3001):
 pnpm --filter @learn-fullstack/chat-web dev
 ```
 
@@ -41,6 +41,9 @@ The tests run under **jsdom** with React Testing Library; every render (and its 
 is torn down in `afterEach`. No Docker, no server, no DB required.
 
 ## Milestones (TODO)
+
+M0 is an executable baseline, not a shipped client. Track M1–M6 production acceptance evidence in
+[Module 29](../../modules/29-capstone/README.md) and the [capstone spec](../../docs/CAPSTONES.html).
 
 - **M1 — Auth**: JWT/Passport login (Chat uses the JWT stack, not Auth.js); gate the socket
   connection on the token; presence.
@@ -51,5 +54,5 @@ is torn down in `afterEach`. No Docker, no server, no DB required.
 - **M4 — Rich messages**: edits/deletes, reactions, typing indicators, read receipts.
 - **M5 — Resilience**: outbound queue while `status !== "open"`, retry/backoff surfaced in the UI,
   reconciliation of optimistic vs. confirmed messages.
-- **M6 — Polish & deploy**: accessibility pass, virtualem message list, error/empty states, Docker
+- **M6 — Polish & deploy**: accessibility pass, virtualized message list, error/empty states, Docker
   image + CI.

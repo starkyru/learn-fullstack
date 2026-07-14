@@ -35,7 +35,7 @@ reach for — and a **contract test** that catches the shape drift a mocked comp
 | 1   | Unit + TDD       | 🟢   | WE   | solved TDD'd moveCard reducer test + analog renameCard test stub         |
 | 2   | Component + MSW  | 🟡   | TODO | an RTL test of the board with MSW-mocked API + a Storybook play test     |
 | 3   | Integration      | 🟡   | TODO | Nest e2e against ephemeral Postgres (Testcontainers) in packages/testing |
-| 4   | E2E              | 🟢   | TODO | Playwright: log in → create card → see it                                |
+| 4   | E2E              | 🟢   | TODO | Playwright: open the real Kanban board and exercise its add-card form    |
 | 5   | When-to-use note | 🟢   | EXT  | the trophy note + a contract-test example                                |
 
 ## Theory & docs

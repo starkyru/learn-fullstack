@@ -6,7 +6,7 @@ Server Actions are the full-stack seam of the Next.js App Router: a form submits
 server function, no route handler in between. This module builds that seam the testable way —
 the action LOGIC lives in plain functions with injected boundaries (`repo`, `revalidate`,
 `session`), so you exercise it with fakes and a `Request`, never a running Next server. On the
-client you wire the React 19 form primitives (`useActionState`, `useOptimistic`) that make those
+client you wire the React 19 form primitives (`useActionState`, `useFormStatus`, `useOptimistic`) that make those
 actions feel instant and progressively enhanced.
 
 ## Concepts
@@ -20,6 +20,10 @@ actions feel instant and progressively enhanced.
   `<form action={formAction}>` at it; React posts the `FormData`, stores the return as `state`,
   and flips `isPending` while in-flight. It works before hydration, which is the progressive-
   enhancement win, and `isPending` / `state` drive the pending + error/success UI.
+- **`useFormStatus` reads the nearest form's submission state** — put a leaf such as
+  `<SubmitButton>` _inside_ the form and use its `pending` signal for the disabled/busy control.
+  It avoids threading pending state through unrelated component layers; compare it with the tuple
+  returned by `useActionState` rather than treating the hooks as interchangeable.
 - **`useOptimistic` shows the result before the server confirms** — render an optimistic layer
   the instant the user acts (inside a transition/action), then commit the authoritative list the
   action returns on settle. React drops the optimistic layer when the action ends, so a move the
@@ -30,12 +34,12 @@ actions feel instant and progressively enhanced.
 
 ## Tasks
 
-| #   | Task                     | Lane | Type | What you build                                              |
-| --- | ------------------------ | ---- | ---- | ----------------------------------------------------------- |
-| 1   | Server Action mutation   | 🟢   | WE   | solved createCard action + analog renameCard stub           |
-| 2   | Forms + `useActionState` | 🟡   | TODO | a card form posting to an action with pending/error state   |
-| 3   | Optimistic actions       | 🟡   | TODO | useOptimistic card move; revalidate on settle               |
-| 4   | Secure actions           | 🟢   | EXT  | authorize actions via Auth.js session + zod-validate inputs |
+| #   | Task                       | Lane | Type | What you build                                                               |
+| --- | -------------------------- | ---- | ---- | ---------------------------------------------------------------------------- |
+| 1   | Server Action mutation     | 🟢   | WE   | solved createCard action + analog renameCard stub                            |
+| 2   | Forms + Action/Form status | 🟡   | TODO | a card form with `useActionState` and a nested `useFormStatus` submit button |
+| 3   | Optimistic actions         | 🟡   | TODO | useOptimistic card move; revalidate on settle                                |
+| 4   | Secure actions             | 🟢   | EXT  | authorize actions via Auth.js session + zod-validate inputs                  |
 
 ## Theory & docs
 
@@ -43,8 +47,9 @@ actions feel instant and progressively enhanced.
   [updating data with Server Actions](https://nextjs.org/docs/app/getting-started/updating-data),
   [Server Functions](https://react.dev/reference/rsc/server-functions),
   [`"use server"`](https://react.dev/reference/rsc/use-server).
-- **Forms + `useActionState`** —
+- **Forms + `useActionState`/`useFormStatus`** —
   [`useActionState`](https://react.dev/reference/react/useActionState),
+  [`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus),
   [`<form action>`](https://react.dev/reference/react-dom/components/form).
 - **Optimistic actions** — [`useOptimistic`](https://react.dev/reference/react/useOptimistic),
   [`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag) for the
@@ -61,8 +66,8 @@ actions feel instant and progressively enhanced.
       `deps.revalidate("cards")`, and returns `{ ok, card }`; a zod-invalid input returns
       `{ ok: false, error }` and never touches the repo or the cache. The analog `renameCardAction`
       does the same for a rename.
-- [ ] `<CardForm>` posts the typed title to the injected action, shows a disabled "Saving…"
-      button while pending, an `alert` with the error after a failed action, and a `status` with
+- [ ] `<CardForm>` posts the typed title to the injected action; its nested `<SubmitButton>` uses
+      `useFormStatus` to show a disabled/busy "Saving…" control while pending, an `alert` with the error after a failed action, and a `status` with
       the created title on success (progressive enhancement — the form works from `formAction`).
 - [ ] `<CardBoard>` moves a card to the other column optimistically the instant it's clicked, then
       commits the authoritative list the action returns on settle — reconciling back if the server

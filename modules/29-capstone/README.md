@@ -2,10 +2,10 @@
 
 > **Depth lanes** 🟢 App · 🟡 Balanced · 🔴 Deep · **Task types** WE / TODO / FS / EXT
 
-The last module. You've built every piece in isolation — now assemble the **vertical slices** of the
-two capstone apps and prove they hold together. This is an **integration** module: you don't rebuild
-the full apps here, you build the SLICE LOGIC (services, guards, reducers, gateway, observability,
-readiness) as plain, injectable TypeScript and unit/integration-test it. The two apps deliberately run
+The last module starts with the **vertical slices** of the two capstone apps, then graduates them
+through their documented M1–M6 production milestones. The slice logic (services, guards, reducers,
+gateway, observability, readiness) remains plain, injectable TypeScript for deterministic tests;
+the app-level milestones bind those seams to the real database, browser, socket, and deployment. The two apps deliberately run
 **different auth stacks** — Kanban on Auth.js/session, Chat on JWT/Passport — and that contrast is the
 whole point: one capstone is not "more correct" than the other, they teach different tradeoffs.
 
@@ -33,12 +33,12 @@ whole point: one capstone is not "more correct" than the other, they teach diffe
 
 ## Tasks
 
-| #   | Task                  | Lane | Type | What you build                                                   |
-| --- | --------------------- | ---- | ---- | ---------------------------------------------------------------- |
-| 1   | Kanban vertical slice | 🟢   | EXT  | board CRUD + drag-move (optimistic) + Auth.js, on packages/ui+db |
-| 2   | Chat vertical slice   | 🟡   | EXT  | rooms + realtime messages (useSocket + gateway) + JWT auth       |
-| 3   | Cross-cutting         | 🟡   | EXT  | tests (trophy), CI, deploy, observability wired for both         |
-| 4   | Ship & document       | 🟢   | TODO | READMEs + /progress reports both apps pass                       |
+| #   | Task                      | Lane | Type | What you build                                                      |
+| --- | ------------------------- | ---- | ---- | ------------------------------------------------------------------- |
+| 1   | Kanban vertical slice     | 🟢   | EXT  | board CRUD + drag-move (optimistic) + Auth.js, on packages/ui+db    |
+| 2   | Chat vertical slice       | 🟡   | EXT  | rooms + realtime messages (useSocket + gateway) + JWT auth          |
+| 3   | Cross-cutting             | 🟡   | EXT  | tests (trophy), CI, deploy, observability wired for both            |
+| 4   | Ship, document & graduate | 🟢   | TODO | M0–M6 evidence + READMEs + `/progress` reports the actual milestone |
 
 ## Theory & docs
 
@@ -64,13 +64,36 @@ whole point: one capstone is not "more correct" than the other, they teach diffe
 - [ ] **Cross-cutting** — `withObservability` emits exactly one linked trace span + one structured
       log per action; `buildDeployPlan` uses the two DIFFERENT auth stacks and orders migrate
       before release; `buildTestPlan` describes both slices as a trophy.
-- [ ] **Ship & document** — `checkAppsReady` reports a fully-wired input as ready/done and a slice
+- [ ] **Ship, document & graduate** — `checkAppsReady` reports a fully-wired input as ready/done and a slice
       missing its auth stack (or an action, or its tests) as NOT ready, naming the gap. Both apps
       documented below; `/progress` reports both slices complete.
 
 > **Extend (EXT):** tasks 1–3 ship a full worked reference in `solution/`, mirrored into `src/` so
 > you can read, run, and extend it. Task 4 (**TODO**) throws in `src/`; implement `checkAppsReady`
 > there, then flip the test import from `../solution/04-readiness.js` to `../src/04-readiness.js`.
+
+---
+
+## Capstone graduation track (M0–M6)
+
+The testable slice is **M0**, not a claim that the finished production app already exists. Graduate
+each application in the real `apps/` directories, recording the evidence in its README and
+`PROGRESS.md`:
+
+1. **M0 — runnable slice:** typecheck, unit/integration tests, Storybook, and the Kanban browser/a11y smoke test are green.
+2. **M1 — persistence and identity:** bind the real `@learn-fullstack/db` repository, authenticate at
+   the transport boundary, and prove an authorized user cannot access another user's data.
+3. **M2 — core domain:** implement the app's documented create/update/move/history flows over real
+   storage, with migration and rollback notes.
+4. **M3 — live collaboration:** verify two real clients receive the scoped realtime update; reconnect
+   behavior and authorization are part of the acceptance test.
+5. **M4–M5 — production UX:** complete a keyboard/a11y pass, locale/time-zone and attachment/worker
+   flows where relevant, performance budgets, errors/empty states, and browser tests.
+6. **M6 — release:** CI runs typecheck/lint/unit/integration/Storybook/browser checks; record deploy,
+   migration ordering, monitoring, security evidence, and rollback.
+
+`docs/CAPSTONES.html` is the authoritative acceptance checklist for these milestones. Do not mark a
+capstone "shipped" at M0; call it a **validated vertical slice** until the M6 evidence exists.
 
 ---
 

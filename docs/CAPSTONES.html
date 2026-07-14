@@ -211,6 +211,17 @@ enum Presence { ONLINE AWAY OFFLINE }   enum ChannelRole { ADMIN MEMBER }</code>
         second auth method.
       </p>
 
+      <h2>Course exit gate: M0 is not shipped</h2>
+      <p>
+        The repository begins each app at a validated <strong>M0 vertical slice</strong>. It is
+        intentionally small and may use injected/in-memory boundaries so the lesson gate remains
+        deterministic. Mark an app <strong>shipped</strong> only after its M1–M6 rows above have
+        evidence in the app README and CI: real persistence and scoped auth, the core domain flow,
+        two-client realtime where applicable, accessibility/browser checks, locale/time-zone and
+        attachment/worker flows where applicable, deploy/monitoring, migration ordering, security
+        evidence, and a rollback plan. Module 29 owns that graduation track.
+      </p>
+
       <h2>Coverage note</h2>
       <p>
         Between the two apps: <strong>all React hooks</strong> (<code>useSyncExternalStore</code> is

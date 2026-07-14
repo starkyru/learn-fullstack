@@ -14,6 +14,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean --external react",
     "dev": "tsup src/index.ts --format esm --dts --watch --external react",
+    "storybook": "STORYBOOK_DISABLE_TELEMETRY=1 storybook dev -p 6006",
+    "storybook:build": "STORYBOOK_DISABLE_TELEMETRY=1 storybook build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -25,6 +27,10 @@
     "@learn-fullstack/config": "workspace:*"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
@@ -32,6 +38,7 @@
     "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "storybook": "^8.6.18",
     "tailwindcss": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",

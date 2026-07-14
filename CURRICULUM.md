@@ -20,19 +20,20 @@
 `WE` worked-example+analog · `TODO` cold hint stub · `FS` from-scratch 🔴 · `EXT`
 extend/refactor.
 
-30 numbered modules (00–29) + 14 lettered companion deep-dives (05b, 05c, 07b, 08b,
-10b, 11b, 13b, 14b, 20b, 21b, 23b, 24b, 28b, 28c). Each module: concepts → a numbered **task table**
+30 numbered modules (00–29) + 20 lettered companion deep-dives (00b, 05b, 05c, 05d, 05e,
+07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 22c, 23b, 24b, 27b, 28b, 28c). Each module: concepts → a numbered **task table**
 (every task tagged with a lane 🟢/🟡/🔴 **and** a type WE/TODO/FS/EXT) → a "Done when"
 checklist. `WE` = worked-example+analog · `TODO` = cold hint stub · `FS` = from-scratch
 🔴 · `EXT` = extend/refactor.
 
-**Prereq graph (in words):** `00` (monorepo) + `01` (TS) gate everything. A **frontend
+**Prereq graph (in words):** `00` (monorepo) + `00b` (Git) + `01` (TS) gate everything. A **frontend
 track** `05 → 06 → 07 → {08, 09, 10} → 11 → {12, 13, 14}` and a **backend track**
 `04 → 15 → 16 → 17 → 18 → {19, 20}` run in parallel; CSS (`05b`) slots beside React Core.
 They converge at cross-cutting modules: `21` Auth needs `18` (Guards) + `16` (a user
 table) + `01` (zod); `22` Realtime needs `18` (gateway) + `10` (`useSyncExternalStore`);
-`23–25` Next needs `05–10` + calls `16` from RSCs/Server Actions; `26` Testing weaves
-across; `27` Ops needs the Postgres of `15/16` + deploy targets of `18/23`; `28`
+`05e` slots after React Core before user-facing capstone copy/time, while `22c` follows realtime
+for attachments and workers. `23–25` Next needs `05–10` + calls `16` from RSCs/Server Actions; `26` Testing weaves
+across; `27` Ops needs the Postgres of `15/16` + deploy targets of `18/23`; `27b` hardens that release path; `28`
 Perf/Debug lands late. **Capstone 🅰 (Trellix)** pulls `11, 14, 16, 20, 21 (Auth.js),
 23–25`; **Capstone 🅱 (Pulse)** pulls `12, 15, 17–19, 21 (JWT/Passport), 22`. Companions
 are optional deepenings that don't block the main path.
@@ -557,12 +558,12 @@ The production Next features interviews probe. Concepts: partial prerendering (P
 
 Mutations without a separate API using Server Actions. Concepts: **Server Actions**, `useActionState`/`useFormStatus`, **`useOptimistic`** with actions, progressive enhancement, revalidation, Auth.js session in actions.
 
-| #   | Task                     | Lane | Type | Build                                                       |
-| --- | ------------------------ | ---- | ---- | ----------------------------------------------------------- |
-| 1   | Server Action mutation   | 🟢   | WE   | solved `createCard` action + analog `renameCard` stub       |
-| 2   | Forms + `useActionState` | 🟡   | TODO | a card form posting to an action with pending/error state   |
-| 3   | Optimistic actions       | 🟡   | TODO | `useOptimistic` card move; revalidate on settle             |
-| 4   | Secure actions           | 🟢   | EXT  | authorize actions via Auth.js session + zod-validate inputs |
+| #   | Task                       | Lane | Type | Build                                                                        |
+| --- | -------------------------- | ---- | ---- | ---------------------------------------------------------------------------- |
+| 1   | Server Action mutation     | 🟢   | WE   | solved `createCard` action + analog `renameCard` stub                        |
+| 2   | Forms + Action/Form status | 🟡   | TODO | a card form with `useActionState` and a nested `useFormStatus` submit button |
+| 3   | Optimistic actions         | 🟡   | TODO | `useOptimistic` card move; revalidate on settle                              |
+| 4   | Secure actions             | 🟢   | EXT  | authorize actions via Auth.js session + zod-validate inputs                  |
 
 **Done when:** the form works without client JS (progressive enhancement) · the optimistic move reconciles after revalidate · unauthorized action calls are rejected.
 
@@ -575,7 +576,7 @@ Choose and combine testing approaches; wire `packages/testing`. Concepts: testin
 | 1   | Unit + TDD       | 🟢   | WE   | solved TDD'd `moveCard` reducer test + analog `renameCard` test stub       |
 | 2   | Component + MSW  | 🟡   | TODO | an RTL test of the board with MSW-mocked API + a Storybook play test       |
 | 3   | Integration      | 🟡   | TODO | Nest e2e against ephemeral Postgres (Testcontainers) in `packages/testing` |
-| 4   | E2E              | 🟢   | TODO | Playwright: log in → create card → see it                                  |
+| 4   | E2E              | 🟢   | TODO | Playwright: open the real Kanban board and exercise its add-card form      |
 | 5   | When-to-use note | 🟢   | EXT  | the trophy note + a contract-test example                                  |
 
 **Done when:** `turbo run test` runs unit+component+integration · MSW intercepts network in component tests · the Nest e2e spins up a real Postgres · the Playwright flow passes headless.
@@ -635,18 +636,76 @@ Compose an app from independently-deployed remotes — the runtime under Webpack
 
 Finish both apps end-to-end with deliberately different stacks. Concepts: integrating everything; Kanban (Next RSC + Server Actions + Prisma + Auth.js + GraphQL) vs Chat (Vite + Nest REST/WS + JWT/Passport + raw SQL); shared packages; CI/deploy. Full specs (data models, API surface, milestones) in [`docs/CAPSTONES.html`](./docs/CAPSTONES.html).
 
-| #   | Task                  | Lane | Type | Build                                                                |
-| --- | --------------------- | ---- | ---- | -------------------------------------------------------------------- |
-| 1   | Kanban vertical slice | 🟢   | EXT  | board CRUD + drag-move (optimistic) + Auth.js, on `packages/ui`+`db` |
-| 2   | Chat vertical slice   | 🟡   | EXT  | rooms + realtime messages (`useSocket` + gateway) + JWT auth         |
-| 3   | Cross-cutting         | 🟡   | EXT  | tests (trophy), CI, deploy, observability wired for both             |
-| 4   | Ship & document       | 🟢   | TODO | READMEs + `/progress` reports both apps pass                         |
+| #   | Task                      | Lane | Type | Build                                                                |
+| --- | ------------------------- | ---- | ---- | -------------------------------------------------------------------- |
+| 1   | Kanban vertical slice     | 🟢   | EXT  | board CRUD + drag-move (optimistic) + Auth.js, on `packages/ui`+`db` |
+| 2   | Chat vertical slice       | 🟡   | EXT  | rooms + realtime messages (`useSocket` + gateway) + JWT auth         |
+| 3   | Cross-cutting             | 🟡   | EXT  | tests (trophy), CI, deploy, observability wired for both             |
+| 4   | Ship, document & graduate | 🟢   | TODO | M0–M6 evidence + READMEs + `/progress` reports the actual milestone  |
 
-**Done when:** both apps deploy green with different auth stacks · realtime + optimistic UX work · `turbo run test` and `/progress` report both apps complete.
+**Done when:** both apps have a validated M0 slice, and neither is called shipped until its M1–M6
+acceptance evidence in `docs/CAPSTONES.html` is complete. M6 includes real persistence/auth, scoped
+realtime, accessibility/browser checks, CI, deploy, monitoring, migration ordering, and rollback.
 
 ---
 
 ---
+
+### 00b — Git, Collaboration & Change Delivery (companion) ✅ implemented
+
+Make each course change reviewable, recoverable, and safe to ship. Concepts: conventional commits,
+small/reversible commits, branch/rebase/merge discipline, conflict resolution, `revert` vs `reset`,
+PR risk/verification/rollback notes, and CI as a review layer.
+
+| #   | Task                        | Lane | Type | Build                                                          |
+| --- | --------------------------- | ---- | ---- | -------------------------------------------------------------- |
+| 1   | Commit metadata             | 🟢   | WE   | solved Conventional Commit parser + analog formatter           |
+| 2   | Reviewable PR plan          | 🟡   | TODO | review, verification, and rollback checklist from a change set |
+| 3   | Conflict and recovery drill | 🔴   | FS   | deliberate conflict, safe resolve, and public-history `revert` |
+
+**Done when:** commit metadata is valid · a schema/deploy PR requires migration/rollback evidence · you have completed a conflict-and-revert drill on a throwaway branch.
+
+### 05e — Internationalization, Locales & Time (companion) ✅ implemented
+
+Keep messages, locales, time zones, and RTL behavior intentional before capstone copy spreads through
+the UI. Concepts: locale negotiation, message catalogs/named interpolation, UTC instants vs display
+time zones, `Intl`, `lang`/`dir`, logical CSS properties, and expanded-text testing.
+
+| #   | Task                       | Lane | Type | Build                                                            |
+| --- | -------------------------- | ---- | ---- | ---------------------------------------------------------------- |
+| 1   | Locale fallback            | 🟢   | WE   | locale parser + analog exact/language/fallback resolver          |
+| 2   | Message interpolation      | 🟡   | TODO | catalog interpolation that rejects absent named variables        |
+| 3   | Time and RTL capstone pass | 🔴   | FS   | two locale/time-zone renders plus logical CSS, no i18n framework |
+
+**Done when:** locale fallback is deterministic · messages never silently render missing variables · one capstone has an accessible locale/RTL pass with explicit locale/time-zone tests.
+
+### 22c — File Uploads & Background Work (companion) ✅ implemented
+
+Add safe attachments and resilient slow work. Concepts: short-lived direct-to-object-storage uploads,
+MIME/size validation, untrusted bytes, verification/scanning, at-least-once delivery, idempotency,
+retries/DLQ, and job-status UX.
+
+| #   | Task                | Lane | Type | Build                                                          |
+| --- | ------------------- | ---- | ---- | -------------------------------------------------------------- |
+| 1   | Upload policy       | 🟢   | WE   | image policy + attachment-policy analog with allowlists        |
+| 2   | Idempotent worker   | 🟡   | TODO | injected worker that remembers completed keys and attempts     |
+| 3   | Attachment pipeline | 🔴   | FS   | presign → upload → verify → scan → status, no upload/queue SDK |
+
+**Done when:** invalid files are rejected before presigning · duplicate deliveries do not repeat a completed side effect · a capstone attachment exposes queued/failed/done state and keeps failed objects private.
+
+### 27b — Supply Chain Security & Safe Releases (companion) ✅ implemented
+
+Harden the delivery boundary. Concepts: least-privilege workflows, immutable action revisions,
+dependency/secret scanning, SBOM/provenance, audit triage, release evidence, migration compatibility,
+and rollback plans.
+
+| #   | Task                   | Lane | Type | Build                                                                                      |
+| --- | ---------------------- | ---- | ---- | ------------------------------------------------------------------------------------------ |
+| 1   | Workflow-action review | 🟢   | WE   | immutable GitHub Action reference checker + allowlist analog                               |
+| 2   | Release evidence gate  | 🟡   | TODO | exact missing audit/SBOM/secret-scan/E2E/migration evidence                                |
+| 3   | Harden CI              | 🔴   | FS   | least-privilege CI, scanning, SBOM, and protected release evidence without a security SaaS |
+
+**Done when:** tags cannot pass as immutable action refs · release evidence names every missing prerequisite · CI produces reviewable security and rollback evidence before a deploy.
 
 ## Coverage matrix
 
@@ -723,9 +782,10 @@ Finish both apps end-to-end with deliberately different stacks. Concepts: integr
 | Interactive learning (`/tutor`, `/exam`, `/progress`)                 | `.claude/` (cross-cutting)                                                        |
 | Shared "core" packages                                                | `config`(00) `ui`(11) `db`(16) `auth`(21) `api-client`(19/20) `testing`(26)       |
 
-**Totals:** 30 numbered modules (00–29) + 14 companions (05b, 05c, 07b, 08b, 10b, 11b,
-13b, 14b, 20b, 21b, 23b, 24b, 28b, 28c) = **44 lessons**. Every named tech, every named React
-hook, both capstones, and all cross-cutting topics (CSS/Tailwind, animation, 3D, auth,
-TanStack, Storybook, testing, ops, realtime, debugging) are placed.
+**Totals:** 30 numbered modules (00–29) + 20 companions (00b, 05b, 05c, 05d, 05e, 07b, 08b,
+10b, 11b, 13b, 14b, 20b, 21b, 22b, 22c, 23b, 24b, 27b, 28b, 28c) = **50 lessons**. Every named
+app-facing React hook, both capstones, and all cross-cutting topics (Git, i18n, uploads/workers,
+CSS/Tailwind, animation, 3D, auth, supply-chain security, Storybook, testing, ops, realtime,
+debugging) are placed.
 
 ---

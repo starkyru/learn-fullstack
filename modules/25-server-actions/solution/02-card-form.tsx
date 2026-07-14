@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 /**
  * A form wired to a Server Action with `useActionState`. In the real app you'd pass
@@ -28,16 +29,24 @@ export type CardFormAction = (
   formData: FormData,
 ) => Promise<FormState>;
 
+/** `useFormStatus` must render under the form whose submission it observes. */
+export function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} aria-busy={pending}>
+      {pending ? "Saving…" : "Create card"}
+    </button>
+  );
+}
+
 export function CardForm({ action }: { action: CardFormAction }) {
-  const [state, formAction, isPending] = useActionState(action, INITIAL);
+  const [state, formAction] = useActionState(action, INITIAL);
 
   return (
     <form action={formAction}>
       <label htmlFor="card-title">Title</label>
       <input id="card-title" name="title" />
-      <button type="submit" disabled={isPending}>
-        {isPending ? "Saving…" : "Create card"}
-      </button>
+      <SubmitButton />
       {state.status === "error" && <p role="alert">{state.error}</p>}
       {state.status === "success" && <p role="status">Created {state.title}</p>}
     </form>

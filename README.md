@@ -1,7 +1,7 @@
 # learn-fullstack
 
 > A personal, hands-on, project-based course that takes one person from **TypeScript
-> basics to shipping two production apps** — a **Kanban board** (Trello-lite) and a
+> basics through two production-capstone delivery tracks** — a **Kanban board** (Trello-lite) and a
 > **realtime chat** (Slack-lite). TypeScript end-to-end: React, Next.js, Node/NestJS,
 > REST **and** GraphQL, Postgres raw **and** via Prisma, auth, realtime, testing, and
 > deploy. Modeled on the house style of [`learn-ai`](https://github.com/starkyru/learn-ai).
@@ -44,33 +44,34 @@ testing}` primitives; module exercises inject in-memory fakes at the same bounda
 
 ## The module map
 
-30 numbered modules (00–29) + 16 lettered companion deep-dives. Full detail in
+30 numbered modules (00–29) + 20 lettered companion deep-dives. Full detail in
 [`CURRICULUM.md`](./CURRICULUM.md).
 
-| #       | Module                                            | #       | Module                                              |
-| ------- | ------------------------------------------------- | ------- | --------------------------------------------------- |
-| 00      | Setup & Monorepo Tooling                          | 15      | SQL & Postgres (raw)                                |
-| 01      | TypeScript for Full-Stack                         | 16      | Prisma                                              |
-| 02      | Modern JavaScript & Async                         | 17      | Node HTTP & Express                                 |
-| 03      | HTTP & the Web Platform                           | 18      | NestJS Fundamentals                                 |
-| 04      | Node.js Fundamentals                              | 19      | REST API Design                                     |
-| 05      | React Core                                        | 20      | GraphQL End-to-End · **20b** DataLoader 🔴          |
-| **05b** | CSS & Modern Layout                               | 21      | Authentication & Security · **21b** Session auth 🔴 |
-| **05c** | CSS & React Animations                            |         |                                                     |
-| **05d** | Responsive Design                                 |         |                                                     |
-| 06      | React Hooks I                                     | 22      | Realtime: WebSockets · **22b** Webhook delivery 🔴  |
-| 07      | React Hooks II · **07b** Hand-rolled hooks 🔴     | 23      | Next.js Core (App Router) · **23b** Mini router 🔴  |
-| 08      | React Patterns & Perf · **08b** Advanced patterns | 24      | Next.js Data & SEO · **24b** Next advanced          |
-| 09      | Forms                                             | 25      | Server Actions & Full-Stack Next                    |
-| 10      | Concurrent React, Suspense & React 19             | 26      | Testing (the trophy)                                |
-| **10b** | 3D: Three.js & react-three-fiber                  |         |                                                     |
-| 11      | Component Library · **11b** Accessibility & WCAG  | 27      | Ops: Docker, CI/CD & Deploy                         |
-| 12      | State: Redux Toolkit                              | 28      | Performance, Observability & Debugging              |
-| 13      | State: Zustand · **13b** Mini store 🔴            | **28b** | Debugging & Profiling                               |
-| 14      | TanStack Query · **14b** Mini query client 🔴     | **28c** | Micro-Frontend Runtime (Module Federation) 🔴       |
-|         |                                                   | 29      | Capstone Integration                                |
+| #       | Module                                                 | #       | Module                                                            |
+| ------- | ------------------------------------------------------ | ------- | ----------------------------------------------------------------- |
+| 00      | Setup & Monorepo Tooling · **00b** Git & collaboration | 15      | SQL & Postgres (raw)                                              |
+| 01      | TypeScript for Full-Stack                              | 16      | Prisma                                                            |
+| 02      | Modern JavaScript & Async                              | 17      | Node HTTP & Express                                               |
+| 03      | HTTP & the Web Platform                                | 18      | NestJS Fundamentals                                               |
+| 04      | Node.js Fundamentals                                   | 19      | REST API Design                                                   |
+| 05      | React Core                                             | 20      | GraphQL End-to-End · **20b** DataLoader 🔴                        |
+| **05b** | CSS & Modern Layout                                    | 21      | Authentication & Security · **21b** Session auth 🔴               |
+| **05c** | CSS & React Animations                                 |         |                                                                   |
+| **05d** | Responsive Design                                      |         |                                                                   |
+| **05e** | Internationalization, locales & time                   |         |                                                                   |
+| 06      | React Hooks I                                          | 22      | Realtime: WebSockets · **22b** Webhooks · **22c** Uploads/workers |
+| 07      | React Hooks II · **07b** Hand-rolled hooks 🔴          | 23      | Next.js Core (App Router) · **23b** Mini router 🔴                |
+| 08      | React Patterns & Perf · **08b** Advanced patterns      | 24      | Next.js Data & SEO · **24b** Next advanced                        |
+| 09      | Forms                                                  | 25      | Server Actions & Full-Stack Next                                  |
+| 10      | Concurrent React, Suspense & React 19                  | 26      | Testing (the trophy)                                              |
+| **10b** | 3D: Three.js & react-three-fiber                       |         |                                                                   |
+| 11      | Component Library · **11b** Accessibility & WCAG       | 27      | Ops · **27b** Supply-chain security                               |
+| 12      | State: Redux Toolkit                                   | 28      | Performance, Observability & Debugging                            |
+| 13      | State: Zustand · **13b** Mini store 🔴                 | **28b** | Debugging & Profiling                                             |
+| 14      | TanStack Query · **14b** Mini query client 🔴          | **28c** | Micro-Frontend Runtime (Module Federation) 🔴                     |
+|         |                                                        | 29      | Capstone Integration                                              |
 
-**Companions:** 05b, 05c, 05d, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 23b, 24b, 28b, 28c (deep-dives;
+**Companions:** 00b, 05b, 05c, 05d, 05e, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 22c, 23b, 24b, 27b, 28b, 28c (deep-dives;
 optional, don't block the main path).
 
 ## How to learn
@@ -113,12 +114,12 @@ Foundations gate everything; the frontend and backend tracks can run in parallel
 converge. A safe linear path (companions `NNx` are optional deep-dives — take them inline or
 skip):
 
-1. **Foundations** — `00 → 01 → 02 → 03 → 04`
-2. **Frontend core** — `05 (+05b, 05c, 05d) → 06 → 07 (+07b) → 08 (+08b) → 09 → 10 (+10b) → 11 (+11b)`
+1. **Foundations** — `00 (+00b) → 01 → 02 → 03 → 04`
+2. **Frontend core** — `05 (+05b, 05c, 05d, 05e) → 06 → 07 (+07b) → 08 (+08b) → 09 → 10 (+10b) → 11 (+11b)`
 3. **Client state & data** — `12 → 13 (+13b) → 14 (+14b)`
 4. **Backend & data** — `15 → 16 → 17 → 18 → 19 → 20 (+20b)`
-5. **Cross-cutting** — `21 (+21b) → 22 (+22b) → 23 (+23b) → 24 (+24b) → 25 → 26`
-6. **Ops & performance** — `27 → 28 (+28b, +28c)`
+5. **Cross-cutting** — `21 (+21b) → 22 (+22b, 22c) → 23 (+23b) → 24 (+24b) → 25 → 26`
+6. **Ops & performance** — `27 (+27b) → 28 (+28b, +28c)`
 7. **Capstone** — `29`
 
 Not starting from zero? Run **`learning-plan`** — it evaluates what you already know (and your
@@ -137,6 +138,7 @@ pnpm db:up && pnpm db:migrate && pnpm db:seed
 
 pnpm dev                     # run app dev servers (turbo)
 pnpm storybook               # packages/ui component library (:6006)
+pnpm test:e2e                # Chromium + axe check against the real Kanban board
 pnpm typecheck && pnpm test  # quality gates
 
 # run one module exercise (learn-ai style)
