@@ -1,7 +1,7 @@
 # Dependency-security upgrade — migration notes
 
-Tracks the work in `TODO.md` (dependency-security upgrade plan). One commit per track so any
-regression can be bisected or reverted cleanly. Becomes the upgrade PR body.
+Record of the dependency-security upgrade — one commit per track so any regression can be bisected or
+reverted cleanly. Becomes the upgrade PR body.
 
 ## Baseline (T1)
 
@@ -186,7 +186,25 @@ unreferenced by the lockfile (frozen install is clean), so CI/images built from 
 resolve only the new tree. A `pnpm store prune` locally is optional cleanup, not required for
 correctness.
 
-Final versions are tabulated in `TODO.md` (§ Final package versions).
+### Final package versions
+
+| Package                                                                      | Before         | After                                   |
+| ---------------------------------------------------------------------------- | -------------- | --------------------------------------- |
+| postcss                                                                      | 8.4.49         | 8.5.19 (catalog + override)             |
+| qs (transitive)                                                              | 6.14.2         | 6.15.3 (native via Express 5)           |
+| uuid (transitive)                                                            | 9.0.1 / 10.0.0 | 11.1.1 (override)                       |
+| @hono/node-server                                                            | 1.19.11        | 1.19.13 (override)                      |
+| file-type (transitive)                                                       | 20.4.1         | 21.3.4 (native via Nest 11)             |
+| @nestjs/{common,core,platform-express,testing,websockets,platform-socket.io} | 10.4.15        | 11.1.28                                 |
+| @nestjs/graphql · @nestjs/apollo                                             | 12.2.1         | 13.4.2                                  |
+| @apollo/server                                                               | 4.11.3         | 5.5.1                                   |
+| graphql                                                                      | 16.10.x        | 16.14.2 (`^16.11`)                      |
+| express (Nest apps)                                                          | 4.x            | 5.2.1                                   |
+| @as-integrations/express5                                                    | —              | 1.1.2 (new; Apollo driver on Express 5) |
+
+Verified: Node v25.7.0 (CI 22·24), pnpm 11.10.0, Docker 29.4.1, Postgres 16 (Testcontainers),
+Playwright 1.61.1. Docker-absent runs still **skip** the Testcontainers suites (verified), so the
+course remains runnable without Docker.
 
 ### Holistic (aggregate) review dispositions
 
