@@ -28,10 +28,9 @@ overrides:
   lodash: 4.18.1
   multer: 2.2.0
   postcss: 8.5.19 # XSS (unescaped </style>); next 15 pins transitive postcss 8.4.31. Prune when Next adopts >=8.5.10.
-  qs: 6.15.3 # DoS (GHSA-q8mj-m7cp-5q26); Nest 10 platform-express pulled 6.14.2. Prune after Nest 11 (T3).
   turbo-stream: 3.0.0
   undici: 6.27.0
-  uuid: 11.1.1 # buffer-bounds (GHSA-w5hq-g745-h8pq); @apollo/server 4 pulled 9.0.1. Prune after Apollo 5 (T4).
+  uuid: 11.1.1 # buffer-bounds (GHSA-w5hq-g745-h8pq); testcontainers>dockerode still pulls uuid 10.0.0 (<11.1.1). Prune when that chain ships >=11.1.1.
   ws: 8.21.0
 
 catalog:

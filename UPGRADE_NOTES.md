@@ -162,4 +162,53 @@ unreachable via the lockfile (no runtime/audit risk) but T5 should confirm a cle
 
 ## T5 — Closeout
 
-_pending_
+**Override pruning** (`pnpm-workspace.yaml`): removed the `qs` override — Express 5's bundled
+body-parser now resolves `qs@6.15.3` in-range with no override (verified `pnpm why qs --prod` →
+single 6.15.3). **Kept** `uuid: 11.1.1`: removing it drops the prod tree to `uuid@10.0.0` via
+`@learn-fullstack/testing > @testcontainers/postgresql > testcontainers > dockerode` (a prod dep of
+the testing package) and `pnpm audit --prod` goes back to 1 moderate — so the T2 "prune after Apollo 5"
+note was incomplete; the override is still doing real work on that chain (comment corrected). Kept
+`postcss` (Next 15 transitive) and `@hono/node-server` (Prisma dev) — their parents are unchanged.
+
+**Full closeout gate (all green):** `build` ✓, `typecheck` ✓ (68/68), `lint` ✓, `test` ✓ (68/68,
+Docker-backed Testcontainers ran for real), `test:e2e` ✓ (Playwright board a11y 1/1), `storybook:build`
+✓, `docs:sync` ✓. `pnpm install --frozen-lockfile` → clean (lockfile consistent, no drift).
+
+**`pnpm audit --prod --audit-level moderate` → 0 findings** (8 → 0 across the run).
+
+**Docker-absent still skips (verified):** with `CI` unset and an invalid `DOCKER_HOST`, `hasDocker()`
+returns false and the container-backed suites `describe.skipIf(!hasDocker())` **skip** rather than fail
+— e.g. `@learn-fullstack/testing` = 3 passed / 1 skipped, `mod-15-sql-postgres` = 6 passed / 18
+skipped, both exit 0. The course remains runnable without Docker.
+
+**Store hygiene:** the incremental installs left pre-migration packages in `node_modules/.pnpm`; they're
+unreferenced by the lockfile (frozen install is clean), so CI/images built from `--frozen-lockfile`
+resolve only the new tree. A `pnpm store prune` locally is optional cleanup, not required for
+correctness.
+
+Final versions are tabulated in `TODO.md` (§ Final package versions).
+
+### Holistic (aggregate) review dispositions
+
+The final cross-cutting Codex pass raised three points on the combined diff; each is accepted with
+reason (none block a green, 0-advisory upgrade):
+
+1. **GraphiQL/introspection gate is `NODE_ENV !== "production"` (fail-open on unset/staging).** Held as
+   rebutted (see the T3+T4 Codex-seal note): it mirrors `@nestjs/apollo`'s **own** landing-page gate and
+   Apollo Server 5's own introspection default, so it introduces no exposure beyond the framework
+   default; `=== "development"` would break the common unset-`NODE_ENV` local-dev case. Fail-closed env
+   validation + explicit `introspection` + rate limiting is kanban-api's **deferred M6 milestone** and a
+   separate hardening effort, out of a dependency-security upgrade's scope. kanban-api is the M0 slice
+   (`main.ts`: "NOT gated … no running server at gate time").
+2. **The shared `express`/`@types/express` catalog stays at v4** — **by design, not an incomplete
+   migration.** Those catalog entries are consumed only by `modules/17-express` and
+   `modules/19-rest-api-design`, which **teach Express 4**; only Nest's transitive `platform-express`
+   moved to Express 5 (for the apps). The two majors serve disjoint consumers — no package resolves
+   both — so there is no runtime split to fix. Migrating the Express lessons to v5 is a curriculum
+   change, out of scope.
+3. **`@apollo/server-plugin-landing-page-graphql-playground@4.0.1` remains in the graph.** It is a hard
+   dependency `require()`d **unconditionally** at the top of `@nestjs/apollo@13.4.2`'s
+   `apollo-base.driver.js` (line 6, before any config), so it cannot be removed via a pnpm override
+   without breaking `require("@nestjs/apollo")`. With `graphiql` set it is never instantiated, it pulls
+   no second `@apollo/server` (peer only), and `audit --prod` is 0. 13.4.2 is the latest `@nestjs/apollo`;
+   this resolves upstream when a release drops the dep. Accepted upstream residual.
