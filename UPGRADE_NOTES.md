@@ -91,13 +91,74 @@ deferred teaching milestone** (`apps/chat-api/README.md` **M4** — "DTO validat
 zod pipe)"); `class-validator` isn't even a chat-api dependency yet. Implementing it here would
 front-run the curriculum and exceed the dependency-upgrade scope, so it is **flagged, not fixed**.
 
-## T3 — Nest 10 → 11
+## T3 + T4 — Nest 10 → 11 and Apollo 4 → 5 (one atomic wave)
 
-_pending_
+**Why merged:** `@nestjs/apollo@13` peer-requires `@apollo/server@^5` and `@nestjs/graphql@13`
+requires `@nestjs/core/common @^11` + `graphql @^16.11`. The `catalog:` is shared, so bumping Nest
+core to 11 forces kanban-api's graphql/apollo to 13 + Apollo Server to 5 in the same change — there is
+no green intermediate. Kept as one commit rather than TODO's two-track split (documented deviation).
 
-## T4 — GraphQL / Apollo
+**Catalog bumps** (`pnpm-workspace.yaml`): `@nestjs/common`, `core`, `platform-express`, `testing`,
+`websockets`, `platform-socket.io` `^10.4.15` → `^11.1.28`; `@nestjs/graphql`, `@nestjs/apollo`
+`^12.2.1` → `^13.4.2`; `@apollo/server` `^4.11.3` → `^5.5.1`; `graphql` `^16.10.0` → `^16.11.0`
+(resolves 16.14.2). `reflect-metadata`/`rxjs`/`graphql-subscriptions`/`graphql-request` unchanged.
 
-_pending_
+**New dependency:** `@as-integrations/express5` (catalog `^1.1.2`; added to `apps/kanban-api` +
+`modules/20-graphql-e2e`). `@nestjs/apollo@13`'s `ApolloDriver` `loadPackage()`s it at runtime for the
+Express platform under Apollo Server 5; without it kanban-api's e2e aborts (`process.exit(1)`). Peers
+(`express ^5`, `@apollo/server ^4||^5`) satisfied.
+
+**Source changes: one, kanban-api only.** Express 5 (`@nestjs/platform-express@11` pulls
+`express@5.2.1`) needed no code edits — grep found no wildcard routes, `req.query` mutation, or removed
+Express APIs in either app, and the Nest e2e suites (which boot the real Express-5 pipeline) pass.
+Apollo 5 CSRF stays on by default; `ts-morph`/`@apollo/subgraph` peers were not required (`autoSchemaFile`
+builds the schema in memory). The **one** edit fulfils TODO T4's "remove/replace the deprecated
+playground plugin": `@nestjs/apollo` mounts the deprecated `ApolloServerPluginLandingPageGraphQLPlayground`
+by default (a live boot confirmed `GET /graphql` served the old playground, loading
+`graphql-playground-react` from jsdelivr). `apps/kanban-api/src/app.module.ts` now sets
+`graphiql: process.env.NODE_ENV !== "production"`, which serves the maintained GraphiQL explorer in dev
+and disables the landing page in production (verified at runtime: `GET /graphql` returns GraphiQL, not
+the playground; `POST /graphql` still answers queries). This does not front-run any kanban-api
+milestone (M1–M6 cover persistence/auth/DataLoader/subscription/validation, not the explorer).
+
+**Advisories cleared:** `@nestjs/core` (GHSA-36xv-jgw5-4q75) + **both** `file-type` advisories
+(`file-type` now single `21.3.4 ≥ 21.3.2` in the prod tree) + the `@apollo/server` XS-search
+(→ 5.5.1). `pnpm audit --prod --audit-level moderate` → **0 known vulnerabilities** (4 → 0). Express 5
+also lands qs `6.15.x` natively (in range) — the T2 `qs` override is now redundant (prune in T5).
+
+**Gate:** build 11/11 ✓, typecheck 68/68 ✓, lint ✓, test **68/68** ✓ (independently re-run; Docker
+Testcontainers ran for real — mod-26 integration, mod-15 SQL). App e2e through the real Nest/Express-5
+HTTP pipeline: chat-api 8/8, kanban-api (Apollo 5) 5/5.
+
+**Known residual (non-blocking, upstream):** `@nestjs/apollo@13.4.2` hard-`require()`s the deprecated
+`@apollo/server-plugin-landing-page-graphql-playground@4.0.1` at the top of its driver, which peer-wants
+`@apollo/server ^4` → one `unmet peer` warning (we ship 5.5.1). With `graphiql` set (above) the plugin
+is never instantiated/served, but it stays _installed_ because it's a hard dep of `@nestjs/apollo` — it
+pulls no second `@apollo/server` (peer only) and audit is 0, so it's cosmetic upstream noise, not a
+re-introduced advisory. Not overridden (there's no non-deprecated drop-in and an override risks the
+driver's `require`). Flagged for visibility.
+
+**Store hygiene (for T5):** this tree came from an incremental `pnpm install`, so `node_modules/.pnpm`
+still holds the unreferenced pre-migration packages (`@apollo/server@4`, `@nestjs/*@10`). They're
+unreachable via the lockfile (no runtime/audit risk) but T5 should confirm a clean
+`pnpm install --frozen-lockfile` before CI caches/images bake the tree.
+
+**Codex seal outcome.** Codex raised two coverage/hardening points on the migration:
+
+1. _Socket.IO tests forced `transports:["websocket"]`, skipping the HTTP long-poll path._ **Fixed:**
+   added `apps/chat-api/test/chat.gateway.transport.test.ts`. A follow-up Codex round correctly noted a
+   default-transport test asserting the upgrade is racy (localhost upgrades before Socket.IO's `connect`
+   fires) and that Engine.IO bypasses Express middleware — so the test now **pins `transports:["polling"]`**,
+   asserts the session actually runs on `polling` (`engine.transport.name === "polling"`), and ACKs a
+   `join` over long-poll. Deterministic, honestly scoped to the Socket.IO/Engine.IO transport (Express 5
+   REST middleware is covered by `chat.controller.test.ts`). Green (chat-api 9/9).
+2. _`graphiql: NODE_ENV !== "production"` fails open on nonstandard/unset `NODE_ENV`._ **Reasoned
+   rebuttal:** this mirrors `@nestjs/apollo`'s **own** landing-page gate (its driver uses the identical
+   `process.env.NODE_ENV === "production"` check), so the migration introduces no new prod exposure vs.
+   the framework default — and `=== "development"` would break the common unset-`NODE_ENV` local-dev
+   case for learners. Fail-closed config validation + explicit `introspection`/rate-limiting is
+   kanban-api's **deferred M6 milestone** ("input validation, error mapping, rate limiting"), out of the
+   dependency-upgrade scope. Flagged, not fixed.
 
 ## T5 — Closeout
 
