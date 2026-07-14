@@ -212,3 +212,49 @@ reason (none block a green, 0-advisory upgrade):
    without breaking `require("@nestjs/apollo")`. With `graphiql` set it is never instantiated, it pulls
    no second `@apollo/server` (peer only), and `audit --prod` is 0. 13.4.2 is the latest `@nestjs/apollo`;
    this resolves upstream when a release drops the dep. Accepted upstream residual.
+
+## Follow-up hardening (post-merge request)
+
+Three of the above were subsequently **fixed** on request (branch `deps/hardening-followups`):
+
+1. **chat-api body validation (was the pre-existing / deferred-M4 finding).**
+   `apps/chat-api/src/chat.controller.ts` now validates at the boundary: `POST /rooms/:id/messages`
+   throws `BadRequestException("`text` must be a non-empty string")` when `text` isn't a non-empty
+   string, so a JSON object or mixed form-urlencoded key can no longer be persisted as a non-string
+   `Message.text`. It also caps length at `MAX_MESSAGE_LENGTH = 4000` (a follow-up Codex round flagged
+   that an authed client could otherwise store unbounded large strings in the in-memory map — a memory
+   DoS). Deliberately a **minimal boundary check, not class-validator** — chat-api's M4 lesson (the
+   DTO/`ValidationPipe` approach) stays intact; `class-validator` is still not a dependency. Tests added
+   (`chat.controller.test.ts`): object `text` → 400 (nothing persisted), missing/blank → 400, `>4000`
+   chars → 400 while exactly 4000 → 201. chat-api 12/12. _(Rate limiting + bounded retention remain the
+   deferred M-milestones; the `ChatGateway` `message` handler shares the untrusted-payload shape but is
+   scoped to its M3 auth/sender-verification milestone — left as is.)_
+
+2. **kanban-api graphiql/introspection gate is now default-deny + explicit.**
+   Two Codex rounds sharpened this. The policy is a **pure function**, `graphqlDevToolsEnabled(nodeEnv)`
+   in `apps/kanban-api/src/graphql-devtools.ts`: it returns true **only** for an explicit `"development"`
+   or `"test"` env — `production`, `staging`, `prod`, uppercase, whitespace, **and unset/empty all fail
+   closed** (round 2 flagged that treating unset as dev is fail-open for a deployment that forgets to set
+   `NODE_ENV`). `app.module.ts` drives **both** `graphiql` and `introspection` from it **and sets
+   `playground: false`** — required, because round 1 caught that with `playground` left undefined
+   `@nestjs/apollo` mounts its deprecated graphql-playground fallback for any non-`production` NODE_ENV
+   even when `graphiql` is false. To keep local DX, `kanban-api`'s `dev` script now sets
+   `NODE_ENV=development` (via `cross-env`, added). Covered by a deterministic unit test
+   (`graphql-devtools.test.ts`: development/test → true; production/staging/prod/uppercase/whitespace/
+   empty/undefined → false) and runtime-verified across unset/development/staging/production (explorer +
+   introspection only under development/test; disabled everywhere else — no GraphiQL, no deprecated
+   playground).
+
+3. **Deprecated playground plugin peer mismatch formalized.**
+   The plugin can't be removed (hard `require`, above), so `pnpm-workspace.yaml` adds a
+   `peerDependencyRules.allowedVersions` entry accepting `@apollo/server 5` for it — the unmet-peer
+   warning is gone and the intentional, inert mismatch is documented in one place. Remove when
+   `@nestjs/apollo` drops the dependency upstream.
+
+**Not changed — disposition #2 (`express ^4` catalog) stands:** it is not a defect. Those catalog
+entries deliberately keep `modules/17-express` / `modules/19-rest-api-design` on Express 4 (the version
+they teach); only the Nest apps run Express 5 (transitively), and no package resolves both majors.
+Migrating the lessons to Express 5 is a curriculum rewrite, not a security fix — out of scope here; can
+be a separate task if wanted.
+
+**Gate after the follow-ups:** build ✓, typecheck ✓ (68/68), lint ✓, test ✓ (68/68), `audit --prod` = 0.

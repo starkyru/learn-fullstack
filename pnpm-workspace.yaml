@@ -33,6 +33,14 @@ overrides:
   uuid: 11.1.1 # buffer-bounds (GHSA-w5hq-g745-h8pq); testcontainers>dockerode still pulls uuid 10.0.0 (<11.1.1). Prune when that chain ships >=11.1.1.
   ws: 8.21.0
 
+# @nestjs/apollo@13 hard-requires the deprecated @apollo/server-plugin-landing-page-graphql-playground
+# at driver load; its @apollo/server ^4 peer can't be satisfied on Apollo 5. The plugin is never
+# instantiated (kanban-api sets `graphiql`), so this formally accepts the inert mismatch instead of
+# emitting an unmet-peer warning. Remove when a @nestjs/apollo release drops the dependency.
+peerDependencyRules:
+  allowedVersions:
+    "@apollo/server-plugin-landing-page-graphql-playground>@apollo/server": "5"
+
 catalog:
   typescript: ^5.7.2
   tsup: ^8.3.5
