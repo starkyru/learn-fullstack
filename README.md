@@ -3,8 +3,9 @@
 > A personal, hands-on, project-based course that takes one person from **TypeScript
 > basics through two production-capstone delivery tracks** — a **Kanban board** (Trello-lite) and a
 > **realtime chat** (Slack-lite). TypeScript end-to-end: React, Next.js, Node/NestJS,
-> REST **and** GraphQL, Postgres raw **and** via Prisma, auth, realtime, testing, and
-> deploy. Modeled on the house style of [`learn-ai`](https://github.com/starkyru/learn-ai).
+> REST **and** GraphQL, Postgres raw **and** via Prisma, auth, realtime, Docker/Compose,
+> testing, CI/CD, and deploy. Modeled on the house style of
+> [`learn-ai`](https://github.com/starkyru/learn-ai).
 
 Each module's `README.md` **is** the lesson: concepts → a numbered task table → a
 "Done when" checklist. Exercises are code you run, break, and extend. A set of shared
@@ -65,7 +66,7 @@ testing}` primitives; module exercises inject in-memory fakes at the same bounda
 | 09      | Forms                                                  | 25      | Server Actions & Full-Stack Next                                  |
 | 10      | Concurrent React, Suspense & React 19                  | 26      | Testing (the trophy)                                              |
 | **10b** | 3D: Three.js & react-three-fiber                       |         |                                                                   |
-| 11      | Component Library · **11b** Accessibility & WCAG       | 27      | Ops · **27b** Supply-chain security                               |
+| 11      | Component Library · **11b** Accessibility & WCAG       | 27      | Ops: Docker, CI/CD & Deploy · **27b** Supply-chain security       |
 | 12      | State: Redux Toolkit                                   | 28      | Performance, Observability & Debugging                            |
 | 13      | State: Zustand · **13b** Mini store 🔴                 | **28b** | Debugging & Profiling                                             |
 | 14      | TanStack Query · **14b** Mini query client 🔴          | **28c** | Micro-Frontend Runtime (Module Federation) 🔴                     |
@@ -73,6 +74,21 @@ testing}` primitives; module exercises inject in-memory fakes at the same bounda
 
 **Companions:** 00b, 05b, 05c, 05d, 05e, 07b, 08b, 10b, 11b, 13b, 14b, 20b, 21b, 22b, 22c, 23b, 24b, 27b, 28b, 28c (deep-dives;
 optional, don't block the main path).
+
+### Docker through the course
+
+Docker is introduced as a practical development tool before it becomes a deployment topic:
+
+- **Module 00 — Setup:** start the local Postgres service with Compose using `pnpm db:up`,
+  then migrate and seed it.
+- **Modules 15 and 26 — database and integration testing:** run real Postgres suites with
+  Testcontainers when Docker is available; the suites skip locally with a clear warning when
+  it is not.
+- **Module 27 — Ops: Docker, CI/CD & Deploy:** build multi-stage Dockerfiles, compose a
+  Postgres + API + web stack, and connect those artifacts to CI and an ordered deploy plan.
+
+Read the full hands-on lesson in
+[`modules/27-ops-docker-cicd/README.md`](./modules/27-ops-docker-cicd/README.md).
 
 ## How to learn
 
@@ -86,6 +102,7 @@ git clone <this-repo> && cd learn-fullstack
 pnpm install                 # also registers the Husky pre-commit hooks
 cp .env.example .env         # fill DATABASE_URL, AUTH_SECRET, JWT_SECRET, OAuth ids
 pnpm build                   # build the shared packages/* once (so module imports resolve)
+# Start Docker Desktop first; this starts the local Postgres Compose service.
 pnpm db:up && pnpm db:migrate && pnpm db:seed
 ```
 
@@ -129,7 +146,7 @@ target role/capstone), then writes a personalized, prereq-respecting order to
 
 ## Getting started
 
-Prerequisites: Node ≥ 22.5 (pnpm 11 needs `node:sqlite`), pnpm, Docker Desktop, git. Comfortable with JavaScript basics.
+Prerequisites: Node ≥ 22.5 (pnpm 11 needs `node:sqlite`), pnpm, Docker Desktop, git. Comfortable with JavaScript basics. Confirm Docker is running with `docker info` before using the Compose and Testcontainers lessons.
 
 ```bash
 pnpm install                 # + registers Husky hooks
