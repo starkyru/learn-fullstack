@@ -28,7 +28,7 @@
     "@types/supertest": "catalog:",
     "class-transformer": "catalog:",
     "class-validator": "catalog:",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "supertest": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
